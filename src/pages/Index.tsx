@@ -17,6 +17,7 @@ const Index = () => {
     if (activeId === "api-keys") return <ApiKeysPage />;
     if (activeId === "agents") return <AgentsPage />;
     if (activeId === "mcp") return <McpToolsPage />;
+    if (activeId === "models") return <LlmModelsPage />;
     if (pages[activeId]) return <PlaceholderPage title={pages[activeId].title} subtitle={pages[activeId].subtitle} />;
     return null;
   };
