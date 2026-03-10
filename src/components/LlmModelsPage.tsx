@@ -41,6 +41,30 @@ const EMBED_CURL = `curl "https://agentgateway.ai.redmadrobot.com/llm/embeddings
   "input": "Текст для получения эмбеддинга"
 }'`;
 
+const VISION_CURL = `curl "https://agentgateway.ai.redmadrobot.com/llm/chat/completions" \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Что изображено на этой картинке?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "https://example.com/image.jpg"
+          }
+        }
+      ]
+    }
+  ]
+}'`;
+
 // --- Types ---
 
 interface LlmModel {
@@ -153,6 +177,7 @@ function ApiCodeExamples() {
       <TabsList className="mb-2">
         <TabsTrigger value="chat">Генерация текста</TabsTrigger>
         <TabsTrigger value="embed">Эмбеддинги</TabsTrigger>
+        <TabsTrigger value="vision">Vision (Изображения)</TabsTrigger>
       </TabsList>
       <TabsContent value="chat">
         <div className="relative rounded-md bg-[hsl(0,0%,8%)] text-[hsl(0,0%,85%)] p-4 overflow-x-auto">
@@ -170,6 +195,15 @@ function ApiCodeExamples() {
           </div>
           <div className="text-xs text-muted-foreground mb-2 font-mono">POST /llm/embeddings</div>
           <pre className="text-xs font-mono whitespace-pre leading-relaxed">{EMBED_CURL}</pre>
+        </div>
+      </TabsContent>
+      <TabsContent value="vision">
+        <div className="relative rounded-md bg-[hsl(0,0%,8%)] text-[hsl(0,0%,85%)] p-4 overflow-x-auto">
+          <div className="absolute top-2 right-2">
+            <CopyCodeButton code={VISION_CURL} />
+          </div>
+          <div className="text-xs text-muted-foreground mb-2 font-mono">POST /llm/chat/completions</div>
+          <pre className="text-xs font-mono whitespace-pre leading-relaxed">{VISION_CURL}</pre>
         </div>
       </TabsContent>
     </Tabs>
