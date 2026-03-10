@@ -24,10 +24,13 @@ function formatDate(d: Date) {
     ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
-const curlExample = `curl "${BASE_URL}/llm/chat/completions" \\
-  -H "Authorization: Bearer YOUR_API_KEY_TOKEN" \\
+function buildCurlExample(token: string | null) {
+  const t = token || "YOUR_API_KEY_TOKEN";
+  return `curl "${BASE_URL}/llm/chat/completions" \\
+  -H "Authorization: Bearer ${t}" \\
   -H "Content-Type: application/json" \\
   -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`;
+}
 
 export function ApiKeysPage() {
   const [keys, setKeys] = useState<ApiKey[]>([]);
