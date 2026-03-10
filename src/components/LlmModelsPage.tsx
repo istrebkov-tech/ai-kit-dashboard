@@ -93,26 +93,28 @@ const TYPE_LABELS: Record<string, string> = {
 const providers = ["openai", "anthropic", "google", "meta", "xai", "deepseek", "qwen", "yandex", "sber"];
 const types = ["model", "vision", "audio", "video", "embedding"];
 
-const curlSnippets: Record<string, string> = {
-  list: `curl -s "https://agentgateway.ai/llm/models" \\
+function getCurlSnippets(model: string): Record<string, string> {
+  return {
+    list: `curl -s "https://agentgateway.ai/llm/models" \\
   -H "Authorization: Bearer YOUR_TOKEN" | jq .`,
-  chat: `curl -s "https://agentgateway.ai/llm/chat/completions" \\
+    chat: `curl -s "https://agentgateway.ai/llm/chat/completions" \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "gpt-4o-mini",
+    "model": "${model}",
     "messages": [
       {"role": "user", "content": "Привет!"}
     ]
   }'`,
-  embeddings: `curl -s "https://agentgateway.ai/llm/embeddings" \\
+    embeddings: `curl -s "https://agentgateway.ai/llm/embeddings" \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "text-embedding-3-small",
+    "model": "${model}",
     "input": "Пример текста для эмбеддинга"
   }'`,
-};
+  };
+}
 
 // --- Components ---
 
