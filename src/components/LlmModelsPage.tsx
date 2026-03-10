@@ -150,16 +150,41 @@ function CodeBlock({ code }: { code: string }) {
   );
 }
 
-function ModelCard({ model }: { model: LlmModel }) {
+function ModelCard({ model, isSelected, onSelect }: { model: LlmModel; isSelected: boolean; onSelect: () => void }) {
   const providerStyle = PROVIDER_STYLES[model.provider] || "bg-muted text-muted-foreground";
   const typeLabel = TYPE_LABELS[model.type] || model.type;
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyName = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(model.name);
+    setCopied(true);
+    toast({ title: "Скопировано", description: model.name });
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 hover:border-primary/50 transition-colors">
+    <div
+      onClick={onSelect}
+      className={`rounded-lg border p-4 cursor-pointer transition-colors ${
+        isSelected
+          ? "border-primary bg-primary/5"
+          : "border-border bg-card hover:border-primary/50"
+      }`}
+    >
       <div className="flex items-start justify-between gap-2">
-        <code className="text-[13px] font-mono font-semibold text-foreground break-all">
-          {model.name}
-        </code>
+        <div className="flex items-center gap-1.5 min-w-0">
+          <code className="text-[13px] font-mono font-semibold text-foreground break-all">
+            {model.name}
+          </code>
+          <button
+            onClick={handleCopyName}
+            className="shrink-0 p-0.5 text-muted-foreground hover:text-foreground transition-colors"
+            title="Скопировать ID модели"
+          >
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          </button>
+        </div>
         <span className="text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded whitespace-nowrap mt-0.5">
           {typeLabel}
         </span>
