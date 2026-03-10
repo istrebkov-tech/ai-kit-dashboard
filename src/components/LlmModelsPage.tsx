@@ -211,6 +211,21 @@ export function LlmModelsPage() {
           </p>
         </div>
 
+        {/* API Reference Accordion */}
+        <Accordion type="single" collapsible className="mb-4">
+          <AccordionItem value="api-ref" className="border rounded-lg bg-card">
+            <AccordionTrigger className="px-4 py-3 text-sm hover:no-underline">
+              <span className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-primary" />
+                Справочник API (Примеры запросов)
+              </span>
+            </AccordionTrigger>
+            <AccordionContent className="px-4 pb-4">
+              <ApiCodeExamples />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
         {/* Filters */}
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           <div className="relative flex-1 min-w-[200px]">
