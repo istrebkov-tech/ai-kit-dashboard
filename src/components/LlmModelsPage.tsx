@@ -41,6 +41,30 @@ const EMBED_CURL = `curl "https://agentgateway.ai.redmadrobot.com/llm/embeddings
   "input": "Текст для получения эмбеддинга"
 }'`;
 
+const VISION_CURL = `curl "https://agentgateway.ai.redmadrobot.com/llm/chat/completions" \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Что изображено на этой картинке?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "https://example.com/image.jpg"
+          }
+        }
+      ]
+    }
+  ]
+}'`;
+
 // --- Types ---
 
 interface LlmModel {
