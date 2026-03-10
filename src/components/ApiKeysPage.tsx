@@ -1,50 +1,93 @@
 import { useState } from "react";
-import { Shield, RefreshCw, Copy, Check, Plus, Eye, EyeOff, Trash2 } from "lucide-react";
+import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+
+const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
 
 interface ApiKey {
   id: string;
   name: string;
-  prefix: string;
   created: string;
-  lastUsed: string;
 }
 
-const mockKeys: ApiKey[] = [
-  { id: "1", name: "Production Backend", prefix: "ak_live_...x8kQ", created: "12 фев 2025", lastUsed: "2 часа назад" },
-  { id: "2", name: "Staging Environment", prefix: "ak_test_...m3Pz", created: "28 янв 2025", lastUsed: "5 дней назад" },
-  { id: "3", name: "CI/CD Pipeline", prefix: "ak_live_...r7Wn", created: "3 дек 2024", lastUsed: "12 мин назад" },
-];
+function generateMockToken() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 256; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+  return result;
+}
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" }) +
+    ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+}
+
+const curlExample = `curl "${BASE_URL}/llm/chat/completions" \\
+  -H "Authorization: Bearer YOUR_API_KEY_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`;
 
 export function ApiKeysPage() {
-  const [token, setToken] = useState<string | null>(null);
+  const [keys, setKeys] = useState<ApiKey[]>([]);
+  const [newKeyName, setNewKeyName] = useState("");
+  const [createdToken, setCreatedToken] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [tokenLoading, setTokenLoading] = useState(false);
-  const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
+  const [creating, setCreating] = useState(false);
 
-  const generateToken = () => {
-    setTokenLoading(true);
+  // JWT section
+  const [jwtToken, setJwtToken] = useState<string | null>(null);
+  const [jwtCopied, setJwtCopied] = useState(false);
+  const [jwtLoading, setJwtLoading] = useState(false);
+
+  const generateJwt = () => {
+    setJwtLoading(true);
     setTimeout(() => {
-      setToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ.kX9mZ2vP7qR8wN3tY6uJ");
-      setTokenLoading(false);
+      setJwtToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ.kX9mZ2vP7qR8wN3tY6uJ");
+      setJwtLoading(false);
     }, 800);
   };
 
+  const copyJwt = () => {
+    if (jwtToken) {
+      navigator.clipboard.writeText(jwtToken);
+      setJwtCopied(true);
+      setTimeout(() => setJwtCopied(false), 2000);
+    }
+  };
+
+  const createKey = () => {
+    if (!newKeyName.trim()) return;
+    setCreating(true);
+    setTimeout(() => {
+      const token = generateMockToken();
+      const newKey: ApiKey = {
+        id: crypto.randomUUID(),
+        name: newKeyName.trim(),
+        created: formatDate(new Date()),
+      };
+      setKeys((prev) => [newKey, ...prev]);
+      setCreatedToken(token);
+      setNewKeyName("");
+      setCreating(false);
+    }, 600);
+  };
+
   const copyToken = () => {
-    if (token) {
-      navigator.clipboard.writeText(token);
+    if (createdToken) {
+      navigator.clipboard.writeText(createdToken);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  const toggleReveal = (id: string) => {
-    setRevealedKeys((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+  const deleteKey = (id: string) => {
+    setKeys((prev) => prev.filter((k) => k.id !== id));
+  };
+
+  const dismissToken = () => {
+    setCreatedToken(null);
   };
 
   return (
@@ -56,6 +99,16 @@ export function ApiKeysPage() {
           <p className="mt-1.5 text-sm text-muted-foreground">
             Управление токенами аутентификации и постоянными API ключами
           </p>
+        </div>
+
+        {/* Usage example */}
+        <div className="mb-6 rounded-lg border border-border bg-card p-5">
+          <h2 className="text-sm font-semibold text-foreground mb-3">Использование API-ключа</h2>
+          <div className="rounded-md bg-code-bg border border-border">
+            <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
+              {curlExample}
+            </pre>
+          </div>
         </div>
 
         {/* Section 1: JWT Token */}
@@ -70,18 +123,13 @@ export function ApiKeysPage() {
                 Генерация краткосрочного JWT для доступа к API. Токены действительны 60 минут.
               </p>
               <div className="mt-4">
-                <Button
-                  onClick={generateToken}
-                  disabled={tokenLoading}
-                  size="sm"
-                  className="gap-2"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${tokenLoading ? "animate-spin" : ""}`} />
+                <Button onClick={generateJwt} disabled={jwtLoading} size="sm" className="gap-2">
+                  <RefreshCw className={`w-3.5 h-3.5 ${jwtLoading ? "animate-spin" : ""}`} />
                   Получить токен
                 </Button>
               </div>
 
-              {token && (
+              {jwtToken && (
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-2">
                     <Badge className="bg-success/10 text-success hover:bg-success/10 border-0 text-xs font-medium">
@@ -90,14 +138,14 @@ export function ApiKeysPage() {
                   </div>
                   <div className="relative rounded-md bg-code-bg border border-border">
                     <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
-                      {token}
+                      {jwtToken}
                     </pre>
                     <button
-                      onClick={copyToken}
+                      onClick={copyJwt}
                       className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
                       title="Копировать"
                     >
-                      {copied ? (
+                      {jwtCopied ? (
                         <Check className="w-3.5 h-3.5 text-success" />
                       ) : (
                         <Copy className="w-3.5 h-3.5 text-muted-foreground" />
@@ -110,54 +158,82 @@ export function ApiKeysPage() {
           </div>
         </div>
 
-        {/* Section 2: Persistent API Keys */}
-        <div className="rounded-lg border border-border bg-card">
-          <div className="flex items-center justify-between p-5 border-b border-border">
-            <div>
-              <h2 className="text-sm font-semibold text-foreground">Постоянные API ключи</h2>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                Долгосрочные ключи для межсервисной интеграции
-              </p>
-            </div>
-            <Button size="sm" variant="outline" className="gap-2">
+        {/* Section 2: Create API Key */}
+        <div className="mb-6 rounded-lg border border-border bg-card p-5">
+          <h2 className="text-sm font-semibold text-foreground mb-1">Создать API ключ</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
+          </p>
+
+          <div className="flex gap-3">
+            <Input
+              value={newKeyName}
+              onChange={(e) => setNewKeyName(e.target.value)}
+              placeholder="Название ключа (напр. мой-агент)"
+              className="flex-1"
+              onKeyDown={(e) => e.key === "Enter" && createKey()}
+            />
+            <Button onClick={createKey} disabled={creating || !newKeyName.trim()} className="gap-2 shrink-0">
               <Plus className="w-3.5 h-3.5" />
-              Создать ключ
+              Создать
             </Button>
           </div>
 
-          <div className="divide-y divide-border">
-            {mockKeys.map((key) => (
-              <div key={key.id} className="flex items-center justify-between px-5 py-3.5">
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm font-medium text-foreground">{key.name}</div>
-                  <div className="mt-0.5 text-xs font-mono text-muted-foreground">{key.prefix}</div>
-                </div>
-                <div className="flex items-center gap-6 shrink-0 ml-4">
-                  <div className="text-right hidden sm:block">
-                    <div className="text-xs text-muted-foreground">Создан: {key.created}</div>
-                    <div className="text-xs text-muted-foreground">Посл. использование: {key.lastUsed}</div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => toggleReveal(key.id)}
-                      className="p-1.5 rounded hover:bg-muted transition-colors"
-                      title={revealedKeys.has(key.id) ? "Скрыть" : "Показать"}
-                    >
-                      {revealedKeys.has(key.id) ? (
-                        <EyeOff className="w-3.5 h-3.5 text-muted-foreground" />
-                      ) : (
-                        <Eye className="w-3.5 h-3.5 text-muted-foreground" />
-                      )}
-                    </button>
-                    <button className="p-1.5 rounded hover:bg-destructive/10 transition-colors" title="Удалить">
-                      <Trash2 className="w-3.5 h-3.5 text-muted-foreground hover:text-destructive" />
-                    </button>
-                  </div>
-                </div>
+          {/* Newly created token — shown once */}
+          {createdToken && (
+            <div className="mt-4 rounded-lg border-2 border-success/40 bg-success/5 p-4 space-y-3">
+              <h3 className="text-sm font-semibold text-foreground">Токен создан!</h3>
+              <p className="text-sm text-muted-foreground">
+                Bearer Token (действует 365 дней):
+              </p>
+              <div className="rounded-md bg-code-bg border border-border">
+                <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all max-h-40">
+                  {createdToken}
+                </pre>
               </div>
-            ))}
-          </div>
+              <div className="flex items-center gap-3">
+                <Button onClick={copyToken} size="sm" className="gap-2">
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? "Скопировано" : "Копировать токен"}
+                </Button>
+                <Button onClick={dismissToken} size="sm" variant="ghost" className="text-muted-foreground">
+                  Закрыть
+                </Button>
+              </div>
+              <p className="text-xs font-medium text-destructive flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                Скопируйте токен сейчас — он больше не будет показан.
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* Section 3: Existing Keys */}
+        {keys.length > 0 && (
+          <div className="rounded-lg border border-border bg-card">
+            <div className="px-5 py-3.5 border-b border-border">
+              <p className="text-xs text-muted-foreground">Найдено: {keys.length}</p>
+            </div>
+            <div className="divide-y divide-border">
+              {keys.map((key) => (
+                <div key={key.id} className="flex items-center justify-between px-5 py-3.5">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold text-foreground">{key.name}</div>
+                    <div className="mt-0.5 text-xs text-muted-foreground">{key.created}</div>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => deleteKey(key.id)}
+                    className="shrink-0 ml-4"
+                  >
+                    Удалить
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
