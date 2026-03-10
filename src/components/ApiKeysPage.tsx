@@ -169,7 +169,7 @@ export function ApiKeysPage() {
 
           <div className="rounded-md bg-code-bg border border-border mb-4">
             <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
-              {buildCurlExample(createdToken)}
+              <CurlExample token={createdToken} />
             </pre>
           </div>
 
