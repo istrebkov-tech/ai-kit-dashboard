@@ -11,6 +11,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+// --- Constants ---
+
+const CHAT_CURL = `curl "https://agentgateway.ai.redmadrobot.com/llm/chat/completions" \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+  "model": "gpt-4.1",
+  "messages": [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Привет! Расскажи о себе."}
+  ],
+  "temperature": 0.7
+}'`;
+
+const EMBED_CURL = `curl "https://agentgateway.ai.redmadrobot.com/llm/embeddings" \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+  "model": "text-embedding-3-small",
+  "input": "Текст для получения эмбеддинга"
+}'`;
 
 // --- Types ---
 
