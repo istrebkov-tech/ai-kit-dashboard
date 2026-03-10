@@ -195,7 +195,7 @@ function ToolItem({ tool }: { tool: McpTool }) {
 }
 
 function CategoryGroup({ category, tools }: { category: string; tools: McpTool[] }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const colorClass = CATEGORY_COLORS[category] || "bg-muted text-muted-foreground";
 
   return (
