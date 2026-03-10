@@ -160,14 +160,14 @@ export function ApiKeysPage() {
         </div>
 
         {/* Section 2: Create API Key */}
+        {/* Section 2: Usage */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-1">Создать API ключ</h2>
+          <h2 className="text-sm font-semibold text-foreground mb-1">Использование API</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
-            Используйте его в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API.
+            Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API.
           </p>
 
-          <div className="relative rounded-md bg-code-bg border border-border mb-4">
+          <div className="relative rounded-md bg-code-bg border border-border">
             <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
               <CurlExample token={createdToken} />
             </pre>
@@ -183,6 +183,14 @@ export function ApiKeysPage() {
               <Copy className="w-3.5 h-3.5 text-muted-foreground" />
             </button>
           </div>
+        </div>
+
+        {/* Section 3: Create API Key */}
+        <div className="mb-6 rounded-lg border border-border bg-card p-5">
+          <h2 className="text-sm font-semibold text-foreground mb-1">Создать API ключ</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
+          </p>
 
           <div className="flex gap-3">
             <Input
