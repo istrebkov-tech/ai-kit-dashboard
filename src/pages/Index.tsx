@@ -16,6 +16,7 @@ const Index = () => {
   const renderPage = () => {
     if (activeId === "api-keys") return <ApiKeysPage />;
     if (activeId === "agents") return <AgentsPage />;
+    if (activeId === "mcp") return <McpToolsPage />;
     if (pages[activeId]) return <PlaceholderPage title={pages[activeId].title} subtitle={pages[activeId].subtitle} />;
     return null;
   };
