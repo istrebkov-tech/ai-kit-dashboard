@@ -71,6 +71,12 @@ export function AgentsPage() {
     return true;
   });
 
+  const counts = {
+    all: agents.filter((a) => !search || a.name.toLowerCase().includes(search.toLowerCase()) || a.description.toLowerCase().includes(search.toLowerCase())).length,
+    active: agents.filter((a) => a.active && (!search || a.name.toLowerCase().includes(search.toLowerCase()) || a.description.toLowerCase().includes(search.toLowerCase()))).length,
+    unavailable: agents.filter((a) => !a.active && (!search || a.name.toLowerCase().includes(search.toLowerCase()) || a.description.toLowerCase().includes(search.toLowerCase()))).length,
+  };
+
   const filters: { key: Filter; label: string }[] = [
     { key: "all", label: "Все" },
     { key: "active", label: "Активные" },
