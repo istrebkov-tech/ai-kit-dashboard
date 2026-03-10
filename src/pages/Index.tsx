@@ -2,11 +2,11 @@ import { useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ApiKeysPage } from "@/components/ApiKeysPage";
 import { AgentsPage } from "@/components/AgentsPage";
+import { McpToolsPage } from "@/components/McpToolsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 
 const pages: Record<string, { title: string; subtitle: string }> = {
   workspace: { title: "Рабочее пространство", subtitle: "Управление рабочими пространствами и сессиями" },
-  mcp: { title: "Инструменты MCP", subtitle: "Конфигурация инструментов Model Context Protocol" },
   models: { title: "LLM Модели", subtitle: "Управление подключёнными языковыми моделями" },
 };
 
