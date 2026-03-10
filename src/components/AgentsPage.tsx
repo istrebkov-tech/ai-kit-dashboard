@@ -117,6 +117,9 @@ export function AgentsPage() {
                 }`}
               >
                 {f.label}
+                <span className={`ml-1 text-[10px] ${filter === f.key ? "text-muted-foreground" : "text-muted-foreground/60"}`}>
+                  {counts[f.key]}
+                </span>
               </button>
             ))}
           </div>
