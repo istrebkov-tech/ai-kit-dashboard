@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Search, Copy, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -92,26 +93,28 @@ const TYPE_LABELS: Record<string, string> = {
 const providers = ["openai", "anthropic", "google", "meta", "xai", "deepseek", "qwen", "yandex", "sber"];
 const types = ["model", "vision", "audio", "video", "embedding"];
 
-const curlSnippets: Record<string, string> = {
-  list: `curl -s "https://agentgateway.ai/llm/models" \\
+function getCurlSnippets(model: string): Record<string, string> {
+  return {
+    list: `curl -s "https://agentgateway.ai/llm/models" \\
   -H "Authorization: Bearer YOUR_TOKEN" | jq .`,
-  chat: `curl -s "https://agentgateway.ai/llm/chat/completions" \\
+    chat: `curl -s "https://agentgateway.ai/llm/chat/completions" \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "gpt-4o-mini",
+    "model": "${model}",
     "messages": [
       {"role": "user", "content": "Привет!"}
     ]
   }'`,
-  embeddings: `curl -s "https://agentgateway.ai/llm/embeddings" \\
+    embeddings: `curl -s "https://agentgateway.ai/llm/embeddings" \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "text-embedding-3-small",
+    "model": "${model}",
     "input": "Пример текста для эмбеддинга"
   }'`,
-};
+  };
+}
 
 // --- Components ---
 
@@ -147,16 +150,41 @@ function CodeBlock({ code }: { code: string }) {
   );
 }
 
-function ModelCard({ model }: { model: LlmModel }) {
+function ModelCard({ model, isSelected, onSelect }: { model: LlmModel; isSelected: boolean; onSelect: () => void }) {
   const providerStyle = PROVIDER_STYLES[model.provider] || "bg-muted text-muted-foreground";
   const typeLabel = TYPE_LABELS[model.type] || model.type;
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyName = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(model.name);
+    setCopied(true);
+    toast({ title: "Скопировано", description: model.name });
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 hover:border-primary/50 transition-colors">
+    <div
+      onClick={onSelect}
+      className={`rounded-lg border p-4 cursor-pointer transition-colors ${
+        isSelected
+          ? "border-primary bg-primary/5"
+          : "border-border bg-card hover:border-primary/50"
+      }`}
+    >
       <div className="flex items-start justify-between gap-2">
-        <code className="text-[13px] font-mono font-semibold text-foreground break-all">
-          {model.name}
-        </code>
+        <div className="flex items-center gap-1.5 min-w-0">
+          <code className="text-[13px] font-mono font-semibold text-foreground break-all">
+            {model.name}
+          </code>
+          <button
+            onClick={handleCopyName}
+            className="shrink-0 p-0.5 text-muted-foreground hover:text-foreground transition-colors"
+            title="Скопировать ID модели"
+          >
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          </button>
+        </div>
         <span className="text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded whitespace-nowrap mt-0.5">
           {typeLabel}
         </span>
@@ -176,6 +204,9 @@ export function LlmModelsPage() {
   const [search, setSearch] = useState("");
   const [provider, setProvider] = useState("all");
   const [type, setType] = useState("all");
+  const [selectedModel, setSelectedModel] = useState("gpt-5.2");
+
+  const curlSnippets = useMemo(() => getCurlSnippets(selectedModel), [selectedModel]);
 
   const filtered = useMemo(() => {
     return models.filter((m) => {
@@ -213,6 +244,10 @@ export function LlmModelsPage() {
             <TabsContent value="chat"><CodeBlock code={curlSnippets.chat} /></TabsContent>
             <TabsContent value="embeddings"><CodeBlock code={curlSnippets.embeddings} /></TabsContent>
           </Tabs>
+
+          <p className="text-sm text-muted-foreground flex items-center gap-2 mt-4">
+            💡 Кликните на любую модель из списка ниже, чтобы автоматически подставить её в пример кода, или скопируйте её ID.
+          </p>
         </div>
 
         {/* Models Directory */}
@@ -265,7 +300,7 @@ export function LlmModelsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {filtered.map((m) => (
-                <ModelCard key={m.name} model={m} />
+                <ModelCard key={m.name} model={m} isSelected={m.name === selectedModel} onSelect={() => setSelectedModel(m.name)} />
               ))}
             </div>
           )}
