@@ -22,11 +22,24 @@ const agents: Agent[] = [
   { id: "4", name: "Store Buddy Orchestrator", description: "Основной оркестратор запросов магазина.", version: "v1.1.0", url: "/erc3/orchestrator", active: true },
 ];
 
-const apiSnippets = [
-  { label: "Получить карточку агента", method: "GET", path: "/a2a/{agent-url}/.well-known/agent-card.json" },
-  { label: "Отправить сообщение (синхронно)", method: "POST", path: "/a2a/{agent-url}/message/send" },
-  { label: "Стриминг сообщения", method: "POST", path: "/a2a/{agent-url}/message/stream" },
-];
+const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
+
+function buildCurlSnippets(agentUrl: string) {
+  return [
+    {
+      label: `GET /a2a${agentUrl}/.well-known/agent-card.json`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/.well-known/agent-card.json" \\\n     -H "Authorization: Bearer YOUR_TOKEN"`,
+    },
+    {
+      label: `POST /a2a${agentUrl} (message/send)`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/send" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
+    },
+    {
+      label: `POST /a2a${agentUrl} (message/stream)`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/stream" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"2","method":"message/stream","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
+    },
+  ];
+}
 
 type Filter = "all" | "active" | "unavailable";
 
