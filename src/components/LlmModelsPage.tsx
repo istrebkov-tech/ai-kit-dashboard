@@ -121,7 +121,7 @@ function ModelCard({ model }: { model: LlmModel }) {
   };
 
   return (
-    <div className="group rounded-md border border-border bg-card px-3 py-2.5 flex items-center gap-3 hover:bg-muted/50 hover:border-border/80 transition-colors">
+    <div className="group rounded-md border border-border bg-card px-3 py-2.5 flex items-center gap-3 hover:border-primary/40 transition-colors">
       <div className="flex-1 min-w-0 flex items-center gap-2">
         <Badge className={`text-[10px] px-1.5 py-0 h-[18px] font-medium border-0 rounded shrink-0 ${providerStyle}`}>
           {model.provider}
@@ -133,25 +133,22 @@ function ModelCard({ model }: { model: LlmModel }) {
           {typeLabel}
         </span>
       </div>
-      <div className="flex items-center gap-1.5 shrink-0">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 px-2 text-xs cursor-pointer"
+      <div className="flex items-center gap-1 shrink-0">
+        <button
           onClick={handleCopyName}
-          title="Скопировать имя модели"
+          className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer opacity-0 group-hover:opacity-100"
+          title="Скопировать имя"
         >
-          <Copy className="w-3 h-3 mr-1" />
-          Имя
-        </Button>
+          <Copy className="w-3.5 h-3.5" />
+        </button>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="sm"
-          className="h-7 px-2.5 text-xs cursor-pointer"
+          className="h-7 px-2 text-xs cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={handleCopyCurl}
         >
           {copied ? <Check className="w-3 h-3 mr-1" /> : <Terminal className="w-3 h-3 mr-1" />}
-          {copied ? "Готово" : "Копировать cURL"}
+          {copied ? "Готово" : "cURL"}
         </Button>
       </div>
     </div>
