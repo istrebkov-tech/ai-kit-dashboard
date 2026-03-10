@@ -257,9 +257,6 @@ function ServerToolsPanel({ server }: { server: McpServer }) {
 
   return (
     <div className="bg-muted/30">
-      {showSearch && (
-        <ToolsSearch value={toolSearch} onChange={setToolSearch} count={filteredTools.length} />
-      )}
       {categories.length === 0 ? (
         <p className="text-xs text-muted-foreground text-center py-6">Ничего не найдено</p>
       ) : (
