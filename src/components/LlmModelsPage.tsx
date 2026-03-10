@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Copy, Check, Terminal } from "lucide-react";
+import { Search, Copy, Check, Terminal, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
