@@ -1,20 +1,11 @@
-import { Key, MessageSquare, Box, Wrench, Cpu, ChevronDown, Sparkles } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const navItems = [
   { id: "api-keys", title: "API Ключи и Доступ", icon: Key },
-  { id: "workspace", title: "Рабочее пространство", icon: MessageSquare, badge: "WIP" },
   { id: "agents", title: "Реестр Агентов", icon: Box },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
-];
-
-const recentSessions = [
-  "Задачи онбординга HR",
-  "Разбор багов Jira",
-  "Анализ отчета за Q4",
-  "Сводка дайджеста Slack",
-  "Обзор аудита безопасности",
 ];
 
 interface AppSidebarProps {
@@ -58,30 +49,11 @@ export function AppSidebar({ activeId, onNavigate }: AppSidebarProps) {
               >
                 <item.icon className="w-4 h-4 shrink-0" />
                 <span className="truncate">{item.title}</span>
-                {item.badge && (
-                  <Badge variant="secondary" className="ml-auto text-[10px] px-1.5 py-0 h-4 font-medium text-muted-foreground">
-                    {item.badge}
-                  </Badge>
-                )}
               </button>
             </li>
           ))}
         </ul>
 
-        <div className="mt-8">
-          <div className="px-2.5 mb-2 text-[11px] font-medium uppercase tracking-wider text-sidebar-section">
-            Недавние сессии
-          </div>
-          <ul className="space-y-0.5">
-            {recentSessions.map((session) => (
-              <li key={session}>
-                <button className="w-full text-left px-2.5 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-sidebar-active transition-colors truncate">
-                  {session}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
       </nav>
 
       <div className="px-5 py-4 border-t border-border">
