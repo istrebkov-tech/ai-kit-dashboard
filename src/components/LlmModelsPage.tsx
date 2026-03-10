@@ -204,6 +204,9 @@ export function LlmModelsPage() {
   const [search, setSearch] = useState("");
   const [provider, setProvider] = useState("all");
   const [type, setType] = useState("all");
+  const [selectedModel, setSelectedModel] = useState("gpt-5.2");
+
+  const curlSnippets = useMemo(() => getCurlSnippets(selectedModel), [selectedModel]);
 
   const filtered = useMemo(() => {
     return models.filter((m) => {
