@@ -24,10 +24,13 @@ function formatDate(d: Date) {
     ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
-const curlExample = `curl "${BASE_URL}/llm/chat/completions" \\
-  -H "Authorization: Bearer YOUR_API_KEY_TOKEN" \\
+function buildCurlExample(token: string | null) {
+  const t = token || "YOUR_API_KEY_TOKEN";
+  return `curl "${BASE_URL}/llm/chat/completions" \\
+  -H "Authorization: Bearer ${t}" \\
   -H "Content-Type: application/json" \\
   -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`;
+}
 
 export function ApiKeysPage() {
   const [keys, setKeys] = useState<ApiKey[]>([]);
@@ -159,7 +162,7 @@ export function ApiKeysPage() {
 
           <div className="rounded-md bg-code-bg border border-border mb-4">
             <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
-              {curlExample}
+              {buildCurlExample(createdToken)}
             </pre>
           </div>
 
@@ -169,13 +172,19 @@ export function ApiKeysPage() {
               onChange={(e) => setNewKeyName(e.target.value)}
               placeholder="Название ключа (напр. мой-агент)"
               className="flex-1"
-              onKeyDown={(e) => e.key === "Enter" && createKey()}
+              onKeyDown={(e) => e.key === "Enter" && !creating && !!jwtToken && !!newKeyName.trim() && createKey()}
+              disabled={!jwtToken}
             />
-            <Button onClick={createKey} disabled={creating || !newKeyName.trim()} className="gap-2 shrink-0">
+            <Button onClick={createKey} disabled={creating || !newKeyName.trim() || !jwtToken} className="gap-2 shrink-0">
               <Plus className="w-3.5 h-3.5" />
               Создать
             </Button>
           </div>
+          {!jwtToken && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Сначала получите сессионный токен (JWT) выше, чтобы создать API ключ.
+            </p>
+          )}
 
           {/* Newly created token — shown once */}
           {createdToken && (
