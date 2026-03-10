@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ApiKeysPage } from "@/components/ApiKeysPage";
+import { AgentsPage } from "@/components/AgentsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 
 const pages: Record<string, { title: string; subtitle: string }> = {
   workspace: { title: "Рабочее пространство", subtitle: "Управление рабочими пространствами и сессиями" },
-  agents: { title: "Реестр Агентов", subtitle: "Просмотр и настройка зарегистрированных агентов" },
   mcp: { title: "Инструменты MCP", subtitle: "Конфигурация инструментов Model Context Protocol" },
   models: { title: "LLM Модели", subtitle: "Управление подключёнными языковыми моделями" },
 };
@@ -13,14 +13,17 @@ const pages: Record<string, { title: string; subtitle: string }> = {
 const Index = () => {
   const [activeId, setActiveId] = useState("api-keys");
 
+  const renderPage = () => {
+    if (activeId === "api-keys") return <ApiKeysPage />;
+    if (activeId === "agents") return <AgentsPage />;
+    if (pages[activeId]) return <PlaceholderPage title={pages[activeId].title} subtitle={pages[activeId].subtitle} />;
+    return null;
+  };
+
   return (
     <div className="flex min-h-screen bg-background">
       <AppSidebar activeId={activeId} onNavigate={setActiveId} />
-      {activeId === "api-keys" ? (
-        <ApiKeysPage />
-      ) : (
-        <PlaceholderPage title={pages[activeId].title} subtitle={pages[activeId].subtitle} />
-      )}
+      {renderPage()}
     </div>
   );
 };
