@@ -178,23 +178,44 @@ export function AgentsPage() {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground mb-5">
                 Используйте эти эндпоинты для прямого взаимодействия с агентами (Agent-to-Agent).
-                В качестве <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">{"{agent-url}"}</code> подставляйте URL из карточек выше.
+                URL автоматически сгенерированы на основе зарегистрированных агентов.
               </p>
-              <div className="space-y-3">
-                {apiSnippets.map((s) => (
-                  <div key={s.path}>
-                    <p className="text-xs text-muted-foreground mb-1.5">{s.label}</p>
-                    <div className="flex items-center gap-1.5 rounded-md bg-foreground/[0.03] border border-border px-3 py-2">
-                      <Badge variant="secondary" className="shrink-0 text-[10px] font-mono px-1.5 py-0 h-4">
-                        {s.method}
-                      </Badge>
-                      <code className="text-xs font-mono text-foreground flex-1 truncate">{s.path}</code>
-                      <CopyButton text={`${s.method} ${s.path}`} />
+              <p className="text-xs text-muted-foreground mb-4">
+                Найдено: {agents.length}
+              </p>
+              <div className="space-y-6">
+                {agents.map((agent) => {
+                  const snippets = buildCurlSnippets(agent.url);
+                  return (
+                    <div key={agent.id}>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h4 className={`text-sm font-semibold ${agent.active ? "text-foreground" : "text-destructive"}`}>
+                          {agent.name}
+                        </h4>
+                        {!agent.active && (
+                          <span className="text-xs text-destructive">Агент недоступен</span>
+                        )}
+                      </div>
+                      <div className="space-y-3">
+                        {snippets.map((s) => (
+                          <div key={s.label}>
+                            <p className="text-xs font-medium text-muted-foreground mb-1.5">{s.label}</p>
+                            <div className="relative rounded-md bg-code-bg border border-border">
+                              <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap">
+                                {s.curl}
+                              </pre>
+                              <div className="absolute top-2 right-2">
+                                <CopyButton text={s.curl} />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </AccordionContent>
           </AccordionItem>
