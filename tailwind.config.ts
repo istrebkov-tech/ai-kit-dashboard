@@ -55,6 +55,7 @@ export default {
         "sidebar-active": "hsl(var(--sidebar-active-bg))",
         "sidebar-section": "hsl(var(--sidebar-section-label))",
         "code-bg": "hsl(var(--code-bg))",
+        "token-highlight": "hsl(var(--token-highlight))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
