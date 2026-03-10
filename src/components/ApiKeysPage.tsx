@@ -101,15 +101,6 @@ export function ApiKeysPage() {
           </p>
         </div>
 
-        {/* Usage example */}
-        <div className="mb-6 rounded-lg border border-border bg-card p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-3">Использование API-ключа</h2>
-          <div className="rounded-md bg-code-bg border border-border">
-            <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
-              {curlExample}
-            </pre>
-          </div>
-        </div>
 
         {/* Section 1: JWT Token */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
