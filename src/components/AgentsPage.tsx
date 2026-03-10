@@ -180,19 +180,29 @@ function AgentEndpoints({ agentUrl }: { agentUrl: string }) {
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="mt-2 space-y-2">
+        <div className="mt-2 space-y-1">
           {snippets.map((s) => (
-            <div key={s.label}>
-              <p className="text-[10px] text-muted-foreground mb-1">{s.label}</p>
-              <div className="relative rounded bg-code-bg border border-border">
-                <pre className="p-2 pr-7 text-[10px] leading-relaxed font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
-                  {s.curl}
-                </pre>
-                <div className="absolute top-1.5 right-1.5">
-                  <CopyButton text={s.curl} />
+            <Collapsible key={s.label}>
+              <CollapsibleTrigger asChild>
+                <button className="w-full flex items-center justify-between gap-2 rounded px-2 py-1.5 text-left hover:bg-muted/50 transition-colors group">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-mono font-medium text-foreground">{s.label}</p>
+                    <p className="text-[10px] text-muted-foreground">{s.desc}</p>
+                  </div>
+                  <ChevronDown className="w-3 h-3 text-muted-foreground shrink-0 transition-transform group-data-[state=open]:rotate-180" />
+                </button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="relative rounded bg-code-bg border border-border mx-1 mb-1">
+                  <pre className="p-2 pr-7 text-[10px] leading-relaxed font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
+                    {s.curl}
+                  </pre>
+                  <div className="absolute top-1.5 right-1.5">
+                    <CopyButton text={s.curl} />
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CollapsibleContent>
+            </Collapsible>
           ))}
         </div>
       </CollapsibleContent>
