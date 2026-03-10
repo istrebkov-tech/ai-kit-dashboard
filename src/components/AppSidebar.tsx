@@ -49,11 +49,6 @@ export function AppSidebar({ activeId, onNavigate }: AppSidebarProps) {
               >
                 <item.icon className="w-4 h-4 shrink-0" />
                 <span className="truncate">{item.title}</span>
-                {item.badge && (
-                  <Badge variant="secondary" className="ml-auto text-[10px] px-1.5 py-0 h-4 font-medium text-muted-foreground">
-                    {item.badge}
-                  </Badge>
-                )}
               </button>
             </li>
           ))}
