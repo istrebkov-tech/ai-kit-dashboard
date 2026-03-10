@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Search, Copy, Check, Terminal, Circle, FlaskConical } from "lucide-react";
+import { Search, Copy, Check, Circle, FlaskConical, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 
 interface Agent {
   id: string;
@@ -143,20 +143,11 @@ export function AgentsPage() {
                   <CopyButton text={agent.url} />
                 </div>
               </CardContent>
-              <CardFooter className="pt-0">
+              <CardFooter className="pt-0 flex-col items-stretch gap-0">
                 {agent.active ? (
-                  <Button variant="outline" size="sm" className="gap-2 text-xs">
-                    <FlaskConical className="w-3.5 h-3.5" />
-                    Протестировать
-                  </Button>
+                  <AgentEndpoints agentUrl={agent.url} />
                 ) : (
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-destructive font-medium">Проверьте подключение</span>
-                    <Button variant="outline" size="sm" className="gap-2 text-xs" disabled>
-                      <FlaskConical className="w-3.5 h-3.5" />
-                      Протестировать
-                    </Button>
-                  </div>
+                  <span className="text-xs text-destructive font-medium">Проверьте подключение</span>
                 )}
               </CardFooter>
             </Card>
@@ -167,60 +158,41 @@ export function AgentsPage() {
             </div>
           )}
         </div>
-
-        {/* API Accordion */}
-        <Accordion type="single" collapsible>
-          <AccordionItem value="api-spec" className="border rounded-lg px-5">
-            <AccordionTrigger className="hover:no-underline">
-              <div className="flex items-center gap-2.5">
-                <Terminal className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-semibold text-foreground">Спецификация API (A2A интеграция)</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <p className="text-sm text-muted-foreground mb-5">
-                Используйте эти эндпоинты для прямого взаимодействия с агентами (Agent-to-Agent).
-                URL автоматически сгенерированы на основе зарегистрированных агентов.
-              </p>
-              <p className="text-xs text-muted-foreground mb-4">
-                Найдено: {agents.length}
-              </p>
-              <div className="space-y-6">
-                {agents.map((agent) => {
-                  const snippets = buildCurlSnippets(agent.url);
-                  return (
-                    <div key={agent.id}>
-                      <div className="flex items-center gap-2 mb-3">
-                        <h4 className={`text-sm font-semibold ${agent.active ? "text-foreground" : "text-destructive"}`}>
-                          {agent.name}
-                        </h4>
-                        {!agent.active && (
-                          <span className="text-xs text-destructive">Агент недоступен</span>
-                        )}
-                      </div>
-                      <div className="space-y-3">
-                        {snippets.map((s) => (
-                          <div key={s.label}>
-                            <p className="text-xs font-medium text-muted-foreground mb-1.5">{s.label}</p>
-                            <div className="relative rounded-md bg-code-bg border border-border">
-                              <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap">
-                                {s.curl}
-                              </pre>
-                              <div className="absolute top-2 right-2">
-                                <CopyButton text={s.curl} />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
       </div>
     </div>
+  );
+}
+
+function AgentEndpoints({ agentUrl }: { agentUrl: string }) {
+  const [open, setOpen] = useState(false);
+  const snippets = buildCurlSnippets(agentUrl);
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <CollapsibleTrigger asChild>
+        <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1">
+          <FlaskConical className="w-3 h-3" />
+          <span>API эндпоинты</span>
+          <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="mt-2 space-y-2">
+          {snippets.map((s) => (
+            <div key={s.label}>
+              <p className="text-[10px] text-muted-foreground mb-1">{s.label}</p>
+              <div className="relative rounded bg-code-bg border border-border">
+                <pre className="p-2 pr-7 text-[10px] leading-relaxed font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
+                  {s.curl}
+                </pre>
+                <div className="absolute top-1.5 right-1.5">
+                  <CopyButton text={s.curl} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
