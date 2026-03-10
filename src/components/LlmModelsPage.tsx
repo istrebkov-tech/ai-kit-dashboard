@@ -175,9 +175,9 @@ export function LlmModelsPage() {
     <div className="flex-1 overflow-y-auto">
       <div className="max-w-5xl mx-auto px-6 py-6">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">Реестр LLM Моделей</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
+        <div className="mb-5">
+          <h1 className="text-xl font-semibold text-foreground tracking-tight">Реестр LLM Моделей</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Доступные языковые, визуальные и аудио модели для использования через единый API.
           </p>
         </div>
