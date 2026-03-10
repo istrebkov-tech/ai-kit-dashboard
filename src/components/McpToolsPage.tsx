@@ -250,25 +250,13 @@ function ToolsSearch({
 }
 
 function ServerToolsPanel({ server }: { server: McpServer }) {
-  const [toolSearch, setToolSearch] = useState("");
-  const showSearch = server.tools.length > 6;
-
-  const filteredTools = useMemo(() => {
-    if (!toolSearch) return server.tools;
-    const q = toolSearch.toLowerCase();
-    return server.tools.filter(
-      (t) => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
-    );
-  }, [server.tools, toolSearch]);
+  const filteredTools = server.tools;
 
   const grouped = useMemo(() => groupToolsByCategory(filteredTools), [filteredTools]);
   const categories = Object.keys(grouped).sort();
 
   return (
     <div className="bg-muted/30">
-      {showSearch && (
-        <ToolsSearch value={toolSearch} onChange={setToolSearch} count={filteredTools.length} />
-      )}
       {categories.length === 0 ? (
         <p className="text-xs text-muted-foreground text-center py-6">Ничего не найдено</p>
       ) : (
