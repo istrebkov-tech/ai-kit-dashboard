@@ -22,11 +22,24 @@ const agents: Agent[] = [
   { id: "4", name: "Store Buddy Orchestrator", description: "Основной оркестратор запросов магазина.", version: "v1.1.0", url: "/erc3/orchestrator", active: true },
 ];
 
-const apiSnippets = [
-  { label: "Получить карточку агента", method: "GET", path: "/a2a/{agent-url}/.well-known/agent-card.json" },
-  { label: "Отправить сообщение (синхронно)", method: "POST", path: "/a2a/{agent-url}/message/send" },
-  { label: "Стриминг сообщения", method: "POST", path: "/a2a/{agent-url}/message/stream" },
-];
+const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
+
+function buildCurlSnippets(agentUrl: string) {
+  return [
+    {
+      label: `GET /a2a${agentUrl}/.well-known/agent-card.json`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/.well-known/agent-card.json" \\\n     -H "Authorization: Bearer YOUR_TOKEN"`,
+    },
+    {
+      label: `POST /a2a${agentUrl} (message/send)`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/send" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
+    },
+    {
+      label: `POST /a2a${agentUrl} (message/stream)`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/stream" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"2","method":"message/stream","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
+    },
+  ];
+}
 
 type Filter = "all" | "active" | "unavailable";
 
@@ -165,23 +178,44 @@ export function AgentsPage() {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground mb-5">
                 Используйте эти эндпоинты для прямого взаимодействия с агентами (Agent-to-Agent).
-                В качестве <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">{"{agent-url}"}</code> подставляйте URL из карточек выше.
+                URL автоматически сгенерированы на основе зарегистрированных агентов.
               </p>
-              <div className="space-y-3">
-                {apiSnippets.map((s) => (
-                  <div key={s.path}>
-                    <p className="text-xs text-muted-foreground mb-1.5">{s.label}</p>
-                    <div className="flex items-center gap-1.5 rounded-md bg-foreground/[0.03] border border-border px-3 py-2">
-                      <Badge variant="secondary" className="shrink-0 text-[10px] font-mono px-1.5 py-0 h-4">
-                        {s.method}
-                      </Badge>
-                      <code className="text-xs font-mono text-foreground flex-1 truncate">{s.path}</code>
-                      <CopyButton text={`${s.method} ${s.path}`} />
+              <p className="text-xs text-muted-foreground mb-4">
+                Найдено: {agents.length}
+              </p>
+              <div className="space-y-6">
+                {agents.map((agent) => {
+                  const snippets = buildCurlSnippets(agent.url);
+                  return (
+                    <div key={agent.id}>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h4 className={`text-sm font-semibold ${agent.active ? "text-foreground" : "text-destructive"}`}>
+                          {agent.name}
+                        </h4>
+                        {!agent.active && (
+                          <span className="text-xs text-destructive">Агент недоступен</span>
+                        )}
+                      </div>
+                      <div className="space-y-3">
+                        {snippets.map((s) => (
+                          <div key={s.label}>
+                            <p className="text-xs font-medium text-muted-foreground mb-1.5">{s.label}</p>
+                            <div className="relative rounded-md bg-code-bg border border-border">
+                              <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap">
+                                {s.curl}
+                              </pre>
+                              <div className="absolute top-2 right-2">
+                                <CopyButton text={s.curl} />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </AccordionContent>
           </AccordionItem>
