@@ -27,15 +27,18 @@ const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
 function buildCurlSnippets(agentUrl: string) {
   return [
     {
-      label: `GET /a2a${agentUrl}/.well-known/agent-card.json`,
+      label: `GET agent-card.json`,
+      desc: "Получить спецификацию агента",
       curl: `curl "${BASE_URL}/a2a${agentUrl}/.well-known/agent-card.json" \\\n     -H "Authorization: Bearer YOUR_TOKEN"`,
     },
     {
-      label: `POST /a2a${agentUrl} (message/send)`,
+      label: `POST message/send`,
+      desc: "Отправить сообщение синхронно",
       curl: `curl "${BASE_URL}/a2a${agentUrl}/message/send" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
     },
     {
-      label: `POST /a2a${agentUrl} (message/stream)`,
+      label: `POST message/stream`,
+      desc: "Стриминг ответа от агента",
       curl: `curl "${BASE_URL}/a2a${agentUrl}/message/stream" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"2","method":"message/stream","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
     },
   ];
