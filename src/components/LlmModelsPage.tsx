@@ -230,7 +230,7 @@ export function LlmModelsPage() {
             <p className="text-sm text-muted-foreground">Ничего не найдено</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="flex flex-col gap-1.5">
             {filtered.map((m) => (
               <ModelCard key={m.name} model={m} />
             ))}
