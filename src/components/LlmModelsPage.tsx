@@ -173,17 +173,17 @@ export function LlmModelsPage() {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="max-w-4xl mx-auto px-8 py-10">
+      <div className="max-w-5xl mx-auto px-6 py-6">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">Реестр LLM Моделей</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
+        <div className="mb-5">
+          <h1 className="text-xl font-semibold text-foreground tracking-tight">Реестр LLM Моделей</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Доступные языковые, визуальные и аудио модели для использования через единый API.
           </p>
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-3 mb-5 flex-wrap">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -230,7 +230,7 @@ export function LlmModelsPage() {
             <p className="text-sm text-muted-foreground">Ничего не найдено</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             {filtered.map((m) => (
               <ModelCard key={m.name} model={m} />
             ))}
