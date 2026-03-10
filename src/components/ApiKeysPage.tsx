@@ -24,12 +24,19 @@ function formatDate(d: Date) {
     ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
-function buildCurlExample(token: string | null) {
+function CurlExample({ token }: { token: string | null }) {
   const t = token || "YOUR_API_KEY_TOKEN";
-  return `curl "${BASE_URL}/llm/chat/completions" \\
-  -H "Authorization: Bearer ${t}" \\
+  const isPlaceholder = !token;
+  return (
+    <>
+      {`curl "${BASE_URL}/llm/chat/completions" \\
+  -H "Authorization: Bearer `}
+      <span className={isPlaceholder ? "text-token-highlight font-semibold" : ""}>{t}</span>
+      {`" \\
   -H "Content-Type: application/json" \\
-  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`;
+  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`}
+    </>
+  );
 }
 
 export function ApiKeysPage() {
