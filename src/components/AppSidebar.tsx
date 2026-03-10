@@ -2,11 +2,11 @@ import { Key, MessageSquare, Box, Wrench, Cpu, ChevronDown, Sparkles } from "luc
 import { Badge } from "@/components/ui/badge";
 
 const navItems = [
-  { title: "API Ключи и Доступ", icon: Key, active: true },
-  { title: "Рабочее пространство", icon: MessageSquare, badge: "WIP" },
-  { title: "Реестр Агентов", icon: Box },
-  { title: "Инструменты MCP", icon: Wrench },
-  { title: "LLM Модели", icon: Cpu },
+  { id: "api-keys", title: "API Ключи и Доступ", icon: Key },
+  { id: "workspace", title: "Рабочее пространство", icon: MessageSquare, badge: "WIP" },
+  { id: "agents", title: "Реестр Агентов", icon: Box },
+  { id: "mcp", title: "Инструменты MCP", icon: Wrench },
+  { id: "models", title: "LLM Модели", icon: Cpu },
 ];
 
 const recentSessions = [
@@ -17,10 +17,14 @@ const recentSessions = [
   "Обзор аудита безопасности",
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  activeId: string;
+  onNavigate: (id: string) => void;
+}
+
+export function AppSidebar({ activeId, onNavigate }: AppSidebarProps) {
   return (
     <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
-      {/* Logo */}
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
@@ -30,7 +34,6 @@ export function AppSidebar() {
         </div>
       </div>
 
-      {/* Profile Selector */}
       <div className="mx-3 mb-4">
         <button className="w-full flex items-center justify-between px-2.5 py-2 rounded-md hover:bg-sidebar-active transition-colors text-left">
           <div className="min-w-0">
@@ -41,14 +44,14 @@ export function AppSidebar() {
         </button>
       </div>
 
-      {/* Main Navigation */}
       <nav className="flex-1 px-3">
         <ul className="space-y-0.5">
           {navItems.map((item) => (
-            <li key={item.title}>
+            <li key={item.id}>
               <button
+                onClick={() => onNavigate(item.id)}
                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-colors ${
-                  item.active
+                  activeId === item.id
                     ? "bg-sidebar-active font-medium text-foreground"
                     : "text-muted-foreground hover:bg-sidebar-active hover:text-foreground"
                 }`}
@@ -65,7 +68,6 @@ export function AppSidebar() {
           ))}
         </ul>
 
-        {/* Recent Sessions */}
         <div className="mt-8">
           <div className="px-2.5 mb-2 text-[11px] font-medium uppercase tracking-wider text-sidebar-section">
             Недавние сессии
