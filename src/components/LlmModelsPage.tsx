@@ -131,6 +131,51 @@ function buildCurl(modelName: string): string {
 
 // --- Components ---
 
+function CopyCodeButton({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    toast({ title: "Скопировано!" });
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={handleCopy}>
+      {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+      {copied ? "Готово" : "Копировать"}
+    </Button>
+  );
+}
+
+function ApiCodeExamples() {
+  return (
+    <Tabs defaultValue="chat" className="w-full">
+      <TabsList className="mb-2">
+        <TabsTrigger value="chat">Генерация текста</TabsTrigger>
+        <TabsTrigger value="embed">Эмбеддинги</TabsTrigger>
+      </TabsList>
+      <TabsContent value="chat">
+        <div className="relative rounded-md bg-[hsl(0,0%,8%)] text-[hsl(0,0%,85%)] p-4 overflow-x-auto">
+          <div className="absolute top-2 right-2">
+            <CopyCodeButton code={CHAT_CURL} />
+          </div>
+          <div className="text-xs text-muted-foreground mb-2 font-mono">POST /llm/chat/completions</div>
+          <pre className="text-xs font-mono whitespace-pre leading-relaxed">{CHAT_CURL}</pre>
+        </div>
+      </TabsContent>
+      <TabsContent value="embed">
+        <div className="relative rounded-md bg-[hsl(0,0%,8%)] text-[hsl(0,0%,85%)] p-4 overflow-x-auto">
+          <div className="absolute top-2 right-2">
+            <CopyCodeButton code={EMBED_CURL} />
+          </div>
+          <div className="text-xs text-muted-foreground mb-2 font-mono">POST /llm/embeddings</div>
+          <pre className="text-xs font-mono whitespace-pre leading-relaxed">{EMBED_CURL}</pre>
+        </div>
+      </TabsContent>
+    </Tabs>
+  );
+}
+
 function ModelCard({ model }: { model: LlmModel }) {
   const providerStyle = PROVIDER_STYLES[model.provider] || "bg-muted text-muted-foreground";
   const typeLabel = TYPE_LABELS[model.type] || model.type;
