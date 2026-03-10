@@ -121,38 +121,36 @@ function ModelCard({ model }: { model: LlmModel }) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 flex flex-col gap-3 hover:border-primary/50 transition-colors">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-1.5 min-w-0">
-          <code className="text-[13px] font-mono font-semibold text-foreground break-all">
-            {model.name}
-          </code>
-          <button
-            onClick={handleCopyName}
-            className="shrink-0 p-0.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            title="Скопировать имя модели"
-          >
-            <Copy className="w-3.5 h-3.5" />
-          </button>
-        </div>
-        <span className="text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded whitespace-nowrap mt-0.5">
+    <div className="group rounded-md border border-border bg-card px-3 py-2.5 flex items-center gap-3 hover:border-primary/40 transition-colors">
+      <div className="flex-1 min-w-0 flex items-center gap-2">
+        <Badge className={`text-[10px] px-1.5 py-0 h-[18px] font-medium border-0 rounded shrink-0 ${providerStyle}`}>
+          {model.provider}
+        </Badge>
+        <code className="text-[13px] font-mono font-medium text-foreground truncate">
+          {model.name}
+        </code>
+        <span className="text-[10px] text-muted-foreground/70 hidden sm:inline">
           {typeLabel}
         </span>
       </div>
-      <div>
-        <Badge className={`text-[10px] px-2 py-0 h-[18px] font-medium border-0 rounded-md ${providerStyle}`}>
-          {model.provider}
-        </Badge>
+      <div className="flex items-center gap-1 shrink-0">
+        <button
+          onClick={handleCopyName}
+          className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer opacity-0 group-hover:opacity-100"
+          title="Скопировать имя"
+        >
+          <Copy className="w-3.5 h-3.5" />
+        </button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-7 px-2 text-xs cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={handleCopyCurl}
+        >
+          {copied ? <Check className="w-3 h-3 mr-1" /> : <Terminal className="w-3 h-3 mr-1" />}
+          {copied ? "Готово" : "cURL"}
+        </Button>
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        className="w-full mt-auto cursor-pointer"
-        onClick={handleCopyCurl}
-      >
-        {copied ? <Check className="w-3.5 h-3.5 mr-1.5" /> : <Terminal className="w-3.5 h-3.5 mr-1.5" />}
-        {copied ? "Скопировано!" : "Скопировать cURL"}
-      </Button>
     </div>
   );
 }
