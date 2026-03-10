@@ -1,4 +1,4 @@
-import { Key, MessageSquare, Box, Wrench, Cpu, ChevronDown, Sparkles } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const navItems = [
