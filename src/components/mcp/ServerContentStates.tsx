@@ -1,0 +1,153 @@
+import { useState, useMemo } from "react";
+import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import type { McpServer, McpTool } from "./types";
+import { renderDescription, groupToolsByCategory, CATEGORY_COLORS } from "./helpers";
+
+// --- Tool list sub-components ---
+
+function ToolItem({ tool }: { tool: McpTool }) {
+  return (
+    <div className="px-4 py-2.5 flex flex-col gap-0.5">
+      <code className="text-[13px] font-mono font-semibold text-foreground">{tool.name}</code>
+      <p className="text-[13px] text-muted-foreground leading-relaxed">
+        {renderDescription(tool.description)}
+      </p>
+    </div>
+  );
+}
+
+function CategoryGroup({ category, tools }: { category: string; tools: McpTool[] }) {
+  const [open, setOpen] = useState(false);
+  const colorClass = CATEGORY_COLORS[category] || "bg-muted text-muted-foreground";
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <CollapsibleTrigger className="flex items-center gap-2 w-full px-4 py-2.5 hover:bg-muted/40 transition-colors cursor-pointer">
+        {open ? (
+          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+        ) : (
+          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+        )}
+        <Badge className={`text-[10px] px-2 py-0 h-[18px] font-medium border-0 ${colorClass} hover:${colorClass}`}>
+          {category}
+        </Badge>
+        <span className="text-xs text-muted-foreground">{tools.length}</span>
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="divide-y divide-border ml-5 mr-2 mb-1 rounded-md border border-border bg-card">
+          {tools.map((tool) => (
+            <ToolItem key={tool.name} tool={tool} />
+          ))}
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+// --- State A: Success ---
+
+function SuccessContent({ server }: { server: McpServer }) {
+  const grouped = useMemo(() => groupToolsByCategory(server.tools), [server.tools]);
+  const categories = Object.keys(grouped).sort();
+
+  return (
+    <div className="bg-muted/30">
+      {categories.length === 0 ? (
+        <p className="text-xs text-muted-foreground text-center py-6">Нет инструментов</p>
+      ) : (
+        <div className="py-1">
+          {categories.map((cat) => (
+            <CategoryGroup key={cat} category={cat} tools={grouped[cat]} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- State B: Error ---
+
+function ErrorContent({ message }: { message: string }) {
+  return (
+    <div className="p-4">
+      <Alert variant="destructive">
+        <TriangleAlert className="h-4 w-4" />
+        <AlertTitle>Ошибка загрузки инструментов</AlertTitle>
+        <AlertDescription className="mt-1">
+          <span>Ошибка: {message}</span>
+          <div className="mt-3">
+            <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5">
+              <RefreshCw className="w-3 h-3" />
+              Повторить запрос
+            </Button>
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
+}
+
+// --- State C: Auth Required ---
+
+function AuthContent({ fields }: { fields: McpServer["status"] & { kind: "auth" } extends { fields: infer F } ? F : never }) {
+  return (
+    <div className="p-4">
+      <Card className="bg-muted/40 border-border">
+        <CardHeader className="pb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[hsl(45,93%,47%)]/10">
+              <Lock className="w-4 h-4 text-[hsl(45,93%,47%)]" />
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold text-foreground">Требуется авторизация</h4>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Введите учётные данные для доступа к инструментам этого сервера.
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3 pb-4">
+          {(fields as { label: string; placeholder: string; type?: string }[]).map((field) => (
+            <div key={field.label} className="space-y-1.5">
+              <Label className="text-xs">{field.label}</Label>
+              <Input
+                type={field.type || "text"}
+                placeholder={field.placeholder}
+                className="h-8 text-xs"
+              />
+            </div>
+          ))}
+        </CardContent>
+        <CardFooter className="pt-0">
+          <Button size="sm" className="h-8 text-xs">
+            Сохранить
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
+
+// --- Dispatcher ---
+
+export function ServerContent({ server }: { server: McpServer }) {
+  switch (server.status.kind) {
+    case "success":
+      return <SuccessContent server={server} />;
+    case "error":
+      return <ErrorContent message={server.status.message} />;
+    case "auth":
+      return <AuthContent fields={server.status.fields} />;
+  }
+}
