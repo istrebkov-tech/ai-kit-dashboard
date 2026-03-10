@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// --- Types & Data ---
+// --- Types ---
 
 interface LlmModel {
   name: string;
@@ -19,48 +19,78 @@ interface LlmModel {
   provider: string;
 }
 
+// --- Data ---
+
 const models: LlmModel[] = [
   { name: "gpt-5.2", type: "model", provider: "openai" },
   { name: "gpt-5.2-pro", type: "model", provider: "openai" },
-  { name: "gpt-4o-mini", type: "model", provider: "openai" },
   { name: "gpt-4o", type: "model", provider: "openai" },
+  { name: "gpt-4o-mini", type: "model", provider: "openai" },
   { name: "gpt-4.1", type: "model", provider: "openai" },
   { name: "gpt-4.1-mini", type: "model", provider: "openai" },
   { name: "gpt-4.1-nano", type: "model", provider: "openai" },
   { name: "o4-mini", type: "model", provider: "openai" },
   { name: "o3", type: "model", provider: "openai" },
   { name: "o3-mini", type: "model", provider: "openai" },
-  { name: "veo-3.1", type: "video", provider: "openai" },
+  { name: "o1", type: "model", provider: "openai" },
+  { name: "o1-mini", type: "model", provider: "openai" },
+  { name: "sora-2", type: "video", provider: "openai" },
+  { name: "veo-3.0", type: "video", provider: "google" },
   { name: "whisperx-1", type: "audio", provider: "openai" },
-  { name: "dall-e-3", type: "image", provider: "openai" },
+  { name: "dall-e-3", type: "vision", provider: "openai" },
   { name: "text-embedding-3-large", type: "embedding", provider: "openai" },
   { name: "text-embedding-3-small", type: "embedding", provider: "openai" },
+  { name: "claude-3-7-sonnet-latest", type: "model", provider: "anthropic" },
   { name: "claude-sonnet-4-fallback", type: "model", provider: "anthropic" },
   { name: "claude-opus-4-1-fallback", type: "model", provider: "anthropic" },
   { name: "claude-3.5-sonnet", type: "model", provider: "anthropic" },
   { name: "claude-3.5-haiku", type: "model", provider: "anthropic" },
+  { name: "gemini-2.5-pro", type: "model", provider: "google" },
+  { name: "gemini-2.5-flash", type: "model", provider: "google" },
+  { name: "gemini-2.0-flash", type: "model", provider: "google" },
+  { name: "gemini-1.5-pro", type: "model", provider: "google" },
   { name: "llama-3-8b-instruct-8k", type: "model", provider: "meta" },
   { name: "llama-3-70b-instruct", type: "model", provider: "meta" },
   { name: "llama-3.1-405b", type: "model", provider: "meta" },
+  { name: "llama-3.2-90b-vision", type: "vision", provider: "meta" },
+  { name: "grok-4", type: "model", provider: "xai" },
+  { name: "grok-3", type: "model", provider: "xai" },
+  { name: "grok-3-mini", type: "model", provider: "xai" },
+  { name: "deepseek-reasoner", type: "model", provider: "deepseek" },
+  { name: "deepseek-chat", type: "model", provider: "deepseek" },
+  { name: "deepseek-coder-v2", type: "model", provider: "deepseek" },
+  { name: "qwen3.5-35b-a3b", type: "model", provider: "qwen" },
+  { name: "qwen3-32b", type: "model", provider: "qwen" },
+  { name: "qwen2.5-72b-instruct", type: "model", provider: "qwen" },
+  { name: "qwq-32b", type: "model", provider: "qwen" },
+  { name: "yandexgpt-5", type: "model", provider: "yandex" },
+  { name: "yandexgpt-4-rc", type: "model", provider: "yandex" },
+  { name: "gigachat-pro", type: "model", provider: "sber" },
+  { name: "gigachat-max", type: "model", provider: "sber" },
 ];
 
 const PROVIDER_STYLES: Record<string, string> = {
-  openai: "bg-foreground/8 text-foreground",
-  anthropic: "bg-[hsl(30,80%,50%)]/10 text-[hsl(30,80%,50%)]",
-  meta: "bg-primary/10 text-primary",
+  openai: "bg-[hsl(0,0%,15%)] text-[hsl(0,0%,100%)]",
+  anthropic: "bg-[hsl(30,90%,94%)] text-[hsl(25,80%,35%)]",
+  google: "bg-[hsl(215,90%,94%)] text-[hsl(215,80%,35%)]",
+  meta: "bg-[hsl(230,70%,94%)] text-[hsl(230,60%,40%)]",
+  xai: "bg-[hsl(220,10%,25%)] text-[hsl(0,0%,100%)]",
+  qwen: "bg-[hsl(270,70%,94%)] text-[hsl(270,60%,40%)]",
+  deepseek: "bg-[hsl(220,70%,20%)] text-[hsl(0,0%,100%)]",
+  yandex: "bg-[hsl(48,90%,90%)] text-[hsl(40,80%,30%)]",
+  sber: "bg-[hsl(142,60%,92%)] text-[hsl(142,60%,30%)]",
 };
 
 const TYPE_LABELS: Record<string, string> = {
   model: "Текст",
   video: "Видео",
   audio: "Аудио",
-  image: "Изображение",
+  vision: "Визуал",
   embedding: "Эмбеддинг",
 };
 
-const providers = ["openai", "anthropic", "meta"];
-
-// --- cURL snippets ---
+const providers = ["openai", "anthropic", "google", "meta", "xai", "deepseek", "qwen", "yandex", "sber"];
+const types = ["model", "vision", "audio", "video", "embedding"];
 
 const curlSnippets: Record<string, string> = {
   list: `curl -s "https://agentgateway.ai/llm/models" \\
@@ -127,7 +157,7 @@ function ModelCard({ model }: { model: LlmModel }) {
         <code className="text-[13px] font-mono font-semibold text-foreground break-all">
           {model.name}
         </code>
-        <span className="text-[11px] text-muted-foreground whitespace-nowrap mt-0.5">
+        <span className="text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded whitespace-nowrap mt-0.5">
           {typeLabel}
         </span>
       </div>
@@ -145,22 +175,24 @@ function ModelCard({ model }: { model: LlmModel }) {
 export function LlmModelsPage() {
   const [search, setSearch] = useState("");
   const [provider, setProvider] = useState("all");
+  const [type, setType] = useState("all");
 
   const filtered = useMemo(() => {
     return models.filter((m) => {
       if (provider !== "all" && m.provider !== provider) return false;
+      if (type !== "all" && m.type !== type) return false;
       if (!search) return true;
       const q = search.toLowerCase();
-      return m.name.toLowerCase().includes(q) || m.provider.toLowerCase().includes(q);
+      return m.name.toLowerCase().includes(q);
     });
-  }, [search, provider]);
+  }, [search, provider, type]);
 
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="max-w-4xl mx-auto px-8 py-10">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">LLM Модели</h1>
+          <h1 className="text-2xl font-semibold text-foreground tracking-tight">Реестр LLM Моделей</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             Доступные языковые, визуальные и аудио модели для использования через единый API.
           </p>
@@ -177,15 +209,9 @@ export function LlmModelsPage() {
               <TabsTrigger value="chat" className="text-xs">Генерация текста</TabsTrigger>
               <TabsTrigger value="embeddings" className="text-xs">Эмбеддинги</TabsTrigger>
             </TabsList>
-            <TabsContent value="list">
-              <CodeBlock code={curlSnippets.list} />
-            </TabsContent>
-            <TabsContent value="chat">
-              <CodeBlock code={curlSnippets.chat} />
-            </TabsContent>
-            <TabsContent value="embeddings">
-              <CodeBlock code={curlSnippets.embeddings} />
-            </TabsContent>
+            <TabsContent value="list"><CodeBlock code={curlSnippets.list} /></TabsContent>
+            <TabsContent value="chat"><CodeBlock code={curlSnippets.chat} /></TabsContent>
+            <TabsContent value="embeddings"><CodeBlock code={curlSnippets.embeddings} /></TabsContent>
           </Tabs>
         </div>
 
@@ -202,7 +228,7 @@ export function LlmModelsPage() {
               />
             </div>
             <Select value={provider} onValueChange={setProvider}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[170px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -210,6 +236,19 @@ export function LlmModelsPage() {
                 {providers.map((p) => (
                   <SelectItem key={p} value={p}>
                     {p.charAt(0).toUpperCase() + p.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={type} onValueChange={setType}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Все типы</SelectItem>
+                {types.map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {TYPE_LABELS[t] || t}
                   </SelectItem>
                 ))}
               </SelectContent>
