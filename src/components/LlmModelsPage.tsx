@@ -244,6 +244,10 @@ export function LlmModelsPage() {
             <TabsContent value="chat"><CodeBlock code={curlSnippets.chat} /></TabsContent>
             <TabsContent value="embeddings"><CodeBlock code={curlSnippets.embeddings} /></TabsContent>
           </Tabs>
+
+          <p className="text-sm text-muted-foreground flex items-center gap-2 mt-4">
+            💡 Кликните на любую модель из списка ниже, чтобы автоматически подставить её в пример кода, или скопируйте её ID.
+          </p>
         </div>
 
         {/* Models Directory */}
