@@ -3,18 +3,9 @@ import { Badge } from "@/components/ui/badge";
 
 const navItems = [
   { id: "api-keys", title: "API Ключи и Доступ", icon: Key },
-  { id: "workspace", title: "Рабочее пространство", icon: MessageSquare, badge: "WIP" },
   { id: "agents", title: "Реестр Агентов", icon: Box },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
-];
-
-const recentSessions = [
-  "Задачи онбординга HR",
-  "Разбор багов Jira",
-  "Анализ отчета за Q4",
-  "Сводка дайджеста Slack",
-  "Обзор аудита безопасности",
 ];
 
 interface AppSidebarProps {
