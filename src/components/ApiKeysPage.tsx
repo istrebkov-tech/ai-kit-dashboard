@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { PageGuide } from "./PageGuide";
 import { SmartCodeBlock } from "./api-keys/SmartCodeBlock";
@@ -40,11 +40,38 @@ export function ApiKeysPage() {
   const [jwtCopied, setJwtCopied] = useState(false);
   const [jwtLoading, setJwtLoading] = useState(false);
 
+  // JWT countdown
+  const [jwtSecondsLeft, setJwtSecondsLeft] = useState(0);
+  const jwtIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startJwtTimer = () => {
+    if (jwtIntervalRef.current) clearInterval(jwtIntervalRef.current);
+    setJwtSecondsLeft(3600);
+    jwtIntervalRef.current = setInterval(() => {
+      setJwtSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(jwtIntervalRef.current!);
+          jwtIntervalRef.current = null;
+          setJwtToken(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (jwtIntervalRef.current) clearInterval(jwtIntervalRef.current);
+    };
+  }, []);
+
   const generateJwt = () => {
     setJwtLoading(true);
     setTimeout(() => {
       setJwtToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ.kX9mZ2vP7qR8wN3tY6uJ");
       setJwtLoading(false);
+      startJwtTimer();
     }, 800);
   };
 
@@ -125,8 +152,8 @@ export function ApiKeysPage() {
               {jwtToken && (
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-2">
-                    <Badge className="bg-success/10 text-success hover:bg-success/10 border-0 text-xs font-medium">
-                      Действителен 1ч 0мин
+                    <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
+                      Действителен {Math.floor(jwtSecondsLeft / 3600)}ч {Math.floor((jwtSecondsLeft % 3600) / 60)}мин {jwtSecondsLeft % 60}с
                     </Badge>
                   </div>
                   <div className="relative rounded-md bg-code-bg border border-border">
