@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw, Copy, Check, FileJson } from "lucide-react";
+import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw, Copy, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
