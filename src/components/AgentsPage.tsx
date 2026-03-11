@@ -169,7 +169,7 @@ export function AgentsPage({ jwtToken }: { jwtToken?: string | null }) {
               </div>
 
               <div className="pt-2.5 mt-auto border-t border-border">
-                <AgentEndpoints agentUrl={agent.url} disabled={!agent.active} />
+                <AgentEndpoints agentUrl={agent.url} disabled={!agent.active} jwtToken={jwtToken} />
               </div>
             </div>
           ))}
