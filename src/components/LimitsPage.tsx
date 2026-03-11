@@ -70,18 +70,18 @@ export function LimitsPage() {
             <TableBody>
               {modelLimits.map((row) => (
                 <TableRow key={row.group} className="hover:bg-muted/30">
-                  <TableCell className="font-mono text-sm font-medium">{row.group}</TableCell>
-                  <TableCell className="font-mono text-sm text-right">{row.rpm}</TableCell>
-                  <TableCell className="font-mono text-sm text-right">{row.tpm}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="font-mono text-xs font-medium py-2">{row.group}</TableCell>
+                  <TableCell className="font-mono text-xs text-right py-2">{row.rpm}</TableCell>
+                  <TableCell className="font-mono text-xs text-right py-2">{row.tpm}</TableCell>
+                  <TableCell className="text-right py-2">
                     {row.monthly === "unlimited" ? (
-                      <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">UNLIMITED</span>
+                      <span className="font-mono text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">UNLIMITED</span>
                     ) : (
-                      <span className="font-mono text-sm">{row.monthly}</span>
+                      <span className="font-mono text-xs">{row.monthly}</span>
                     )}
                   </TableCell>
-                  <TableCell className="font-mono text-sm text-right text-muted-foreground">{row.priceIn}</TableCell>
-                  <TableCell className="font-mono text-sm text-right text-muted-foreground">{row.priceOut}</TableCell>
+                  <TableCell className="font-mono text-xs text-right text-muted-foreground py-2">{row.priceIn}</TableCell>
+                  <TableCell className="font-mono text-xs text-right text-muted-foreground py-2">{row.priceOut}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
