@@ -291,6 +291,10 @@ export function LlmModelsPage() {
           </p>
         </div>
 
+        <PageGuide>
+          <strong>Как использовать:</strong> Здесь собран единый API для 100+ нейросетей. Найдите нужную модель (текст, аудио, зрение), скопируйте её название и подставьте в параметр <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">model</code> в вашем коде.
+        </PageGuide>
+
         {/* API Reference Accordion */}
         <Accordion type="single" collapsible className="mb-4">
           <AccordionItem value="api-ref" className="border rounded-lg bg-card">
