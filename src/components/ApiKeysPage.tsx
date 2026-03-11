@@ -62,7 +62,7 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
         if (prev <= 1) {
           clearInterval(jwtIntervalRef.current!);
           jwtIntervalRef.current = null;
-          setJwtToken(null);
+          onJwtTokenChange(null);
           return 0;
         }
         return prev - 1;
