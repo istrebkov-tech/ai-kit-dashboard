@@ -273,15 +273,13 @@ function AgentManualButton({ agent }: { agent: Agent }) {
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="sm"
+      <button
         onClick={() => setOpen(true)}
-        className="text-primary hover:text-primary hover:bg-primary/10 -mr-2 gap-1.5"
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
-        <BookOpen className="w-3.5 h-3.5" />
+        <BookOpen className="w-3 h-3" />
         Как использовать
-      </Button>
+      </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent className="overflow-y-auto">
