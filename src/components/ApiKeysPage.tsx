@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { PageGuide } from "./PageGuide";
 import { HelpTerm } from "./HelpTerm";
-import { DocsFooter } from "./DocsFooter";
+import { ResourcesSection } from "./ResourcesSection";
+import { Shield as ShieldIcon, Clock, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -272,7 +273,11 @@ export function ApiKeysPage() {
           </div>
         )}
 
-        <DocsFooter text="📖 Читать гайд: Безопасность API и управление ключами доступа" />
+        <ResourcesSection items={[
+          { icon: ShieldIcon, title: "Безопасность API", description: "Как безопасно хранить ключи и избегать утечек в публичных репозиториях." },
+          { icon: Clock, title: "JWT против Постоянных ключей", description: "В чем разница и что лучше использовать для вашего бэкенда." },
+          { icon: Activity, title: "Лимиты и квоты (Rate Limits)", description: "Ограничения на количество запросов в минуту для разных типов токенов." },
+        ]} />
       </div>
     </div>
   );

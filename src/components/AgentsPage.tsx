@@ -7,7 +7,8 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { PageGuide } from "./PageGuide";
 import { HelpTerm } from "./HelpTerm";
-import { DocsFooter } from "./DocsFooter";
+import { ResourcesSection } from "./ResourcesSection";
+import { Network, Workflow, FileJson } from "lucide-react";
 
 interface Agent {
   id: string;
@@ -178,7 +179,11 @@ export function AgentsPage() {
           )}
         </div>
 
-        <DocsFooter text="📖 Гайд разработчика: A2A-интеграция и оркестрация агентов" />
+        <ResourcesSection items={[
+          { icon: Network, title: "A2A-интеграция (Agent-to-Agent)", description: "Протокол взаимодействия между вашим кодом и автономными агентами." },
+          { icon: Workflow, title: "Оркестрация агентов", description: "Как заставить нескольких агентов работать над одной сложной задачей." },
+          { icon: FileJson, title: "Структура Agent Card", description: "Разбор JSON-схемы, описывающей возможности и метаданные агента." },
+        ]} />
       </div>
     </div>
   );

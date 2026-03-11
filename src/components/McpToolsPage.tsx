@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Search, Lock } from "lucide-react";
+import { Search, Lock, Database, Code } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { HelpTerm } from "./HelpTerm";
-import { DocsFooter } from "./DocsFooter";
+import { ResourcesSection } from "./ResourcesSection";
 import {
   Accordion,
   AccordionContent,
@@ -134,7 +134,11 @@ export function McpToolsPage() {
           </Accordion>
         )}
 
-        <DocsFooter text="📖 Руководство: Как безопасно подключить корпоративные базы данных через MCP" />
+        <ResourcesSection items={[
+          { icon: Database, title: "Подключение баз знаний", description: "Как дать ИИ доступ к корпоративной Confluence и Jira." },
+          { icon: Code, title: "Создание своего MCP-сервера", description: "Гайд по написанию кастомных инструментов на Python для ваших внутренних API." },
+          { icon: Lock, title: "Настройка Scopes и доступов", description: "Как ограничить права модели при работе с чувствительными данными." },
+        ]} />
       </div>
     </div>
   );

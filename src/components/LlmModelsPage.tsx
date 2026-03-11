@@ -2,7 +2,8 @@ import { useState, useMemo } from "react";
 import { Search, Copy, Check, Terminal, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PageGuide } from "./PageGuide";
-import { DocsFooter } from "./DocsFooter";
+import { ResourcesSection } from "./ResourcesSection";
+import { Image, MessageSquare, SquareActivity } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -366,7 +367,12 @@ export function LlmModelsPage() {
           </div>
         )}
 
-        <DocsFooter text="📖 Документация: Работа с потоковой генерацией (Streaming) и Vision моделями" />
+        <ResourcesSection items={[
+          { icon: Terminal, title: "Быстрый старт: Генерация текста", description: "Базовые примеры на Python и Node.js для работы с моделями." },
+          { icon: SquareActivity, title: "Потоковая генерация (Streaming)", description: "Как получать ответ от модели по частям для ускорения UI." },
+          { icon: Image, title: "Работа с Vision моделями", description: "Как правильно передавать изображения в формате Base64 или по URL." },
+          { icon: MessageSquare, title: "Промпт-инжиниринг", description: "Лучшие практики по составлению системных промптов для Claude и GPT-4o." },
+        ]} />
       </div>
     </div>
   );
