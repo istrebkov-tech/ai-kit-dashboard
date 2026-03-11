@@ -5,6 +5,11 @@ import { Badge } from "@/components/ui/badge";
 
 import { ResourcesSection } from "./ResourcesSection";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
