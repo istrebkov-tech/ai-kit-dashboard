@@ -68,12 +68,23 @@ export function ApiKeysPage() {
     };
   }, []);
 
+  const activeToken = jwtToken || createdToken;
+
+  const flashAndScroll = () => {
+    setTokenHighlight(true);
+    setTimeout(() => setTokenHighlight(false), 1500);
+    setTimeout(() => {
+      usageSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
+  };
+
   const generateJwt = () => {
     setJwtLoading(true);
     setTimeout(() => {
       setJwtToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ.kX9mZ2vP7qR8wN3tY6uJ");
       setJwtLoading(false);
       startJwtTimer();
+      flashAndScroll();
     }, 800);
   };
 
