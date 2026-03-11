@@ -130,12 +130,12 @@ function ConnectionCommand({ server }: { server: McpServer }) {
   );
 
   return (
-    <div className="border-t border-border px-4 py-3 bg-muted/20">
+    <div className="px-4 py-3 mx-3 mt-2 mb-1 rounded-md bg-muted/40 border border-border/50">
       <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold">
         Command to run
       </span>
       <div className="mt-1.5 flex items-center gap-2">
-        <code className="flex-1 text-xs font-mono bg-muted/50 border border-border rounded px-3 py-1.5 text-foreground truncate">
+        <code className="flex-1 text-xs font-mono bg-background border border-border rounded px-3 py-1.5 text-foreground truncate">
           {shortCommand}
         </code>
         <Tooltip>
@@ -179,7 +179,8 @@ function SuccessContent({ server }: { server: McpServer }) {
   const categories = Object.keys(grouped).sort();
 
   return (
-    <div>
+    <div className="py-1">
+      <ConnectionCommand server={server} />
       <div className="bg-muted/30">
         {categories.length === 0 ? (
           <p className="text-xs text-muted-foreground text-center py-6">Нет инструментов</p>
@@ -191,7 +192,6 @@ function SuccessContent({ server }: { server: McpServer }) {
           </div>
         )}
       </div>
-      <ConnectionCommand server={server} />
     </div>
   );
 }
