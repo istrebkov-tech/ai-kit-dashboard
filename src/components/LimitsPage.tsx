@@ -1,7 +1,6 @@
-import { Activity, Cpu, Bot, Zap } from "lucide-react";
+import { Cpu, Bot, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const usageCards = [
@@ -41,16 +40,9 @@ export function LimitsPage() {
   return (
     <div className="flex-1 overflow-auto">
       <div className="max-w-6xl mx-auto px-8 py-8">
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Лимиты и Квоты</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Ваш текущий план: <span className="font-medium text-foreground">Pro Enterprise</span>. Лимиты обновляются 1-го числа каждого месяца.
-            </p>
-          </div>
-          <Button size="sm" className="shrink-0">
-            Увеличить квоты
-          </Button>
+        <div className="mb-6">
+          <h1 className="text-xl font-bold text-foreground">Лимиты и Квоты</h1>
+          <p className="text-sm text-muted-foreground mt-1">Текущее использование ресурсов и ограничения</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
