@@ -104,6 +104,12 @@ function ConnectionCommand({ server }: { server: McpServer }) {
   const [copiedCmd, setCopiedCmd] = useState(false);
   const [copiedConfig, setCopiedConfig] = useState(false);
 
+  const copyToClipboard = useCallback((text: string, setter: (v: boolean) => void) => {
+    navigator.clipboard.writeText(text);
+    setter(true);
+    setTimeout(() => setter(false), 2000);
+  }, []);
+
   if (!server.mcpCommand) return null;
 
   const { command, args, env } = server.mcpCommand;
@@ -122,12 +128,6 @@ function ConnectionCommand({ server }: { server: McpServer }) {
     null,
     2
   );
-
-  const copyToClipboard = useCallback((text: string, setter: (v: boolean) => void) => {
-    navigator.clipboard.writeText(text);
-    setter(true);
-    setTimeout(() => setter(false), 2000);
-  }, []);
 
   return (
     <div className="border-t border-border px-4 py-3 bg-muted/20">
