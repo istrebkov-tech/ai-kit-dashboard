@@ -61,7 +61,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
               {item.children ? (
                 <>
                   <button
-                    onClick={() => onNavigate(item.children![0].id)}
+                    onClick={() => setAgentsOpen(!agentsOpen)}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-colors ${
                       isAgentsSection
                         ? "bg-sidebar-active font-medium text-foreground"
@@ -69,9 +69,14 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
                     }`}
                   >
                     <item.icon className="w-4 h-4 shrink-0" />
-                    <span className="truncate">{item.title}</span>
+                    <span className="truncate flex-1 text-left">{item.title}</span>
+                    {agentsOpen ? (
+                      <ChevronDown className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                    ) : (
+                      <ChevronRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                    )}
                   </button>
-                  {isAgentsSection && (
+                  {agentsOpen && (
                     <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-border pl-3">
                       {item.children.map((child) => (
                         <li key={child.id}>
