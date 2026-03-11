@@ -361,18 +361,20 @@ export function ApiKeysPage() {
                             ))}
                           </div>
                         </CollapsibleContent>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setIsKeysListExpanded(!isKeysListExpanded)}
-                          className="w-full mt-2 text-muted-foreground gap-1.5"
-                        >
-                          {isKeysListExpanded ? (
-                            <><ChevronUp className="w-3.5 h-3.5" /> Скрыть</>
-                          ) : (
-                            <><ChevronDown className="w-3.5 h-3.5" /> Показать остальные ({keys.length - 1})</>
-                          )}
-                        </Button>
+                        <div className="flex justify-start mt-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsKeysListExpanded(!isKeysListExpanded)}
+                            className="text-xs text-muted-foreground hover:text-foreground gap-1 h-auto py-1 px-2"
+                          >
+                            {isKeysListExpanded ? (
+                              <><ChevronUp className="w-3 h-3" /> Скрыть</>
+                            ) : (
+                              <><ChevronDown className="w-3 h-3" /> Показать остальные ({keys.length - 1})</>
+                            )}
+                          </Button>
+                        </div>
                       </Collapsible>
                     )}
                   </div>
