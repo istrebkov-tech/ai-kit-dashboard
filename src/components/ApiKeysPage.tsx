@@ -110,6 +110,7 @@ export function ApiKeysPage() {
       setCreatedToken(token);
       setNewKeyName("");
       setCreating(false);
+      flashAndScroll();
     }, 600);
   };
 
