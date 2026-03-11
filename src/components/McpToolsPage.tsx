@@ -3,7 +3,8 @@ import { Search, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { HelpTerm } from "./HelpTerm";
-import { DocsFooter } from "./DocsFooter";
+import { ResourcesSection } from "./ResourcesSection";
+import { Database, Code, Lock as LockIcon } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
