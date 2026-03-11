@@ -127,9 +127,6 @@ export function ApiKeysPage() {
     setKeys((prev) => prev.filter((k) => k.id !== id));
   };
 
-  const dismissToken = () => {
-    setCreatedToken(null);
-  };
 
   return (
     <div className="flex-1 overflow-y-auto">
