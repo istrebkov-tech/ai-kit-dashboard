@@ -32,6 +32,7 @@ interface AppSidebarProps {
 export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
   const isAgentsSection = activeId === "agents" || activeId === "my-agents";
   const [agentsOpen, setAgentsOpen] = useState(isAgentsSection);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
