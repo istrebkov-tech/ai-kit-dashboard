@@ -223,7 +223,7 @@ export function ApiKeysPage() {
 
         {/* Success Dialog for permanent keys */}
         <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); }}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Сохраните ваш секретный ключ</DialogTitle>
               <DialogDescription>
@@ -231,10 +231,10 @@ export function ApiKeysPage() {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-4">
+            <div className="space-y-4 min-w-0">
               <div className="flex items-center gap-2">
-                <div className="flex-1 rounded-md bg-code-bg border border-border">
-                  <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all max-h-28">
+                <div className="flex-1 min-w-0 rounded-md bg-code-bg border border-border">
+                  <pre className="p-3 text-xs font-mono text-foreground whitespace-normal break-all max-h-28 overflow-y-auto">
                     {createdToken}
                   </pre>
                 </div>
@@ -251,7 +251,9 @@ export function ApiKeysPage() {
                 </p>
               </div>
 
-              {createdToken && <SmartCodeBlock token={createdToken} />}
+              <div className="min-w-0 max-w-full">
+                {createdToken && <SmartCodeBlock token={createdToken} />}
+              </div>
             </div>
 
             <DialogFooter>
