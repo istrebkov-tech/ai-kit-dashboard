@@ -1,9 +1,23 @@
-import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles, Users, UserCog } from "lucide-react";
 
-const navItems = [
+interface NavItem {
+  id: string;
+  title: string;
+  icon: React.ElementType;
+  children?: { id: string; title: string; icon: React.ElementType }[];
+}
+
+const navItems: NavItem[] = [
   { id: "api-keys", title: "API Ключи и Доступ", icon: Key },
-  { id: "agents", title: "Реестр Агентов", icon: Box },
+  {
+    id: "agents",
+    title: "Реестр Агентов",
+    icon: Box,
+    children: [
+      { id: "agents", title: "Доступные агенты", icon: Users },
+      { id: "my-agents", title: "Мои агенты", icon: UserCog },
+    ],
+  },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
 ];
@@ -15,6 +29,8 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
+  const isAgentsSection = activeId === "agents" || activeId === "my-agents";
+
   return (
     <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
       <div className="px-5 pt-5 pb-3">
@@ -40,21 +56,55 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         <ul className="space-y-0.5">
           {navItems.map((item) => (
             <li key={item.id}>
-              <button
-                onClick={() => onNavigate(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-colors ${
-                  activeId === item.id
-                    ? "bg-sidebar-active font-medium text-foreground"
-                    : "text-muted-foreground hover:bg-sidebar-active hover:text-foreground"
-                }`}
-              >
-                <item.icon className="w-4 h-4 shrink-0" />
-                <span className="truncate">{item.title}</span>
-              </button>
+              {item.children ? (
+                <>
+                  <button
+                    onClick={() => onNavigate(item.children![0].id)}
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-colors ${
+                      isAgentsSection
+                        ? "bg-sidebar-active font-medium text-foreground"
+                        : "text-muted-foreground hover:bg-sidebar-active hover:text-foreground"
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{item.title}</span>
+                  </button>
+                  {isAgentsSection && (
+                    <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-border pl-3">
+                      {item.children.map((child) => (
+                        <li key={child.id}>
+                          <button
+                            onClick={() => onNavigate(child.id)}
+                            className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-[13px] transition-colors ${
+                              activeId === child.id
+                                ? "text-foreground font-medium bg-sidebar-active"
+                                : "text-muted-foreground hover:text-foreground hover:bg-sidebar-active"
+                            }`}
+                          >
+                            <child.icon className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{child.title}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <button
+                  onClick={() => onNavigate(item.id)}
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-colors ${
+                    activeId === item.id
+                      ? "bg-sidebar-active font-medium text-foreground"
+                      : "text-muted-foreground hover:bg-sidebar-active hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{item.title}</span>
+                </button>
+              )}
             </li>
           ))}
         </ul>
-
       </nav>
 
       <div className="px-3 pb-2">
