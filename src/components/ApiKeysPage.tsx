@@ -304,7 +304,7 @@ export function ApiKeysPage() {
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
           <div className="flex items-start gap-3.5">
             <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-              <KeyRound className="w-4.5 h-4.5 text-primary" />
+              <List className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-sm font-semibold text-foreground">Активные ключи</h2>
