@@ -137,7 +137,7 @@ export function McpToolsPage() {
         <ResourcesSection items={[
           { icon: Database, title: "Подключение баз знаний", description: "Как дать ИИ доступ к корпоративной Confluence и Jira." },
           { icon: Code, title: "Создание своего MCP-сервера", description: "Гайд по написанию кастомных инструментов на Python для ваших внутренних API." },
-          { icon: LockIcon, title: "Настройка Scopes и доступов", description: "Как ограничить права модели при работе с чувствительными данными." },
+          { icon: Lock, title: "Настройка Scopes и доступов", description: "Как ограничить права модели при работе с чувствительными данными." },
         ]} />
       </div>
     </div>
