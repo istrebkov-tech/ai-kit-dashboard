@@ -103,16 +103,18 @@ function CategoryGroup({ category, tools }: { category: string; tools: McpTool[]
 function ConnectionCommand({ server }: { server: McpServer }) {
   const [copied, setCopied] = useState(false);
 
+  const handleCopy = useCallback(() => {
+    if (!server.mcpCommand) return;
+    const text = `${server.mcpCommand.command} ${server.mcpCommand.args.join(" ")}`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [server.mcpCommand]);
+
   if (!server.mcpCommand) return null;
 
   const { command, args } = server.mcpCommand;
   const shortCommand = `${command} ${args.join(" ")}`;
-
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(shortCommand);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [shortCommand]);
 
   return (
     <div className="px-4 py-3 mx-3 mt-2 mb-1 rounded-md bg-muted/40 border border-border/50">
