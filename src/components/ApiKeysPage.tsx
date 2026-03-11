@@ -222,6 +222,13 @@ export function ApiKeysPage() {
             Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API.
           </p>
 
+          {createdToken && (
+            <div className="mb-3 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
+              <Check className="w-3.5 h-3.5 shrink-0" />
+              Ваш токен подставлен в пример ниже. При перезагрузке страницы он будет сброшен.
+            </div>
+          )}
+
           <div className="relative rounded-md bg-code-bg border border-border">
             <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
               <CurlExample token={createdToken} />
