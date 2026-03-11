@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowUpRight } from "lucide-react";
+
 
 const usageBars = [
   { label: "Месячные кредиты", used: 1_200_000, total: 5_000_000, display: "1.2M / 5M токенов" },
@@ -19,13 +19,8 @@ const modelLimits = [
   { group: "Mixtral 8x7B", rpm: "10 000", tpm: "500 000", monthly: "unlimited", priceIn: "$0.24", priceOut: "$0.24", status: "unlimited" },
 ];
 
-const tiers = [
-  { name: "Tier 1", req: "$0", active: false },
-  { name: "Tier 2", req: "$10", active: false },
-  { name: "Tier 3", req: "$50", active: true },
-  { name: "Tier 4", req: "$100", active: false },
-  { name: "Tier 5", req: "$500", active: false },
-];
+
+
 
 export function LimitsPage() {
   return (
@@ -98,32 +93,6 @@ export function LimitsPage() {
           </Table>
         </Card>
 
-        {/* Tier Benefits */}
-        <Card className="p-5">
-          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Уровни доступа</h2>
-          <div className="flex gap-2 mb-4">
-            {tiers.map((tier) => (
-              <div
-                key={tier.name}
-                className={`flex-1 rounded-lg border px-3 py-2.5 text-center transition-colors ${
-                  tier.active
-                    ? "border-primary bg-primary/5"
-                    : "border-border bg-muted/30"
-                }`}
-              >
-                <div className={`font-mono text-xs font-semibold ${tier.active ? "text-primary" : "text-muted-foreground"}`}>
-                  {tier.name}
-                </div>
-                <div className="font-mono text-[11px] text-muted-foreground mt-0.5">от {tier.req}</div>
-              </div>
-            ))}
-          </div>
-          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-            Пополните баланс на <span className="font-mono font-semibold text-foreground">$50</span>, чтобы перейти на
-            <span className="font-mono font-semibold text-foreground">Tier 4</span> с увеличенной пропускной способностью.
-            <ArrowUpRight className="w-3.5 h-3.5 text-primary inline shrink-0" />
-          </p>
-        </Card>
       </div>
     </div>
   );
