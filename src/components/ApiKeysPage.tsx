@@ -296,11 +296,11 @@ export function ApiKeysPage() {
               </Collapsible>
 
               <div className="mt-4 border-t border-border pt-4">
-                <div className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground mb-4">
-                  <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-background px-3 py-1 text-sm font-medium text-foreground shadow-sm">
+                <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-4">
+                  <div className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium text-foreground bg-background shadow-sm">
                     Активные ключи
                     {keys.length > 0 && (
-                      <span className="ml-2 rounded-full bg-muted/80 px-2 py-0.5 text-xs text-muted-foreground font-semibold">
+                      <span className="ml-2 rounded-full bg-muted/80 px-1.5 py-0.5 text-[11px] text-muted-foreground font-semibold leading-none">
                         {keys.length}
                       </span>
                     )}
