@@ -151,23 +151,14 @@ export function AgentsPage() {
                       <AgentManualButton agent={agent} />
                     </div>
                   </div>
-                  <div className="flex items-center gap-1.5 shrink-0 ml-4">
+                  <div className="flex items-center gap-2 shrink-0 ml-4">
                     {agent.version && (
-                      <Badge variant="outline" className="text-[10px] font-mono border-border text-muted-foreground px-1.5 py-0">
-                        {agent.version}
-                      </Badge>
+                      <span className="text-[10px] font-mono text-muted-foreground">{agent.version}</span>
                     )}
-                    {agent.active ? (
-                      <Badge className="gap-1 bg-success/10 text-success hover:bg-success/10 border border-success/20 text-[10px] px-1.5 py-0">
-                        <Circle className="w-1.5 h-1.5 fill-current" />
-                        Активен
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="gap-1 bg-muted text-muted-foreground border-border text-[10px] px-1.5 py-0">
-                        <Circle className="w-1.5 h-1.5 fill-current" />
-                        Недоступен
-                      </Badge>
-                    )}
+                    <span
+                      className={`w-2 h-2 rounded-full shrink-0 ${agent.active ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-destructive'}`}
+                      title={agent.active ? 'Статус: Активен' : 'Статус: Недоступен'}
+                    />
                   </div>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground line-clamp-2 pl-10">{agent.description}</p>
