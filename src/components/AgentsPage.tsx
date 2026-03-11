@@ -135,7 +135,7 @@ export function AgentsPage() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
           {filtered.map((agent) => (
             <div key={agent.id} className="rounded-lg border border-border bg-card p-4 flex flex-col">
               <div className="flex items-start gap-3">
