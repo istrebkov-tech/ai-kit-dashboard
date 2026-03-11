@@ -224,75 +224,78 @@ export function ApiKeysPage() {
 
         {/* Section 2: Create API Key */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-1">Создать API ключ</h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
-          </p>
-
-          <div className="flex gap-3">
-            <Input
-              value={newKeyName}
-              onChange={(e) => setNewKeyName(e.target.value)}
-              placeholder="Название ключа (напр. мой-агент)"
-              className="flex-1"
-              onKeyDown={(e) => e.key === "Enter" && !creating && !!newKeyName.trim() && createKey()}
-            />
-            <Button onClick={createKey} disabled={creating || !newKeyName.trim()} className="gap-2 shrink-0">
-              <Plus className="w-3.5 h-3.5" />
-              Создать
-            </Button>
-          </div>
-
-          {createdToken && (
-            <div className="mt-3 flex items-center justify-end">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsKeyExpanded(!isKeyExpanded)}
-                className="gap-1.5 text-muted-foreground"
-              >
-                {isKeyExpanded ? (
-                  <><ChevronUp className="w-3.5 h-3.5" /> Скрыть детали</>
-                ) : (
-                  <><ChevronDown className="w-3.5 h-3.5" /> Показать детали</>
-                )}
-              </Button>
+          <div className="flex items-start gap-3.5">
+            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+              <KeyRound className="w-4.5 h-4.5 text-primary" />
             </div>
-          )}
+            <div className="flex-1 min-w-0">
+              <h2 className="text-sm font-semibold text-foreground">Создать API ключ</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
+              </p>
+              <div className="mt-4 flex items-center gap-3">
+                <Input
+                  value={newKeyName}
+                  onChange={(e) => setNewKeyName(e.target.value)}
+                  placeholder="Название ключа (напр. мой-агент)"
+                  className="flex-1"
+                  onKeyDown={(e) => e.key === "Enter" && !creating && !!newKeyName.trim() && createKey()}
+                />
+                <Button onClick={createKey} disabled={creating || !newKeyName.trim()} size="sm" className="gap-2 shrink-0">
+                  <Plus className="w-3.5 h-3.5" />
+                  Создать
+                </Button>
+                {createdToken && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsKeyExpanded(!isKeyExpanded)}
+                    className="gap-1.5 text-muted-foreground ml-auto shrink-0"
+                  >
+                    {isKeyExpanded ? (
+                      <><ChevronUp className="w-3.5 h-3.5" /> Скрыть детали</>
+                    ) : (
+                      <><ChevronDown className="w-3.5 h-3.5" /> Показать детали</>
+                    )}
+                  </Button>
+                )}
+              </div>
 
-          <Collapsible open={isKeyExpanded}>
-            <CollapsibleContent>
-              {createdToken && (
-                <div className="mt-3 space-y-3">
-                  <div className="relative rounded-md bg-code-bg border border-border">
-                    <pre className="p-3 pr-10 text-xs font-mono text-foreground whitespace-pre-wrap break-all max-h-28 overflow-y-auto">
-                      {createdToken}
-                    </pre>
-                    <button
-                      onClick={copyToken}
-                      className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
-                      title="Копировать"
-                    >
-                      {copied ? (
-                        <Check className="w-3.5 h-3.5 text-success" />
-                      ) : (
-                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
-                      )}
-                    </button>
-                  </div>
+              <Collapsible open={isKeyExpanded}>
+                <CollapsibleContent>
+                  {createdToken && (
+                    <div className="mt-3 space-y-3">
+                      <div className="relative rounded-md bg-code-bg border border-border">
+                        <pre className="p-3 pr-10 text-xs font-mono text-foreground whitespace-pre-wrap break-all max-h-28 overflow-y-auto">
+                          {createdToken}
+                        </pre>
+                        <button
+                          onClick={copyToken}
+                          className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
+                          title="Копировать"
+                        >
+                          {copied ? (
+                            <Check className="w-3.5 h-3.5 text-success" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                          )}
+                        </button>
+                      </div>
 
-                  <div className="flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
-                    <Check className="w-3.5 h-3.5 shrink-0" />
-                    Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
-                  </div>
+                      <div className="flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
+                        <Check className="w-3.5 h-3.5 shrink-0" />
+                        Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
+                      </div>
 
-                  <div className="min-w-0 max-w-full">
-                    <SmartCodeBlock token={createdToken} />
-                  </div>
-                </div>
-              )}
-            </CollapsibleContent>
-          </Collapsible>
+                      <div className="min-w-0 max-w-full">
+                        <SmartCodeBlock token={createdToken} />
+                      </div>
+                    </div>
+                  )}
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+          </div>
         </div>
 
         {/* Existing Keys */}
