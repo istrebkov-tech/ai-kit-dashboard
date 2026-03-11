@@ -104,6 +104,7 @@ export function ApiKeysPage() {
       setCreatedToken(token);
       setNewKeyName("");
       setCreating(false);
+      setDialogOpen(true);
     }, 600);
   };
 
@@ -113,6 +114,12 @@ export function ApiKeysPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+    setCreatedToken(null);
+    setCopied(false);
   };
 
 
