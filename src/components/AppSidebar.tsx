@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity } from "lucide-react";
 
 interface NavItem {
   id: string;
@@ -19,6 +19,7 @@ const navItems: NavItem[] = [
       { id: "my-agents", title: "Мои агенты", icon: UserCog },
     ],
   },
+  { id: "limits", title: "Лимиты и Квоты", icon: Activity },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
 ];

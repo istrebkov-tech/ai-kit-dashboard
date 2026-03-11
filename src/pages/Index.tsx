@@ -5,6 +5,7 @@ import { AgentsPage } from "@/components/AgentsPage";
 import { MyAgentsPage } from "@/components/MyAgentsPage";
 import { McpToolsPage } from "@/components/McpToolsPage";
 import { LlmModelsPage } from "@/components/LlmModelsPage";
+import { LimitsPage } from "@/components/LimitsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 import { OnboardingModal } from "@/components/OnboardingModal";
 
@@ -19,6 +20,7 @@ const Index = () => {
     if (activeId === "api-keys") return <ApiKeysPage jwtToken={jwtToken} onJwtTokenChange={setJwtToken} />;
     if (activeId === "agents") return <AgentsPage jwtToken={jwtToken} />;
     if (activeId === "my-agents") return <MyAgentsPage />;
+    if (activeId === "limits") return <LimitsPage />;
     if (activeId === "mcp") return <McpToolsPage />;
     if (activeId === "models") return <LlmModelsPage />;
     if (pages[activeId]) return <PlaceholderPage title={pages[activeId].title} subtitle={pages[activeId].subtitle} />;
