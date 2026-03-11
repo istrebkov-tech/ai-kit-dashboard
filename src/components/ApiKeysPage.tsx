@@ -40,11 +40,38 @@ export function ApiKeysPage() {
   const [jwtCopied, setJwtCopied] = useState(false);
   const [jwtLoading, setJwtLoading] = useState(false);
 
+  // JWT countdown
+  const [jwtSecondsLeft, setJwtSecondsLeft] = useState(0);
+  const jwtIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startJwtTimer = () => {
+    if (jwtIntervalRef.current) clearInterval(jwtIntervalRef.current);
+    setJwtSecondsLeft(3600);
+    jwtIntervalRef.current = setInterval(() => {
+      setJwtSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(jwtIntervalRef.current!);
+          jwtIntervalRef.current = null;
+          setJwtToken(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (jwtIntervalRef.current) clearInterval(jwtIntervalRef.current);
+    };
+  }, []);
+
   const generateJwt = () => {
     setJwtLoading(true);
     setTimeout(() => {
       setJwtToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ.kX9mZ2vP7qR8wN3tY6uJ");
       setJwtLoading(false);
+      startJwtTimer();
     }, 800);
   };
 
