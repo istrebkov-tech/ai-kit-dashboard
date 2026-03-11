@@ -176,7 +176,7 @@ export function AgentsPage() {
 
               <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-border">
                 <div>
-                  {agent.active && <AgentEndpoints agentUrl={agent.url} />}
+                  <AgentEndpoints agentUrl={agent.url} disabled={!agent.active} />
                 </div>
                 <AgentManualButton agent={agent} />
               </div>
@@ -215,14 +215,17 @@ export function AgentsPage() {
   );
 }
 
-function AgentEndpoints({ agentUrl }: { agentUrl: string }) {
+function AgentEndpoints({ agentUrl, disabled = false }: { agentUrl: string; disabled?: boolean }) {
   const [open, setOpen] = useState(false);
   const snippets = buildCurlSnippets(agentUrl);
 
   return (
-    <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger asChild>
-        <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1">
+    <Collapsible open={open} onOpenChange={disabled ? undefined : setOpen}>
+      <CollapsibleTrigger asChild disabled={disabled}>
+        <button
+          className={`flex items-center gap-1.5 text-xs py-1 transition-colors ${disabled ? "text-muted-foreground/40 cursor-not-allowed" : "text-muted-foreground hover:text-foreground"}`}
+          disabled={disabled}
+        >
           <FlaskConical className="w-3 h-3" />
           <span>A2A эндпоинты</span>
           <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
