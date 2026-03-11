@@ -5,13 +5,13 @@ import { AgentsPage } from "@/components/AgentsPage";
 import { McpToolsPage } from "@/components/McpToolsPage";
 import { LlmModelsPage } from "@/components/LlmModelsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
+import { OnboardingModal } from "@/components/OnboardingModal";
 
-const pages: Record<string, { title: string; subtitle: string }> = {
-  workspace: { title: "Рабочее пространство", subtitle: "Управление рабочими пространствами и сессиями" },
-};
+const pages: Record<string, { title: string; subtitle: string }> = {};
 
 const Index = () => {
   const [activeId, setActiveId] = useState("api-keys");
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
 
   const renderPage = () => {
     if (activeId === "api-keys") return <ApiKeysPage />;
@@ -24,8 +24,9 @@ const Index = () => {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <AppSidebar activeId={activeId} onNavigate={setActiveId} />
+      <AppSidebar activeId={activeId} onNavigate={setActiveId} onOpenOnboarding={() => setOnboardingOpen(true)} />
       {renderPage()}
+      <OnboardingModal open={onboardingOpen} onOpenChange={setOnboardingOpen} />
     </div>
   );
 };
