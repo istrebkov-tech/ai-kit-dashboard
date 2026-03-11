@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Shield, RefreshCw, Copy, Check, Plus, AlertTriangle } from "lucide-react";
+import { Shield, RefreshCw, Copy, Check, Plus } from "lucide-react";
 import { PageGuide } from "./PageGuide";
 import { SmartCodeBlock } from "./api-keys/SmartCodeBlock";
 
@@ -8,9 +8,7 @@ import { Shield as ShieldIcon, Clock, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 
 interface ApiKey {
@@ -225,31 +223,24 @@ export function ApiKeysPage() {
         <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); }}>
           <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Сохраните ваш секретный ключ</DialogTitle>
-              <DialogDescription>
-                Пожалуйста, скопируйте этот ключ прямо сейчас.
-              </DialogDescription>
+              <DialogTitle>Ваш API ключ</DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-4 min-w-0">
+            <div className="space-y-3 min-w-0">
               <div className="flex items-center gap-2">
                 <div className="flex-1 min-w-0 rounded-md bg-code-bg border border-border">
                   <pre className="p-3 text-xs font-mono text-foreground whitespace-normal break-all max-h-28 overflow-y-auto">
                     {createdToken}
                   </pre>
                 </div>
-                <Button onClick={copyToken} size="sm" className="gap-2 shrink-0">
-                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  {copied ? "Скопировано" : "Копировать"}
+                <Button onClick={copyToken} size="icon" variant="secondary" className="shrink-0">
+                  {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
                 </Button>
               </div>
 
-              <div className="flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2.5">
-                <AlertTriangle className="w-3.5 h-3.5 text-destructive shrink-0 mt-0.5" />
-                <p className="text-xs text-destructive">
-                  Из соображений безопасности этот ключ больше не будет вам показан. Если вы его потеряете, придётся создать новый.
-                </p>
-              </div>
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                💡 Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
+              </p>
 
               <div className="min-w-0 max-w-full">
                 {createdToken && <SmartCodeBlock token={createdToken} />}
@@ -257,7 +248,7 @@ export function ApiKeysPage() {
             </div>
 
             <DialogFooter>
-              <Button onClick={closeDialog}>Я скопировал ключ</Button>
+              <Button onClick={closeDialog}>Готово</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
