@@ -242,42 +242,57 @@ export function ApiKeysPage() {
               Создать
             </Button>
           </div>
-        </div>
 
-        {/* Success Dialog for permanent keys */}
-        <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); }}>
-          <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Ваш API ключ</DialogTitle>
-            </DialogHeader>
-
-            <div className="space-y-3 min-w-0">
-              <div className="flex items-center gap-2">
-                <div className="flex-1 min-w-0 rounded-md bg-code-bg border border-border">
-                  <pre className="p-3 text-xs font-mono text-foreground whitespace-normal break-all max-h-28 overflow-y-auto">
-                    {createdToken}
-                  </pre>
-                </div>
-                <Button onClick={copyToken} size="icon" variant="secondary" className="shrink-0">
-                  {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-
-              <div className="text-xs text-success bg-success/10 px-3 py-2 rounded-md flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 shrink-0" />
-                Секретный ключ подставлен в примеры ниже. Скопируйте нужный код — после закрытия окна этот ключ будет скрыт навсегда.
-              </div>
-
-              <div className="min-w-0 max-w-full">
-                {createdToken && <SmartCodeBlock token={createdToken} />}
-              </div>
+          {createdToken && (
+            <div className="mt-3 flex items-center justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsKeyExpanded(!isKeyExpanded)}
+                className="gap-1.5 text-muted-foreground"
+              >
+                {isKeyExpanded ? (
+                  <><ChevronUp className="w-3.5 h-3.5" /> Скрыть детали</>
+                ) : (
+                  <><ChevronDown className="w-3.5 h-3.5" /> Показать детали</>
+                )}
+              </Button>
             </div>
+          )}
 
-            <DialogFooter>
-              <Button onClick={closeDialog}>Готово</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          <Collapsible open={isKeyExpanded}>
+            <CollapsibleContent>
+              {createdToken && (
+                <div className="mt-3 space-y-3">
+                  <div className="relative rounded-md bg-code-bg border border-border">
+                    <pre className="p-3 pr-10 text-xs font-mono text-foreground whitespace-pre-wrap break-all max-h-28 overflow-y-auto">
+                      {createdToken}
+                    </pre>
+                    <button
+                      onClick={copyToken}
+                      className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
+                      title="Копировать"
+                    >
+                      {copied ? (
+                        <Check className="w-3.5 h-3.5 text-success" />
+                      ) : (
+                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2 rounded-md bg-warning/10 border border-warning/20 px-3 py-2 text-xs text-warning">
+                    💡 Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
+                  </div>
+
+                  <div className="min-w-0 max-w-full">
+                    <SmartCodeBlock token={createdToken} />
+                  </div>
+                </div>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
 
         {/* Existing Keys */}
         {keys.length > 0 && (
