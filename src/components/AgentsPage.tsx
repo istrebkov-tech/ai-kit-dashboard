@@ -272,10 +272,10 @@ function AgentManualButton({ agent }: { agent: Agent }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+        className="absolute top-3.5 right-3.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground/60 hover:text-foreground transition-colors"
       >
         <BookOpen className="w-3 h-3" />
-        Как использовать
+        Инструкция
       </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
