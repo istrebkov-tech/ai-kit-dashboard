@@ -11,6 +11,7 @@ export interface ResourceItem {
 
 interface ResourcesSectionProps {
   items: ResourceItem[];
+  description?: string;
 }
 
 function ArticleView({ item, onBack }: { item: ResourceItem; onBack: () => void }) {
