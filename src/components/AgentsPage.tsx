@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Copy, Check, Circle, FlaskConical, ChevronDown, BookOpen, Brain, Zap, Bot } from "lucide-react";
+import { Search, Copy, Check, Circle, FlaskConical, ChevronDown, BookOpen, Brain, Zap, Bot, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -138,13 +138,16 @@ export function AgentsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
           {filtered.map((agent) => (
             <div key={agent.id} className="rounded-lg border border-border bg-card p-4 flex flex-col h-full">
-              <div className="flex items-start gap-3 min-h-[72px]">
+              <div className="flex items-start gap-3 min-h-[56px]">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-sm font-semibold text-foreground leading-tight">{agent.name}</h3>
+                    <h3 className="text-sm font-semibold text-foreground leading-tight flex items-center gap-1.5">
+                      {agent.name}
+                      <AgentManualButton agent={agent} />
+                    </h3>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {agent.version && (
                         <Badge variant="outline" className="text-[10px] font-mono border-border text-muted-foreground px-1.5 py-0">
@@ -165,7 +168,6 @@ export function AgentsPage() {
                     </div>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{agent.description}</p>
-                  <AgentManualButton agent={agent} />
                 </div>
               </div>
 
@@ -272,10 +274,10 @@ function AgentManualButton({ agent }: { agent: Agent }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 text-xs text-primary/70 hover:text-primary transition-colors mt-1.5"
+        className="text-muted-foreground/50 hover:text-primary transition-colors shrink-0"
+        title="Как использовать"
       >
-        <BookOpen className="w-3 h-3" />
-        Как использовать
+        <Info className="w-3.5 h-3.5" />
       </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
