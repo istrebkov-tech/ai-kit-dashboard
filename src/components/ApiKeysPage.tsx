@@ -243,10 +243,10 @@ export function ApiKeysPage() {
         {/* Section 3: Usage */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
           <h2 className="text-sm font-semibold text-foreground mb-1">Использование API</h2>
-          {createdToken ? (
+          {activeToken ? (
             <div className="mb-3 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
               <Check className="w-3.5 h-3.5 shrink-0" />
-              Ваш токен подставлен в пример ниже. При перезагрузке страницы он будет сброшен.
+              Ваш токен подставлен в примеры ниже. При перезагрузке страницы он будет сброшен.
             </div>
           ) : (
             <div className="mb-4 space-y-2">
@@ -254,12 +254,12 @@ export function ApiKeysPage() {
                 Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API.
               </p>
               <p className="text-xs text-muted-foreground/70 italic">
-                💡 При создании API-ключа токен автоматически подставится в примеры ниже.
+                💡 Сгенерируйте JWT-токен или создайте API-ключ — он автоматически подставится в примеры.
               </p>
             </div>
           )}
 
-          <SmartCodeBlock token={createdToken} />
+          <SmartCodeBlock ref={usageSectionRef} token={activeToken} highlight={tokenHighlight} />
         </div>
 
         {/* Section 3: Existing Keys */}
