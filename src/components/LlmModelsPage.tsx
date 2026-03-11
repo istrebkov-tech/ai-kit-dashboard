@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Search, Copy, Check, Terminal, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { PageGuide } from "./PageGuide";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
