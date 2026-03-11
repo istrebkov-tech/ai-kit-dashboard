@@ -167,6 +167,9 @@ export function ApiKeysPage() {
                   </Badge>
                 )}
               </div>
+
+              {jwtToken && (
+                <div className="mt-3 space-y-3">
                   <div className="relative rounded-md bg-code-bg border border-border">
                     <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
                       {jwtToken}
@@ -184,7 +187,6 @@ export function ApiKeysPage() {
                     </button>
                   </div>
 
-                  {/* Inline code examples */}
                   <div className="pt-2 border-t border-border">
                     <div className="mb-2 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
                       <Check className="w-3.5 h-3.5 shrink-0" />
