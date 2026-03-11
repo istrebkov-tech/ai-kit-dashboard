@@ -11,18 +11,47 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { McpServer, McpTool } from "./types";
-import { renderDescription, groupToolsByCategory, CATEGORY_COLORS } from "./helpers";
+import { groupToolsByCategory, CATEGORY_COLORS } from "./helpers";
+
+/** Split description into main text and arg names */
+function parseToolDescription(desc: string): { text: string; args: string[] } {
+  const argsMatch = desc.match(/Args:\s*(.+)$/);
+  if (!argsMatch) return { text: desc.trim(), args: [] };
+  const text = desc.slice(0, desc.indexOf("Args:")).trim();
+  const argsStr = argsMatch[1];
+  const args = [...argsStr.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
+  return { text, args };
+}
 
 // --- Tool list sub-components ---
 
 function ToolItem({ tool }: { tool: McpTool }) {
+  const { text, args } = useMemo(() => parseToolDescription(tool.description), [tool.description]);
+
   return (
-    <div className="px-4 py-2.5 flex flex-col gap-0.5">
-      <code className="text-[13px] font-mono font-semibold text-foreground">{tool.name}</code>
-      <p className="text-[13px] text-muted-foreground leading-relaxed">
-        {renderDescription(tool.description)}
-      </p>
+    <div className="px-3 py-2 flex flex-col gap-1">
+      <code className="text-sm font-mono font-semibold text-foreground">{tool.name}</code>
+      {text && (
+        <p className="text-[13px] text-muted-foreground leading-snug line-clamp-2">{text}</p>
+      )}
+      {args.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1 mt-0.5">
+          {args.map((arg) => (
+            <span
+              key={arg}
+              className="bg-muted/60 text-muted-foreground px-2 py-0.5 rounded border border-border text-[11px] font-mono"
+            >
+              {arg}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
