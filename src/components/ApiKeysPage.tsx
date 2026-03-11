@@ -106,7 +106,7 @@ export function ApiKeysPage() {
       setCreatedToken(token);
       setNewKeyName("");
       setCreating(false);
-      setDialogOpen(true);
+      setIsKeyExpanded(true);
     }, 600);
   };
 
@@ -118,8 +118,8 @@ export function ApiKeysPage() {
     }
   };
 
-  const closeDialog = () => {
-    setDialogOpen(false);
+  const dismissKeyDetails = () => {
+    setIsKeyExpanded(false);
     setCreatedToken(null);
     setCopied(false);
   };
