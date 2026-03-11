@@ -73,12 +73,12 @@ export function ResourcesSection({ items }: ResourcesSectionProps) {
             Руководства, лимиты и лучшие практики по работе с API
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
+          <div className="flex gap-3 overflow-x-auto pb-3 mt-5 scrollbar-hide snap-x">
             {items.map((item) => (
               <button
                 key={item.title}
                 onClick={() => setOpenArticle(item)}
-                className="group relative flex items-center p-4 pl-5 rounded-xl border border-border bg-background hover:bg-muted/50 hover:shadow-sm transition-all cursor-pointer text-left overflow-hidden"
+                className="group relative flex-none w-[260px] snap-start flex items-center p-4 pl-5 rounded-xl border border-border bg-background hover:bg-muted/50 hover:shadow-sm transition-all cursor-pointer text-left overflow-hidden"
               >
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-primary transition-colors" />
                 <div className="min-w-0 flex-1">
