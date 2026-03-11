@@ -311,29 +311,23 @@ export function ApiKeysPage() {
                     <p className="text-sm text-muted-foreground mt-2">Нет активных ключей</p>
                   </div>
                 ) : (
-                  <div className="rounded-lg border border-border bg-background divide-y divide-border max-h-[200px] overflow-y-auto">
+                  <div className="space-y-2 max-h-[250px] overflow-y-auto pr-1">
                     {keys.map((key) => (
-                      <div key={key.id} className="p-3 flex items-center justify-between hover:bg-muted/50 transition-colors">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="p-2 bg-muted rounded-md shrink-0">
-                            <KeyRound className="w-4 h-4 text-muted-foreground" />
-                          </div>
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-sm font-medium text-foreground">{key.name}</span>
-                            <code className="text-[11px] text-muted-foreground font-mono mt-0.5">sk-...{key.id.slice(-4)}</code>
-                          </div>
+                      <div key={key.id} className="relative rounded-md bg-code-bg border border-border p-3 pr-10 font-mono">
+                        <div className="flex items-center gap-2 text-xs text-foreground">
+                          <KeyRound className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                          <span className="font-medium">{key.name}</span>
+                          <span className="text-muted-foreground">•</span>
+                          <code className="text-muted-foreground">[sk-...{key.id.slice(-4)}]</code>
+                          <span className="text-muted-foreground hidden sm:inline">• {key.created}</span>
                         </div>
-                        <div className="flex items-center gap-4 shrink-0">
-                          <span className="text-xs text-muted-foreground hidden sm:inline">{key.created}</span>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => deleteKey(key.id)}
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </Button>
-                        </div>
+                        <button
+                          onClick={() => deleteKey(key.id)}
+                          className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-destructive/10 transition-colors group"
+                          title="Удалить"
+                        >
+                          <Trash2 className="w-3.5 h-3.5 text-muted-foreground group-hover:text-destructive" />
+                        </button>
                       </div>
                     ))}
                   </div>
