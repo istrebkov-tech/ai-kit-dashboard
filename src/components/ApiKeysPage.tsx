@@ -203,15 +203,15 @@ export function ApiKeysPage() {
         {/* Section 3: Usage */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
           <h2 className="text-sm font-semibold text-foreground mb-1">Использование API</h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API.
-          </p>
-
-          {createdToken && (
+          {createdToken ? (
             <div className="mb-3 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
               <Check className="w-3.5 h-3.5 shrink-0" />
               Ваш токен подставлен в пример ниже. При перезагрузке страницы он будет сброшен.
             </div>
+          ) : (
+            <p className="text-sm text-muted-foreground mb-4">
+              Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API. При создании ключа он автоматически подставится в примеры ниже.
+            </p>
           )}
 
           <SmartCodeBlock token={createdToken} />
