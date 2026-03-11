@@ -21,6 +21,13 @@ import { PageGuide } from "./PageGuide";
 
 export function McpToolsPage() {
   const [search, setSearch] = useState("");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const handleCopyCommand = useCallback((serverId: string, command: string) => {
+    navigator.clipboard.writeText(command);
+    setCopiedId(serverId);
+    setTimeout(() => setCopiedId(null), 2000);
+  }, []);
 
   const filtered = servers.filter((s) => {
     const q = search.toLowerCase();
