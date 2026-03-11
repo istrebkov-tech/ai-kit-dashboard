@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { PageGuide } from "./PageGuide";
-import { HelpTerm } from "./HelpTerm";
+
 import { ResourcesSection } from "./ResourcesSection";
 import { Network, Workflow, FileJson } from "lucide-react";
 
