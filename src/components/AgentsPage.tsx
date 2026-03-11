@@ -66,7 +66,7 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-export function AgentsPage() {
+export function AgentsPage({ jwtToken }: { jwtToken?: string | null }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
 
