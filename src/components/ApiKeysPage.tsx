@@ -79,7 +79,7 @@ export function ApiKeysPage() {
       setJwtLoading(false);
       startJwtTimer();
       setTokenHighlight(true);
-      setIsTokenExpanded(true);
+      setJwtDialogOpen(true);
       setTimeout(() => setTokenHighlight(false), 1500);
     }, 800);
   };
