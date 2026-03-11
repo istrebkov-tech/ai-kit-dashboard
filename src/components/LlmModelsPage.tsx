@@ -367,7 +367,12 @@ export function LlmModelsPage() {
           </div>
         )}
 
-        <DocsFooter text="📖 Документация: Работа с потоковой генерацией (Streaming) и Vision моделями" />
+        <ResourcesSection items={[
+          { icon: Terminal, title: "Быстрый старт: Генерация текста", description: "Базовые примеры на Python и Node.js для работы с моделями." },
+          { icon: SquareActivity, title: "Потоковая генерация (Streaming)", description: "Как получать ответ от модели по частям для ускорения UI." },
+          { icon: Image, title: "Работа с Vision моделями", description: "Как правильно передавать изображения в формате Base64 или по URL." },
+          { icon: MessageSquare, title: "Промпт-инжиниринг", description: "Лучшие практики по составлению системных промптов для Claude и GPT-4o." },
+        ]} />
       </div>
     </div>
   );

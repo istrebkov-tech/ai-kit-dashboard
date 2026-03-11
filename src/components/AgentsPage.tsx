@@ -179,7 +179,11 @@ export function AgentsPage() {
           )}
         </div>
 
-        <DocsFooter text="📖 Гайд разработчика: A2A-интеграция и оркестрация агентов" />
+        <ResourcesSection items={[
+          { icon: Network, title: "A2A-интеграция (Agent-to-Agent)", description: "Протокол взаимодействия между вашим кодом и автономными агентами." },
+          { icon: Workflow, title: "Оркестрация агентов", description: "Как заставить нескольких агентов работать над одной сложной задачей." },
+          { icon: FileJson, title: "Структура Agent Card", description: "Разбор JSON-схемы, описывающей возможности и метаданные агента." },
+        ]} />
       </div>
     </div>
   );
