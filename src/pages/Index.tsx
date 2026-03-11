@@ -13,10 +13,11 @@ const pages: Record<string, { title: string; subtitle: string }> = {};
 const Index = () => {
   const [activeId, setActiveId] = useState("api-keys");
   const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [jwtToken, setJwtToken] = useState<string | null>(null);
 
   const renderPage = () => {
-    if (activeId === "api-keys") return <ApiKeysPage />;
-    if (activeId === "agents") return <AgentsPage />;
+    if (activeId === "api-keys") return <ApiKeysPage jwtToken={jwtToken} onJwtTokenChange={setJwtToken} />;
+    if (activeId === "agents") return <AgentsPage jwtToken={jwtToken} />;
     if (activeId === "my-agents") return <MyAgentsPage />;
     if (activeId === "mcp") return <McpToolsPage />;
     if (activeId === "models") return <LlmModelsPage />;
