@@ -55,7 +55,7 @@ function ArticleView({ item, onBack }: { item: ResourceItem; onBack: () => void 
   );
 }
 
-export function ResourcesSection({ items }: ResourcesSectionProps) {
+export function ResourcesSection({ items, description = "Руководства, лимиты и лучшие практики по работе с API" }: ResourcesSectionProps) {
   const [openArticle, setOpenArticle] = useState<ResourceItem | null>(null);
 
   if (openArticle) {
