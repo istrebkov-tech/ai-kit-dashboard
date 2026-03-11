@@ -63,35 +63,33 @@ export function ResourcesSection({ items }: ResourcesSectionProps) {
 
   return (
     <div className="mb-6 rounded-lg border border-border bg-card p-5">
-      <div className="flex items-start gap-3.5 mb-6">
+      <div className="flex items-start gap-3.5">
         <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
           <BookOpen className="w-4.5 h-4.5 text-primary" />
         </div>
-        <div>
+        <div className="flex-1 min-w-0">
           <h2 className="text-sm font-semibold text-foreground">Полезные материалы</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Руководства, лимиты и лучшие практики по работе с API
           </p>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {items.map((item) => (
-          <button
-            key={item.title}
-            onClick={() => setOpenArticle(item)}
-            className="group flex items-start gap-4 p-4 rounded-xl border border-border bg-muted/30 hover:bg-muted/60 hover:border-primary/20 hover:shadow-sm transition-all cursor-pointer text-left"
-          >
-            <div className="mt-0.5 text-primary shrink-0">
-              <item.icon className="w-5 h-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold text-foreground">{item.title}</div>
-              <div className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.description}</div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground/30 shrink-0 mt-0.5 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-          </button>
-        ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
+            {items.map((item) => (
+              <button
+                key={item.title}
+                onClick={() => setOpenArticle(item)}
+                className="group relative flex items-center p-4 pl-5 rounded-xl border border-border bg-background hover:bg-muted/50 hover:shadow-sm transition-all cursor-pointer text-left overflow-hidden"
+              >
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-primary transition-colors" />
+                <div className="min-w-0 flex-1">
+                  <h5 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{item.title}</h5>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.description}</p>
+                </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground/30 shrink-0 ml-3 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
