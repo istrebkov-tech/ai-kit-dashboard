@@ -173,7 +173,7 @@ export function AgentsPage() {
                 <CopyButton text={agent.url} />
               </div>
 
-              <div className="flex items-center justify-between mt-auto pt-2.5 border-t border-border" style={{ marginTop: 'auto', paddingTop: '10px' }}>
+              <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-border">
                 <div>
                   {agent.active ? (
                     <AgentEndpoints agentUrl={agent.url} />
