@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { servers } from "./mcp/data";
 import { ServerContent } from "./mcp/ServerContentStates";
+import { PageGuide } from "./PageGuide";
 
 export function McpToolsPage() {
   const [search, setSearch] = useState("");
