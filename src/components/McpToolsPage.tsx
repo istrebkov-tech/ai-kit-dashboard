@@ -37,7 +37,7 @@ export function McpToolsPage() {
       <div className="max-w-3xl mx-auto px-8 py-10">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">Инструменты <HelpTerm tip="Model Context Protocol. Стандарт, позволяющий нейросетям безопасно читать данные из ваших внешних сервисов (Jira, GitHub, Slack).">MCP</HelpTerm></h1>
+          <h1 className="text-2xl font-semibold text-foreground tracking-tight">Инструменты MCP</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             Управление серверами Model Context Protocol и доступными инструментами (Tools).
           </p>

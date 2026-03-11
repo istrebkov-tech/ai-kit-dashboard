@@ -214,7 +214,7 @@ function AgentEndpoints({ agentUrl }: { agentUrl: string }) {
       <CollapsibleTrigger asChild>
         <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1">
           <FlaskConical className="w-3 h-3" />
-          <span><HelpTerm tip="Agent-to-Agent. Протокол для прямого взаимодействия вашего кода или другого ИИ с нашим агентом.">A2A</HelpTerm> эндпоинты</span>
+          <span>A2A эндпоинты</span>
           <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
       </CollapsibleTrigger>
