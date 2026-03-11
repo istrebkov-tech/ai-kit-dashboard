@@ -79,25 +79,31 @@ console.log(data);`;
 function CodePane({ children, getText, tokenInjected }: { children: React.ReactNode; getText: () => string; tokenInjected: boolean }) {
   const { copied, copy } = useCopyButton(getText);
   return (
-    <div className="relative rounded-md bg-code-bg border border-border">
-      <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
+    <div className="relative rounded-md bg-code-bg border border-border overflow-hidden">
+      <pre className="p-3 pr-36 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
         {children}
       </pre>
-      <div className="absolute top-2 right-2 flex items-center gap-1.5">
-        {tokenInjected && (
-          <span className="text-[10px] text-success font-medium whitespace-nowrap">✓ Токен подставлен</span>
-        )}
-        <button
-          onClick={copy}
-          className="p-1 rounded hover:bg-muted transition-colors"
-          title="Копировать"
-        >
-          {copied ? (
-            <Check className="w-3.5 h-3.5 text-success" />
-          ) : (
-            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+      <div className="absolute top-0 right-0 h-full flex items-start pt-2 pr-2 pl-6 bg-gradient-to-l from-code-bg from-70% to-transparent pointer-events-none">
+        <div className="flex items-center gap-1.5 pointer-events-auto">
+          {tokenInjected && (
+            <span className="text-[10px] text-success font-medium whitespace-nowrap">✓ Токен подставлен</span>
           )}
-        </button>
+          <button
+            onClick={copy}
+            className="p-1 rounded hover:bg-muted transition-colors"
+            title="Копировать"
+          >
+            {copied ? (
+              <Check className="w-3.5 h-3.5 text-success" />
+            ) : (
+              <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
       </div>
     </div>
   );
