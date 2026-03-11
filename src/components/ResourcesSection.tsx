@@ -69,19 +69,16 @@ export function ResourcesSection({ items }: ResourcesSectionProps) {
           <button
             key={item.title}
             onClick={() => setOpenArticle(item)}
-            className="p-4 rounded-lg border border-border bg-card hover:bg-muted/50 hover:border-primary/20 transition-all cursor-pointer flex items-start gap-3 group text-left"
+            className="p-4 rounded-lg border border-border bg-card hover:bg-muted/50 hover:border-primary/20 transition-all cursor-pointer flex items-center gap-3 group text-left"
           >
-            <item.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-            <div className="min-w-0">
+            <item.icon className="w-5 h-5 text-primary mt-0.5 shrink-0 self-start" />
+            <div className="min-w-0 flex-1">
               <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                 {item.title}
               </div>
               <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{item.description}</div>
-              <span className="inline-flex items-center gap-1 text-xs text-primary/70 mt-2 group-hover:text-primary transition-colors">
-                <BookOpen className="w-3 h-3" />
-                Читать
-              </span>
             </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground/50 shrink-0 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
           </button>
         ))}
       </div>
