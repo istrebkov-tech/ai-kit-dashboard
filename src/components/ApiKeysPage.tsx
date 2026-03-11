@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
+import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
