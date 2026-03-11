@@ -71,7 +71,7 @@ export function ResourcesSection({ items, description = "Руководства,
         <div className="flex-1 min-w-0">
           <h2 className="text-sm font-semibold text-foreground">Полезные материалы</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Руководства, лимиты и лучшие практики по работе с API
+            {description}
           </p>
 
           <div className="flex gap-3 overflow-x-auto pb-3 mt-5 scrollbar-hide snap-x">
