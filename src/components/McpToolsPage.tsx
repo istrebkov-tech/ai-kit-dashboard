@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search, Lock, Database, Code } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { HelpTerm } from "./HelpTerm";
+
 import { ResourcesSection } from "./ResourcesSection";
 import {
   Accordion,
