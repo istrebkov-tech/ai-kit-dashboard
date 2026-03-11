@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { PageGuide } from "./PageGuide";
-import { HelpTerm } from "./HelpTerm";
+
 import { ResourcesSection } from "./ResourcesSection";
 import { Network, Workflow, FileJson } from "lucide-react";
 
@@ -214,7 +214,7 @@ function AgentEndpoints({ agentUrl }: { agentUrl: string }) {
       <CollapsibleTrigger asChild>
         <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1">
           <FlaskConical className="w-3 h-3" />
-          <span><HelpTerm tip="Agent-to-Agent. Протокол для прямого взаимодействия вашего кода или другого ИИ с нашим агентом.">A2A</HelpTerm> эндпоинты</span>
+          <span>A2A эндпоинты</span>
           <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
       </CollapsibleTrigger>
