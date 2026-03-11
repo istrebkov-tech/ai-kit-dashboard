@@ -37,6 +37,7 @@ export function ApiKeysPage() {
   const [copied, setCopied] = useState(false);
   const [creating, setCreating] = useState(false);
   const [isKeyExpanded, setIsKeyExpanded] = useState(false);
+  const [isKeysListExpanded, setIsKeysListExpanded] = useState(false);
 
   // JWT section
   const [jwtToken, setJwtToken] = useState<string | null>(null);
