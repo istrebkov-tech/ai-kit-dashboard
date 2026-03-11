@@ -1,98 +1,128 @@
-import { Cpu, Bot, Zap } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ArrowUpRight } from "lucide-react";
 
-const usageCards = [
-  {
-    title: "Токены LLM",
-    icon: Cpu,
-    used: 1_200_000,
-    total: 5_000_000,
-    label: "1.2M / 5M токенов",
-    percent: 24,
-  },
-  {
-    title: "Запросы (RPM)",
-    icon: Zap,
-    used: 450,
-    total: 1000,
-    label: "450 / 1 000 запросов в минуту",
-    percent: 45,
-  },
-  {
-    title: "Активные агенты",
-    icon: Bot,
-    used: 8,
-    total: 20,
-    label: "8 / 20 агентов запущено",
-    percent: 40,
-  },
+const usageBars = [
+  { label: "Месячные кредиты", used: 1_200_000, total: 5_000_000, display: "1.2M / 5M токенов" },
+  { label: "Дневные запросы", used: 3_420, total: 10_000, display: "3 420 / 10 000" },
+  { label: "Активные соединения", used: 12, total: 50, display: "12 / 50" },
 ];
 
-const limitsData = [
-  { model: "GPT-4o-mini", rpm: "5 000", tpm: "200 000", status: "Normal", color: "bg-emerald-500" },
-  { model: "GPT-4o", rpm: "1 000", tpm: "80 000", status: "Near Limit", color: "bg-amber-500" },
-  { model: "Claude 3.5 Sonnet", rpm: "2 000", tpm: "150 000", status: "Normal", color: "bg-emerald-500" },
+const modelLimits = [
+  { group: "GPT-4o", rpm: "1 000", tpm: "80 000", monthly: "10M", priceIn: "$2.50", priceOut: "$10.00", status: "normal" },
+  { group: "GPT-4o-mini", rpm: "5 000", tpm: "200 000", monthly: "50M", priceIn: "$0.15", priceOut: "$0.60", status: "normal" },
+  { group: "Claude 3.5 Sonnet", rpm: "2 000", tpm: "150 000", monthly: "30M", priceIn: "$3.00", priceOut: "$15.00", status: "normal" },
+  { group: "Claude 3 Haiku", rpm: "10 000", tpm: "500 000", monthly: "unlimited", priceIn: "$0.25", priceOut: "$1.25", status: "unlimited" },
+  { group: "Llama 3.1 70B", rpm: "5 000", tpm: "300 000", monthly: "unlimited", priceIn: "$0.40", priceOut: "$0.40", status: "unlimited" },
+  { group: "Mixtral 8x7B", rpm: "10 000", tpm: "500 000", monthly: "unlimited", priceIn: "$0.24", priceOut: "$0.24", status: "unlimited" },
+];
+
+const tiers = [
+  { name: "Tier 1", req: "$0", active: false },
+  { name: "Tier 2", req: "$10", active: false },
+  { name: "Tier 3", req: "$50", active: true },
+  { name: "Tier 4", req: "$100", active: false },
+  { name: "Tier 5", req: "$500", active: false },
 ];
 
 export function LimitsPage() {
   return (
     <div className="flex-1 overflow-auto">
       <div className="max-w-6xl mx-auto px-8 py-8">
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-foreground">Лимиты и Квоты</h1>
-          <p className="text-sm text-muted-foreground mt-1">Текущее использование ресурсов и ограничения</p>
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-bold text-foreground">Лимиты и Квоты</h1>
+            <Badge variant="secondary" className="font-mono text-xs">Tier 3 — Professional</Badge>
+          </div>
+          <p className="text-sm text-muted-foreground mt-1.5">
+            Лимиты определяются вашим уровнем. Кредиты списываются за миллион токенов по ценам модели.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          {usageCards.map((card) => (
-            <Card key={card.title} className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <card.icon className="w-4 h-4 text-primary" />
+        {/* Current Usage */}
+        <Card className="p-5 mb-6">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Текущее использование</h2>
+          <div className="space-y-3">
+            {usageBars.map((bar) => {
+              const percent = Math.round((bar.used / bar.total) * 100);
+              return (
+                <div key={bar.label} className="flex items-center gap-4">
+                  <span className="text-sm text-muted-foreground w-[180px] shrink-0">{bar.label}</span>
+                  <Progress value={percent} className="h-1.5 flex-1" />
+                  <span className="font-mono text-xs text-muted-foreground w-[140px] text-right shrink-0">
+                    {bar.display} <span className="text-foreground font-semibold">({percent}%)</span>
+                  </span>
                 </div>
-                <span className="text-sm font-semibold text-foreground">{card.title}</span>
-              </div>
-              <Progress value={card.percent} className="h-2 mb-2" />
-              <p className="text-xs text-muted-foreground">
-                {card.label} ({card.percent}%)
-              </p>
-            </Card>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        </Card>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Детальные лимиты по моделям</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-xs">Модель / Ресурс</TableHead>
-                  <TableHead className="text-xs">Лимит (RPM)</TableHead>
-                  <TableHead className="text-xs">Лимит (TPM)</TableHead>
-                  <TableHead className="text-xs">Статус</TableHead>
+        {/* Limits Table */}
+        <Card className="mb-6">
+          <div className="px-5 pt-5 pb-2">
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Лимиты по моделям</h2>
+          </div>
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="text-xs font-medium">Модель</TableHead>
+                <TableHead className="text-xs font-medium text-right">RPM</TableHead>
+                <TableHead className="text-xs font-medium text-right">TPM</TableHead>
+                <TableHead className="text-xs font-medium text-right">Токены / мес</TableHead>
+                <TableHead className="text-xs font-medium text-right">Цена / 1M (вход)</TableHead>
+                <TableHead className="text-xs font-medium text-right">Цена / 1M (выход)</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {modelLimits.map((row) => (
+                <TableRow key={row.group} className="hover:bg-muted/30">
+                  <TableCell className="font-mono text-sm font-medium">{row.group}</TableCell>
+                  <TableCell className="font-mono text-sm text-right">{row.rpm}</TableCell>
+                  <TableCell className="font-mono text-sm text-right">{row.tpm}</TableCell>
+                  <TableCell className="text-right">
+                    {row.monthly === "unlimited" ? (
+                      <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">UNLIMITED</span>
+                    ) : (
+                      <span className="font-mono text-sm">{row.monthly}</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="font-mono text-sm text-right text-muted-foreground">{row.priceIn}</TableCell>
+                  <TableCell className="font-mono text-sm text-right text-muted-foreground">{row.priceOut}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {limitsData.map((row) => (
-                  <TableRow key={row.model}>
-                    <TableCell className="text-sm font-medium">{row.model}</TableCell>
-                    <TableCell className="text-sm">{row.rpm}</TableCell>
-                    <TableCell className="text-sm">{row.tpm}</TableCell>
-                    <TableCell>
-                      <span className="inline-flex items-center gap-1.5 text-sm">
-                        <span className={`w-2 h-2 rounded-full ${row.color}`} />
-                        {row.status}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
+
+        {/* Tier Benefits */}
+        <Card className="p-5">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Уровни доступа</h2>
+          <div className="flex gap-2 mb-4">
+            {tiers.map((tier) => (
+              <div
+                key={tier.name}
+                className={`flex-1 rounded-lg border px-3 py-2.5 text-center transition-colors ${
+                  tier.active
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-muted/30"
+                }`}
+              >
+                <div className={`font-mono text-xs font-semibold ${tier.active ? "text-primary" : "text-muted-foreground"}`}>
+                  {tier.name}
+                </div>
+                <div className="font-mono text-[11px] text-muted-foreground mt-0.5">от {tier.req}</div>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+            Пополните баланс на <span className="font-mono font-semibold text-foreground">$50</span>, чтобы перейти на
+            <span className="font-mono font-semibold text-foreground">Tier 4</span> с увеличенной пропускной способностью.
+            <ArrowUpRight className="w-3.5 h-3.5 text-primary inline shrink-0" />
+          </p>
         </Card>
       </div>
     </div>
