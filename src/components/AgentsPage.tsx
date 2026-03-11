@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Search, Copy, Check, Circle, FlaskConical, ChevronDown } from "lucide-react";
+import { Search, Copy, Check, Circle, FlaskConical, ChevronDown, BookOpen, Brain, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { PageGuide } from "./PageGuide";
 
 import { ResourcesSection } from "./ResourcesSection";
