@@ -5,6 +5,7 @@ import { AgentsPage } from "@/components/AgentsPage";
 import { MyAgentsPage } from "@/components/MyAgentsPage";
 import { McpToolsPage } from "@/components/McpToolsPage";
 import { LlmModelsPage } from "@/components/LlmModelsPage";
+import { LimitsPage } from "@/components/LimitsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 import { OnboardingModal } from "@/components/OnboardingModal";
 
