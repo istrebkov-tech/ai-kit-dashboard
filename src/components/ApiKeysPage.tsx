@@ -323,10 +323,10 @@ export function ApiKeysPage() {
                     <div className="relative rounded-md bg-code-bg border border-border p-3 pr-10 font-mono">
                       <div className="flex items-center gap-2 text-xs text-foreground">
                         <KeyRound className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        <span className="font-medium">{keys[0].name}</span>
+                        <span className="inline-block w-28 truncate font-medium">{keys[0].name}</span>
                         <span className="text-muted-foreground">•</span>
-                        <code className="text-muted-foreground">[sk-...{keys[0].id.slice(-4)}]</code>
-                        <span className="text-muted-foreground hidden sm:inline">• {keys[0].created}</span>
+                        <code className="text-muted-foreground w-20 shrink-0">[sk-...{keys[0].id.slice(-4)}]</code>
+                        <span className="text-muted-foreground hidden sm:inline shrink-0">• {keys[0].created}</span>
                       </div>
                       <button
                         onClick={() => deleteKey(keys[0].id)}
