@@ -276,7 +276,7 @@ function AgentManualButton({ agent }: { agent: Agent }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-muted-foreground/50 hover:text-primary transition-colors shrink-0"
+        className="text-muted-foreground/30 hover:text-primary transition-colors shrink-0"
         title="Как использовать"
       >
         <Info className="w-3.5 h-3.5" />
