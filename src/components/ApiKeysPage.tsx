@@ -232,7 +232,41 @@ export function ApiKeysPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Existing Keys */}
+        {/* JWT Success Dialog */}
+        <Dialog open={jwtDialogOpen} onOpenChange={(open) => { if (!open) setJwtDialogOpen(false); }}>
+          <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Ваш временный токен</DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-3 min-w-0">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 min-w-0 rounded-md bg-code-bg border border-border">
+                  <pre className="p-3 text-xs font-mono text-foreground whitespace-normal break-all max-h-28 overflow-y-auto">
+                    {jwtToken}
+                  </pre>
+                </div>
+                <Button onClick={copyJwt} size="icon" variant="secondary" className="shrink-0">
+                  {jwtCopied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
+                </Button>
+              </div>
+
+              <div className="text-xs text-success bg-success/10 px-3 py-2 rounded-md flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 shrink-0" />
+                Секретный ключ подставлен в примеры ниже. Скопируйте нужный код.
+              </div>
+
+              <div className="min-w-0 max-w-full">
+                {jwtToken && <SmartCodeBlock token={jwtToken} highlight={tokenHighlight} />}
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button onClick={() => setJwtDialogOpen(false)}>Готово</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         {keys.length > 0 && (
           <div className="mb-6 rounded-lg border border-border bg-card">
             <div className="px-5 py-3.5 border-b border-border">
