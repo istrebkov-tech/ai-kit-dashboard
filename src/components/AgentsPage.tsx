@@ -137,13 +137,12 @@ export function AgentsPage() {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
           {filtered.map((agent) => (
-            <div key={agent.id} className="relative rounded-lg border border-border bg-card p-4 flex flex-col h-full">
-              <AgentManualButton agent={agent} />
-              <div className="flex items-start gap-3 min-h-[56px]">
+            <div key={agent.id} className="rounded-lg border border-border bg-card p-4 flex flex-col h-full">
+              <div className="flex items-start gap-3 min-h-[72px]">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4 text-primary" />
                 </div>
-                <div className="flex-1 min-w-0 pr-16">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-sm font-semibold text-foreground leading-tight">{agent.name}</h3>
                     <div className="flex items-center gap-1.5 shrink-0">
@@ -166,6 +165,7 @@ export function AgentsPage() {
                     </div>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{agent.description}</p>
+                  <AgentManualButton agent={agent} />
                 </div>
               </div>
 
