@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Shield, RefreshCw, Copy, Check, Plus, KeyRound, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { Shield, RefreshCw, Copy, Check, Plus, KeyRound, ChevronDown, ChevronUp, Trash2, List } from "lucide-react";
 import { PageGuide } from "./PageGuide";
 import { SmartCodeBlock } from "./api-keys/SmartCodeBlock";
 
@@ -304,7 +304,7 @@ export function ApiKeysPage() {
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
           <div className="flex items-start gap-3.5">
             <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-              <KeyRound className="w-4.5 h-4.5 text-primary" />
+              <List className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-sm font-semibold text-foreground">Активные ключи</h2>
@@ -314,9 +314,9 @@ export function ApiKeysPage() {
 
               <div className="mt-4">
                 {keys.length === 0 ? (
-                  <div className="p-6 border-2 border-dashed border-border rounded-lg text-center flex flex-col items-center">
-                    <KeyRound className="w-8 h-8 text-muted-foreground/30" />
-                    <p className="text-sm text-muted-foreground mt-2">Нет активных ключей</p>
+                  <div className="py-4 border-2 border-dashed border-border rounded-lg text-center flex items-center justify-center gap-2">
+                    <KeyRound className="w-4 h-4 text-muted-foreground/30" />
+                    <p className="text-sm text-muted-foreground">Нет активных ключей</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
