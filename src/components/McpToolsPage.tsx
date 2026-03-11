@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, Lock, Database, Code } from "lucide-react";
+import { useState, useCallback } from "react";
+import { Search, Lock, Database, Code, Copy, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
