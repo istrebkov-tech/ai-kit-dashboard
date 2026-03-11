@@ -179,19 +179,13 @@ export function ApiKeysPage() {
               onChange={(e) => setNewKeyName(e.target.value)}
               placeholder="Название ключа (напр. мой-агент)"
               className="flex-1"
-              onKeyDown={(e) => e.key === "Enter" && !creating && !!jwtToken && !!newKeyName.trim() && createKey()}
-              disabled={!jwtToken}
+              onKeyDown={(e) => e.key === "Enter" && !creating && !!newKeyName.trim() && createKey()}
             />
-            <Button onClick={createKey} disabled={creating || !newKeyName.trim() || !jwtToken} className="gap-2 shrink-0">
+            <Button onClick={createKey} disabled={creating || !newKeyName.trim()} className="gap-2 shrink-0">
               <Plus className="w-3.5 h-3.5" />
               Создать
             </Button>
           </div>
-          {!jwtToken && (
-            <p className="mt-2 text-xs text-muted-foreground">
-              Сначала получите сессионный токен (JWT) выше, чтобы создать API ключ.
-            </p>
-          )}
 
           {createdToken && (
             <div className="mt-4 rounded-lg border-2 border-success/40 bg-success/5 p-4 space-y-3">
