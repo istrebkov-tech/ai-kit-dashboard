@@ -137,8 +137,8 @@ export function AgentsPage() {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
           {filtered.map((agent) => (
-            <div key={agent.id} className="rounded-lg border border-border bg-card p-4 flex flex-col">
-              <div className="flex items-start gap-3">
+            <div key={agent.id} className="rounded-lg border border-border bg-card p-4 flex flex-col h-full">
+              <div className="flex items-start gap-3 min-h-[56px]">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4 text-primary" />
                 </div>
@@ -173,7 +173,7 @@ export function AgentsPage() {
                 <CopyButton text={agent.url} />
               </div>
 
-              <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-border mt-auto">
+              <div className="flex items-center justify-between mt-auto pt-2.5 border-t border-border" style={{ marginTop: 'auto', paddingTop: '10px' }}>
                 <div>
                   {agent.active ? (
                     <AgentEndpoints agentUrl={agent.url} />
