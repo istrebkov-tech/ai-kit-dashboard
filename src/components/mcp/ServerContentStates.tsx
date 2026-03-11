@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw } from "lucide-react";
+import { useState, useMemo, useCallback } from "react";
+import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw, Copy, Check, FileJson } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -98,6 +98,80 @@ function CategoryGroup({ category, tools }: { category: string; tools: McpTool[]
   );
 }
 
+// --- Connection Command Block ---
+
+function ConnectionCommand({ server }: { server: McpServer }) {
+  const [copiedCmd, setCopiedCmd] = useState(false);
+  const [copiedConfig, setCopiedConfig] = useState(false);
+
+  const copyToClipboard = useCallback((text: string, setter: (v: boolean) => void) => {
+    navigator.clipboard.writeText(text);
+    setter(true);
+    setTimeout(() => setter(false), 2000);
+  }, []);
+
+  if (!server.mcpCommand) return null;
+
+  const { command, args, env } = server.mcpCommand;
+  const shortCommand = `${command} ${args.join(" ")}`;
+
+  const fullConfig = JSON.stringify(
+    {
+      mcpServers: {
+        [server.id]: {
+          command,
+          args,
+          ...(env && Object.keys(env).length > 0 ? { env } : {}),
+        },
+      },
+    },
+    null,
+    2
+  );
+
+  return (
+    <div className="border-t border-border px-4 py-3 bg-muted/20">
+      <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold">
+        Command to run
+      </span>
+      <div className="mt-1.5 flex items-center gap-2">
+        <code className="flex-1 text-xs font-mono bg-muted/50 border border-border rounded px-3 py-1.5 text-foreground truncate">
+          {shortCommand}
+        </code>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0 shrink-0"
+              onClick={() => copyToClipboard(shortCommand, setCopiedCmd)}
+            >
+              {copiedCmd ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">Копировать команду</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 shrink-0 gap-1 text-[11px] text-muted-foreground"
+              onClick={() => copyToClipboard(fullConfig, setCopiedConfig)}
+            >
+              {copiedConfig ? <Check className="w-3 h-3 text-success" /> : <FileJson className="w-3 h-3" />}
+              Config
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs max-w-xs">
+            Копировать полный JSON-конфиг для Claude Desktop
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </div>
+  );
+}
+
 // --- State A: Success ---
 
 function SuccessContent({ server }: { server: McpServer }) {
@@ -105,16 +179,19 @@ function SuccessContent({ server }: { server: McpServer }) {
   const categories = Object.keys(grouped).sort();
 
   return (
-    <div className="bg-muted/30">
-      {categories.length === 0 ? (
-        <p className="text-xs text-muted-foreground text-center py-6">Нет инструментов</p>
-      ) : (
-        <div className="py-1">
-          {categories.map((cat) => (
-            <CategoryGroup key={cat} category={cat} tools={grouped[cat]} />
-          ))}
-        </div>
-      )}
+    <div>
+      <div className="bg-muted/30">
+        {categories.length === 0 ? (
+          <p className="text-xs text-muted-foreground text-center py-6">Нет инструментов</p>
+        ) : (
+          <div className="py-1">
+            {categories.map((cat) => (
+              <CategoryGroup key={cat} category={cat} tools={grouped[cat]} />
+            ))}
+          </div>
+        )}
+      </div>
+      <ConnectionCommand server={server} />
     </div>
   );
 }
