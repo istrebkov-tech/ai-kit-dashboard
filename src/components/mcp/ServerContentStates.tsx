@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw, Copy, Check, FileJson } from "lucide-react";
+import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw, Copy, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -101,33 +101,20 @@ function CategoryGroup({ category, tools }: { category: string; tools: McpTool[]
 // --- Connection Command Block ---
 
 function ConnectionCommand({ server }: { server: McpServer }) {
-  const [copiedCmd, setCopiedCmd] = useState(false);
-  const [copiedConfig, setCopiedConfig] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const copyToClipboard = useCallback((text: string, setter: (v: boolean) => void) => {
+  const handleCopy = useCallback(() => {
+    if (!server.mcpCommand) return;
+    const text = `${server.mcpCommand.command} ${server.mcpCommand.args.join(" ")}`;
     navigator.clipboard.writeText(text);
-    setter(true);
-    setTimeout(() => setter(false), 2000);
-  }, []);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [server.mcpCommand]);
 
   if (!server.mcpCommand) return null;
 
-  const { command, args, env } = server.mcpCommand;
+  const { command, args } = server.mcpCommand;
   const shortCommand = `${command} ${args.join(" ")}`;
-
-  const fullConfig = JSON.stringify(
-    {
-      mcpServers: {
-        [server.id]: {
-          command,
-          args,
-          ...(env && Object.keys(env).length > 0 ? { env } : {}),
-        },
-      },
-    },
-    null,
-    2
-  );
 
   return (
     <div className="px-4 py-3 mx-3 mt-2 mb-1 rounded-md bg-muted/40 border border-border/50">
@@ -144,28 +131,12 @@ function ConnectionCommand({ server }: { server: McpServer }) {
               variant="ghost"
               size="sm"
               className="h-7 w-7 p-0 shrink-0"
-              onClick={() => copyToClipboard(shortCommand, setCopiedCmd)}
+              onClick={handleCopy}
             >
-              {copiedCmd ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">Копировать команду</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 shrink-0 gap-1 text-[11px] text-muted-foreground"
-              onClick={() => copyToClipboard(fullConfig, setCopiedConfig)}
-            >
-              {copiedConfig ? <Check className="w-3 h-3 text-success" /> : <FileJson className="w-3 h-3" />}
-              Config
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs max-w-xs">
-            Копировать полный JSON-конфиг для Claude Desktop
-          </TooltipContent>
+          <TooltipContent side="top" className="text-xs">Копировать</TooltipContent>
         </Tooltip>
       </div>
     </div>
