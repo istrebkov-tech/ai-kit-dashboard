@@ -138,22 +138,20 @@ export function AgentsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
           {filtered.map((agent) => (
             <div key={agent.id} className="rounded-lg border border-border bg-card p-4 flex flex-col h-full">
-              <div className="min-h-[72px]">
-                <div className="flex items-start justify-between w-full mb-1">
+              <div className="min-h-[60px]">
+                <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                       <Bot className="w-4 h-4 text-primary" />
                     </div>
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <h3 className="text-sm font-semibold text-foreground leading-tight truncate max-w-[180px]">
-                        {agent.name}
-                      </h3>
-                      <AgentManualButton agent={agent} />
-                    </div>
+                    <h3 className="text-sm font-semibold text-foreground leading-tight truncate max-w-[180px]">
+                      {agent.name}
+                    </h3>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0 ml-4">
+                  <div className="flex items-center gap-3 shrink-0 ml-auto">
+                    <AgentManualButton agent={agent} />
                     {agent.version && (
-                      <span className="text-[10px] font-mono text-muted-foreground">{agent.version}</span>
+                      <span className="text-[11px] font-mono text-muted-foreground">{agent.version}</span>
                     )}
                     <span
                       className={`w-2 h-2 rounded-full shrink-0 ${agent.active ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-destructive'}`}
@@ -161,7 +159,7 @@ export function AgentsPage() {
                     />
                   </div>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground line-clamp-2 pl-10">{agent.description}</p>
+                <p className="mt-2 text-xs text-muted-foreground line-clamp-2 pl-10">{agent.description}</p>
               </div>
 
               <div className="mt-3 flex items-center gap-1.5 rounded-md bg-code-bg border border-border px-2.5 py-1.5">
