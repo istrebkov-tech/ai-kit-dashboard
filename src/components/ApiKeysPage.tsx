@@ -39,6 +39,8 @@ export function ApiKeysPage() {
   const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [jwtCopied, setJwtCopied] = useState(false);
   const [jwtLoading, setJwtLoading] = useState(false);
+  const [tokenHighlight, setTokenHighlight] = useState(false);
+  const usageSectionRef = useRef<HTMLDivElement>(null);
 
   // JWT countdown
   const [jwtSecondsLeft, setJwtSecondsLeft] = useState(0);
