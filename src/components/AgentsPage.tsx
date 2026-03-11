@@ -165,11 +165,16 @@ export function AgentsPage() {
                 </div>
               </CardContent>
               <CardFooter className="pt-0 flex-col items-stretch gap-0">
-                {agent.active ? (
-                  <AgentEndpoints agentUrl={agent.url} />
-                ) : (
-                  <span className="text-xs text-destructive font-medium">Проверьте подключение</span>
-                )}
+                <div className="flex justify-between items-center">
+                  <div>
+                    {agent.active ? (
+                      <AgentEndpoints agentUrl={agent.url} />
+                    ) : (
+                      <span className="text-xs text-destructive font-medium">Проверьте подключение</span>
+                    )}
+                  </div>
+                  <AgentManualButton agent={agent} />
+                </div>
               </CardFooter>
             </Card>
           ))}
