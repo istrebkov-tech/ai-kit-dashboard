@@ -37,6 +37,7 @@ export function ApiKeysPage() {
   const [createdToken, setCreatedToken] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // JWT section
   const [jwtToken, setJwtToken] = useState<string | null>(null);
