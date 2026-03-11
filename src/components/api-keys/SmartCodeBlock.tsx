@@ -127,7 +127,7 @@ export const SmartCodeBlock = forwardRef<HTMLDivElement, SmartCodeBlockProps>(
           </TabsContent>
 
           <TabsContent value="python" className="mt-3">
-            <CodePane getText={() => getPythonText(t)} tokenInjected={!!token}>
+            <CodePane getText={() => getPythonText(t)}>
               {`import requests
 
 headers = {
