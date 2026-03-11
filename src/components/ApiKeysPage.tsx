@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 
-const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
 
 interface ApiKey {
   id: string;
@@ -27,21 +26,6 @@ function generateMockToken() {
 function formatDate(d: Date) {
   return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" }) +
     ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-}
-
-function CurlExample({ token }: { token: string | null }) {
-  const t = token || "YOUR_API_KEY_TOKEN";
-  const isPlaceholder = !token;
-  return (
-    <>
-      {`curl "${BASE_URL}/llm/chat/completions" \\
-  -H "Authorization: Bearer `}
-      <span className={isPlaceholder ? "text-token-highlight font-semibold" : ""}>{t}</span>
-      {`" \\
-  -H "Content-Type: application/json" \\
-  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`}
-    </>
-  );
 }
 
 export function ApiKeysPage() {
