@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type LucideIcon, ArrowLeft, Clock, BookOpen } from "lucide-react";
+import { type LucideIcon, ArrowLeft, ChevronRight, Clock, BookOpen } from "lucide-react";
 
 export interface ResourceItem {
   icon: LucideIcon;
