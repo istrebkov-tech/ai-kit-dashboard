@@ -14,7 +14,7 @@ interface AppSidebarProps {
   onOpenOnboarding?: () => void;
 }
 
-export function AppSidebar({ activeId, onNavigate }: AppSidebarProps) {
+export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
   return (
     <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
       <div className="px-5 pt-5 pb-3">
