@@ -176,7 +176,7 @@ export function AgentsPage() {
 
               <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-border">
                 <div>
-                  {agent.active && <AgentEndpoints agentUrl={agent.url} />}
+                  <AgentEndpoints agentUrl={agent.url} disabled={!agent.active} />
                 </div>
                 <AgentManualButton agent={agent} />
               </div>
