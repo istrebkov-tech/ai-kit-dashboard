@@ -1,9 +1,14 @@
-import { useState } from "react";
-import { Search, Lock, Database, Code } from "lucide-react";
+import { useState, useCallback } from "react";
+import { Search, Lock, Database, Code, Copy, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 import { ResourcesSection } from "./ResourcesSection";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Accordion,
   AccordionContent,
@@ -16,6 +21,13 @@ import { PageGuide } from "./PageGuide";
 
 export function McpToolsPage() {
   const [search, setSearch] = useState("");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const handleCopyCommand = useCallback((serverId: string, command: string) => {
+    navigator.clipboard.writeText(command);
+    setCopiedId(serverId);
+    setTimeout(() => setCopiedId(null), 2000);
+  }, []);
 
   const filtered = servers.filter((s) => {
     const q = search.toLowerCase();
@@ -119,9 +131,36 @@ export function McpToolsPage() {
                         )}
                       </div>
                       <span className="text-sm text-muted-foreground">{server.description}</span>
-                      <code className="text-xs font-mono bg-code-bg px-1.5 py-0.5 rounded text-muted-foreground">
-                        {server.path}
-                      </code>
+                      {server.mcpCommand && (
+                        <div className="flex items-center gap-1.5 group/cmd">
+                          <code className="text-xs font-mono text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded">
+                            {server.mcpCommand.command} {server.mcpCommand.args.join(" ")}
+                          </code>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                className="opacity-0 group-hover/cmd:opacity-100 transition-opacity p-0.5 rounded hover:bg-muted"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCopyCommand(server.id, `${server.mcpCommand!.command} ${server.mcpCommand!.args.join(" ")}`);
+                                }}
+                              >
+                                {copiedId === server.id ? (
+                                  <Check className="w-3 h-3 text-success" />
+                                ) : (
+                                  <Copy className="w-3 h-3 text-muted-foreground" />
+                                )}
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="text-xs">Копировать</TooltipContent>
+                          </Tooltip>
+                        </div>
+                      )}
+                      {!server.mcpCommand && (
+                        <code className="text-xs font-mono bg-muted/50 px-1.5 py-0.5 rounded text-muted-foreground">
+                          {server.path}
+                        </code>
+                      )}
                     </div>
                   </AccordionTrigger>
 

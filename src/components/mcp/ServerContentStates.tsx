@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
-import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw, Copy, Check } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ChevronDown, ChevronRight, TriangleAlert, Lock, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -98,51 +98,6 @@ function CategoryGroup({ category, tools }: { category: string; tools: McpTool[]
   );
 }
 
-// --- Connection Command Block ---
-
-function ConnectionCommand({ server }: { server: McpServer }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = useCallback(() => {
-    if (!server.mcpCommand) return;
-    const text = `${server.mcpCommand.command} ${server.mcpCommand.args.join(" ")}`;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [server.mcpCommand]);
-
-  if (!server.mcpCommand) return null;
-
-  const { command, args } = server.mcpCommand;
-  const shortCommand = `${command} ${args.join(" ")}`;
-
-  return (
-    <div className="px-4 py-3 mx-3 mt-2 mb-1 rounded-md bg-muted/40 border border-border/50">
-      <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold">
-        Command to run
-      </span>
-      <div className="mt-1.5 flex items-center gap-2">
-        <code className="flex-1 text-xs font-mono bg-background border border-border rounded px-3 py-1.5 text-foreground truncate">
-          {shortCommand}
-        </code>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 w-7 p-0 shrink-0"
-              onClick={handleCopy}
-            >
-              {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">Копировать</TooltipContent>
-        </Tooltip>
-      </div>
-    </div>
-  );
-}
-
 // --- State A: Success ---
 
 function SuccessContent({ server }: { server: McpServer }) {
@@ -150,19 +105,16 @@ function SuccessContent({ server }: { server: McpServer }) {
   const categories = Object.keys(grouped).sort();
 
   return (
-    <div className="py-1">
-      <ConnectionCommand server={server} />
-      <div className="bg-muted/30">
-        {categories.length === 0 ? (
-          <p className="text-xs text-muted-foreground text-center py-6">Нет инструментов</p>
-        ) : (
-          <div className="py-1">
-            {categories.map((cat) => (
-              <CategoryGroup key={cat} category={cat} tools={grouped[cat]} />
-            ))}
-          </div>
-        )}
-      </div>
+    <div className="bg-muted/30">
+      {categories.length === 0 ? (
+        <p className="text-xs text-muted-foreground text-center py-6">Нет инструментов</p>
+      ) : (
+        <div className="py-1">
+          {categories.map((cat) => (
+            <CategoryGroup key={cat} category={cat} tools={grouped[cat]} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
