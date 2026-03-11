@@ -30,7 +30,12 @@ function formatDate(d: Date) {
     ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
-export function ApiKeysPage() {
+interface ApiKeysPageProps {
+  jwtToken: string | null;
+  onJwtTokenChange: (token: string | null) => void;
+}
+
+export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
@@ -40,8 +45,10 @@ export function ApiKeysPage() {
   const [isKeysListExpanded, setIsKeysListExpanded] = useState(false);
 
   // JWT section
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [jwtCopied, setJwtCopied] = useState(false);
+  const [jwtLoading, setJwtLoading] = useState(false);
+  const [tokenHighlight, setTokenHighlight] = useState(false);
+  const [isTokenExpanded, setIsTokenExpanded] = useState(false);
   const [jwtLoading, setJwtLoading] = useState(false);
   const [tokenHighlight, setTokenHighlight] = useState(false);
   const [isTokenExpanded, setIsTokenExpanded] = useState(false);
