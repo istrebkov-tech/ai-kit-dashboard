@@ -74,7 +74,7 @@ function CategoryGroup({ category, tools }: { category: string; tools: McpTool[]
         <span className="text-xs text-muted-foreground">{tools.length}</span>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="divide-y divide-border ml-5 mr-2 mb-1 rounded-md border border-border bg-card">
+        <div className="divide-y divide-border ml-5 mr-2 mb-1 rounded-md border border-border bg-muted/20">
           {tools.map((tool) => (
             <ToolItem key={tool.name} tool={tool} />
           ))}
