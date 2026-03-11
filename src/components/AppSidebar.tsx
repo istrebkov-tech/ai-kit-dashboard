@@ -19,7 +19,6 @@ const navItems: NavItem[] = [
       { id: "my-agents", title: "Мои агенты", icon: UserCog },
     ],
   },
-  { id: "limits", title: "Лимиты и Квоты", icon: Activity },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
 ];
@@ -33,6 +32,7 @@ interface AppSidebarProps {
 export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
   const isAgentsSection = activeId === "agents" || activeId === "my-agents";
   const [agentsOpen, setAgentsOpen] = useState(isAgentsSection);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
@@ -46,13 +46,35 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
       </div>
 
       <div className="mx-3 mb-4">
-        <button className="w-full flex items-center justify-between px-2.5 py-2 rounded-md hover:bg-sidebar-active transition-colors text-left">
+        <button
+          onClick={() => setProfileOpen(!profileOpen)}
+          className="w-full flex items-center justify-between px-2.5 py-2 rounded-md hover:bg-sidebar-active transition-colors text-left"
+        >
           <div className="min-w-0">
             <div className="text-sm font-medium text-foreground truncate">Иван Стребков</div>
             <div className="text-xs text-muted-foreground truncate">IT Отдел</div>
           </div>
-          <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 ml-2" />
+          {profileOpen ? (
+            <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 ml-2" />
+          ) : (
+            <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 ml-2" />
+          )}
         </button>
+        {profileOpen && (
+          <div className="mt-0.5 ml-2 border-l border-border pl-3">
+            <button
+              onClick={() => { onNavigate("limits"); setProfileOpen(true); }}
+              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-[13px] transition-colors ${
+                activeId === "limits"
+                  ? "text-foreground font-medium bg-sidebar-active"
+                  : "text-muted-foreground hover:text-foreground hover:bg-sidebar-active"
+              }`}
+            >
+              <Activity className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Лимиты и Квоты</span>
+            </button>
+          </div>
+        )}
       </div>
 
       <nav className="flex-1 px-3">
