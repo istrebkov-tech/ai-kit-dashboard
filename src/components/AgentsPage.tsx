@@ -173,13 +173,16 @@ export function AgentsPage() {
                 <CopyButton text={agent.url} />
               </div>
 
+              {!agent.active && (
+                <div className="mt-2.5 flex items-center gap-1.5 rounded-md bg-destructive/5 border border-destructive/10 px-2.5 py-1.5">
+                  <Circle className="w-1.5 h-1.5 fill-destructive text-destructive shrink-0" />
+                  <span className="text-xs text-destructive font-medium">Проверьте подключение</span>
+                </div>
+              )}
+
               <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-border">
                 <div>
-                  {agent.active ? (
-                    <AgentEndpoints agentUrl={agent.url} />
-                  ) : (
-                    <span className="text-xs text-muted-foreground font-medium">Проверьте подключение</span>
-                  )}
+                  {agent.active && <AgentEndpoints agentUrl={agent.url} />}
                 </div>
                 <AgentManualButton agent={agent} />
               </div>
