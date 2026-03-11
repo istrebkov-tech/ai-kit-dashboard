@@ -11,6 +11,7 @@ const navItems = [
 interface AppSidebarProps {
   activeId: string;
   onNavigate: (id: string) => void;
+  onOpenOnboarding?: () => void;
 }
 
 export function AppSidebar({ activeId, onNavigate }: AppSidebarProps) {
