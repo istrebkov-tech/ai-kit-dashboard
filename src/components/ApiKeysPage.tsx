@@ -238,9 +238,10 @@ export function ApiKeysPage() {
                 </Button>
               </div>
 
-              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                💡 Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
-              </p>
+              <div className="text-xs text-success bg-success/10 px-3 py-2 rounded-md flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 shrink-0" />
+                Секретный ключ подставлен в примеры ниже. Скопируйте нужный код — после закрытия окна этот ключ будет скрыт навсегда.
+              </div>
 
               <div className="min-w-0 max-w-full">
                 {createdToken && <SmartCodeBlock token={createdToken} />}
