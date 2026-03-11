@@ -152,8 +152,8 @@ export function ApiKeysPage() {
               {jwtToken && (
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center gap-2">
-                    <Badge className="bg-success/10 text-success hover:bg-success/10 border-0 text-xs font-medium">
-                      Действителен 1ч 0мин
+                    <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
+                      Действителен {Math.floor(jwtSecondsLeft / 3600)}ч {Math.floor((jwtSecondsLeft % 3600) / 60)}мин {jwtSecondsLeft % 60}с
                     </Badge>
                   </div>
                   <div className="relative rounded-md bg-code-bg border border-border">
