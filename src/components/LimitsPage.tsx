@@ -87,6 +87,7 @@ export function LimitsPage() {
               ))}
             </TableBody>
           </Table>
+          </div>
         </Card>
 
       </div>
