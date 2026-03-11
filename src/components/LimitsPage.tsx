@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowUpRight } from "lucide-react";
+
 
 const usageBars = [
   { label: "Месячные кредиты", used: 1_200_000, total: 5_000_000, display: "1.2M / 5M токенов" },
