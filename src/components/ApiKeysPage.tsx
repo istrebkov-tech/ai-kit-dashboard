@@ -230,22 +230,7 @@ export function ApiKeysPage() {
             </div>
           )}
 
-          <div className="relative rounded-md bg-code-bg border border-border">
-            <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
-              <CurlExample token={createdToken} />
-            </pre>
-            <button
-              onClick={() => {
-                const t = createdToken || "YOUR_API_KEY_TOKEN";
-                const text = `curl "${BASE_URL}/llm/chat/completions" \\\n  -H "Authorization: Bearer ${t}" \\\n  -H "Content-Type: application/json" \\\n  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`;
-                navigator.clipboard.writeText(text);
-              }}
-              className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
-              title="Копировать"
-            >
-              <Copy className="w-3.5 h-3.5 text-muted-foreground" />
-            </button>
-          </div>
+          <SmartCodeBlock token={createdToken} />
         </div>
 
         {/* Section 3: Existing Keys */}
