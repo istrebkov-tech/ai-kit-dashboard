@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Copy, Check, Circle, FlaskConical, ChevronDown, BookOpen, Brain, Zap, Bot } from "lucide-react";
+import { Search, Copy, Check, Circle, FlaskConical, ChevronDown, BookOpen, Brain, Zap, Bot, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
