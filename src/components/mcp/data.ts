@@ -8,6 +8,11 @@ export const servers: McpServer[] = [
     description: "DeepWiki - AI documentation for GitHub repos",
     path: "/mcp/dev/deepwiki",
     status: { kind: "success" },
+    mcpCommand: {
+      command: "npx",
+      args: ["-y", "@anthropic/deepwiki-mcp"],
+      env: { "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_TOKEN_HERE" },
+    },
     tools: [
       { name: "read_wiki_structure", description: "Получить список тем документации для GitHub-репозитория. Args: `repoName` — репозиторий GitHub в формате owner/repo.", category: "Чтение" },
       { name: "read_wiki_contents", description: "Просмотреть документацию GitHub-репозитория. Args: `repoName` — репозиторий GitHub в формате owner/repo.", category: "Чтение" },
