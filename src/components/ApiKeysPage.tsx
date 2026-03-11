@@ -111,11 +111,6 @@ export function ApiKeysPage() {
     }
   };
 
-  const copyForEnv = (token: string) => {
-    navigator.clipboard.writeText(`API_KEY=${token}`);
-    setEnvCopied(true);
-    setTimeout(() => setEnvCopied(false), 2000);
-  };
 
   const deleteKey = (id: string) => {
     setKeys((prev) => prev.filter((k) => k.id !== id));
