@@ -314,9 +314,9 @@ export function ApiKeysPage() {
 
               <div className="mt-4">
                 {keys.length === 0 ? (
-                  <div className="p-6 border-2 border-dashed border-border rounded-lg text-center flex flex-col items-center">
-                    <KeyRound className="w-8 h-8 text-muted-foreground/30" />
-                    <p className="text-sm text-muted-foreground mt-2">Нет активных ключей</p>
+                  <div className="py-4 border-2 border-dashed border-border rounded-lg text-center flex items-center justify-center gap-2">
+                    <KeyRound className="w-4 h-4 text-muted-foreground/30" />
+                    <p className="text-sm text-muted-foreground">Нет активных ключей</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
