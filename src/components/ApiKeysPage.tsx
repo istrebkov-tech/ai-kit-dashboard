@@ -166,40 +166,58 @@ export function ApiKeysPage() {
                   {jwtToken ? "Обновить токен" : "Получить токен"}
                 </Button>
                 {jwtToken && (
-                  <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
-                    {Math.floor(jwtSecondsLeft / 60)}мин {jwtSecondsLeft % 60}с
-                  </Badge>
+                  <>
+                    <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
+                      {Math.floor(jwtSecondsLeft / 60)}мин {jwtSecondsLeft % 60}с
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsTokenExpanded(!isTokenExpanded)}
+                      className="gap-1.5 text-muted-foreground ml-auto"
+                    >
+                      {isTokenExpanded ? (
+                        <><ChevronUp className="w-3.5 h-3.5" /> Скрыть детали</>
+                      ) : (
+                        <><ChevronDown className="w-3.5 h-3.5" /> Показать детали</>
+                      )}
+                    </Button>
+                  </>
                 )}
               </div>
 
-              {jwtToken && (
-                <div className="mt-3 space-y-3">
-                  <div className="relative rounded-md bg-code-bg border border-border">
-                    <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
-                      {jwtToken}
-                    </pre>
-                    <button
-                      onClick={copyJwt}
-                      className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
-                      title="Копировать"
-                    >
-                      {jwtCopied ? (
-                        <Check className="w-3.5 h-3.5 text-success" />
-                      ) : (
-                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
-                      )}
-                    </button>
-                  </div>
+              <Collapsible open={isTokenExpanded}>
+                <CollapsibleContent>
+                  {jwtToken && (
+                    <div className="mt-3 space-y-3">
+                      <div className="relative rounded-md bg-code-bg border border-border">
+                        <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
+                          {jwtToken}
+                        </pre>
+                        <button
+                          onClick={copyJwt}
+                          className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
+                          title="Копировать"
+                        >
+                          {jwtCopied ? (
+                            <Check className="w-3.5 h-3.5 text-success" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                          )}
+                        </button>
+                      </div>
 
-                  <div className="pt-2 border-t border-border">
-                    <div className="mb-2 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
-                      <Check className="w-3.5 h-3.5 shrink-0" />
-                      Токен подставлен в примеры. При перезагрузке страницы он будет сброшен.
+                      <div className="pt-2 border-t border-border">
+                        <div className="mb-2 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
+                          <Check className="w-3.5 h-3.5 shrink-0" />
+                          Токен подставлен в примеры. При перезагрузке страницы он будет сброшен.
+                        </div>
+                        <SmartCodeBlock token={jwtToken} highlight={tokenHighlight} />
+                      </div>
                     </div>
-                    <SmartCodeBlock token={jwtToken} highlight={tokenHighlight} />
-                  </div>
-                </div>
-              )}
+                  )}
+                </CollapsibleContent>
+              </Collapsible>
             </div>
           </div>
         </div>
