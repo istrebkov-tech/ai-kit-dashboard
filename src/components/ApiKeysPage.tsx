@@ -8,6 +8,9 @@ import { Shield as ShieldIcon, Clock, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from "@/components/ui/dialog";
 
 
 interface ApiKey {
@@ -34,6 +37,7 @@ export function ApiKeysPage() {
   const [createdToken, setCreatedToken] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // JWT section
   const [jwtToken, setJwtToken] = useState<string | null>(null);
@@ -100,6 +104,7 @@ export function ApiKeysPage() {
       setCreatedToken(token);
       setNewKeyName("");
       setCreating(false);
+      setDialogOpen(true);
     }, 600);
   };
 
@@ -111,14 +116,17 @@ export function ApiKeysPage() {
     }
   };
 
+  const closeDialog = () => {
+    setDialogOpen(false);
+    setCreatedToken(null);
+    setCopied(false);
+  };
+
 
   const deleteKey = (id: string) => {
     setKeys((prev) => prev.filter((k) => k.id !== id));
   };
 
-  const dismissToken = () => {
-    setCreatedToken(null);
-  };
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -211,42 +219,46 @@ export function ApiKeysPage() {
               Создать
             </Button>
           </div>
-
-          {createdToken && (
-            <div className="mt-4 rounded-lg border-2 border-success/40 bg-success/5 p-4 space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">Токен создан!</h3>
-              <p className="text-sm text-muted-foreground">
-                Bearer Token (действует 365 дней):
-              </p>
-              <div className="rounded-md bg-code-bg border border-border">
-                <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all max-h-40">
-                  {createdToken}
-                </pre>
-              </div>
-              <div className="flex items-center gap-3">
-                <Button onClick={copyToken} size="sm" className="gap-2">
-                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  {copied ? "Скопировано" : "Копировать токен"}
-                </Button>
-                <Button onClick={dismissToken} size="sm" variant="ghost" className="text-muted-foreground">
-                  Закрыть
-                </Button>
-              </div>
-              <p className="text-xs font-medium text-destructive flex items-center gap-1.5">
-                <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                Скопируйте токен сейчас — он больше не будет показан.
-              </p>
-
-              <div className="pt-2 border-t border-border">
-                <div className="mb-2 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
-                  <Check className="w-3.5 h-3.5 shrink-0" />
-                  Токен подставлен в примеры. При перезагрузке страницы он будет сброшен.
-                </div>
-                <SmartCodeBlock token={createdToken} />
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* Success Dialog for permanent keys */}
+        <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); }}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Сохраните ваш секретный ключ</DialogTitle>
+              <DialogDescription>
+                Пожалуйста, скопируйте этот ключ прямо сейчас.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 rounded-md bg-code-bg border border-border">
+                  <pre className="p-3 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all max-h-28">
+                    {createdToken}
+                  </pre>
+                </div>
+                <Button onClick={copyToken} size="sm" className="gap-2 shrink-0">
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? "Скопировано" : "Копировать"}
+                </Button>
+              </div>
+
+              <div className="flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-destructive shrink-0 mt-0.5" />
+                <p className="text-xs text-destructive">
+                  Из соображений безопасности этот ключ больше не будет вам показан. Если вы его потеряете, придётся создать новый.
+                </p>
+              </div>
+
+              {createdToken && <SmartCodeBlock token={createdToken} />}
+            </div>
+
+            <DialogFooter>
+              <Button onClick={closeDialog}>Я скопировал ключ</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Existing Keys */}
         {keys.length > 0 && (
