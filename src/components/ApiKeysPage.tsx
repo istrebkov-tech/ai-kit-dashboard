@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle, Key } from "lucide-react";
+import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ function CurlExample({ token }: { token: string | null }) {
   );
 }
 
-export function ApiKeysPage({ showEmpty = false }: { showEmpty?: boolean }) {
+export function ApiKeysPage() {
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
@@ -240,7 +240,7 @@ export function ApiKeysPage({ showEmpty = false }: { showEmpty?: boolean }) {
         </div>
 
         {/* Section 3: Existing Keys */}
-        {!showEmpty && keys.length > 0 && (
+        {keys.length > 0 && (
           <div className="rounded-lg border border-border bg-card">
             <div className="px-5 py-3.5 border-b border-border">
               <p className="text-xs text-muted-foreground">Найдено: {keys.length}</p>
@@ -263,32 +263,6 @@ export function ApiKeysPage({ showEmpty = false }: { showEmpty?: boolean }) {
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Empty State for permanent keys */}
-        {(showEmpty || keys.length === 0) && !createdToken && (
-          <div className="rounded-lg border border-border bg-card p-10 flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
-              <Key className="w-6 h-6 text-muted-foreground" />
-            </div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">
-              У вас пока нет постоянных API ключей
-            </h3>
-            <p className="text-sm text-muted-foreground max-w-md mb-5 leading-relaxed">
-              Постоянные ключи (ak_***) используются для безопасной интеграции ваших серверов и приложений с платформой AI Kit. В отличие от JWT-токенов, они не истекают через час.
-            </p>
-            <Button
-              size="sm"
-              className="gap-2"
-              onClick={() => {
-                const input = document.querySelector<HTMLInputElement>('input[placeholder*="Название ключа"]');
-                input?.focus();
-              }}
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Создать первый ключ
-            </Button>
           </div>
         )}
       </div>

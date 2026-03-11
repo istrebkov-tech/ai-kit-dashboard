@@ -1,4 +1,4 @@
-import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles, LayoutDashboard } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const navItems = [
@@ -6,7 +6,6 @@ const navItems = [
   { id: "agents", title: "Реестр Агентов", icon: Box },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
-  { id: "workspace", title: "Рабочее пространство", icon: LayoutDashboard },
 ];
 
 interface AppSidebarProps {
