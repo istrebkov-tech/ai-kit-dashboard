@@ -209,9 +209,14 @@ export function ApiKeysPage() {
               Ваш токен подставлен в пример ниже. При перезагрузке страницы он будет сброшен.
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground mb-4">
-              Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API. При создании ключа он автоматически подставится в примеры ниже.
-            </p>
+            <div className="mb-4 space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Используйте ключ в заголовке <code className="text-xs font-mono bg-code-bg px-1 py-0.5 rounded">Authorization: Bearer &lt;TOKEN&gt;</code> при запросах к API.
+              </p>
+              <p className="text-xs text-muted-foreground/70 italic">
+                💡 При создании API-ключа токен автоматически подставится в примеры ниже.
+              </p>
+            </div>
           )}
 
           <SmartCodeBlock token={createdToken} />
