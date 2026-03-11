@@ -134,52 +134,61 @@ export function AgentsPage() {
           </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {/* Agent List */}
+        <div className="flex flex-col gap-6 mb-8">
           {filtered.map((agent) => (
-            <Card key={agent.id} className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-sm font-semibold text-foreground leading-tight">{agent.name}</h3>
-                  {agent.active ? (
-                    <Badge variant="secondary" className="shrink-0 gap-1 bg-success/10 text-success hover:bg-success/10 border-0 text-[11px]">
-                      <Circle className="w-2 h-2 fill-current" />
-                      Активен
-                    </Badge>
-                  ) : (
-                    <Badge variant="destructive" className="shrink-0 gap-1 text-[11px]">
-                      <Circle className="w-2 h-2 fill-current" />
-                      Недоступен
-                    </Badge>
-                  )}
+            <div key={agent.id} className="rounded-lg border border-border bg-card p-5">
+              <div className="flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                  <Bot className="w-4.5 h-4.5 text-primary" />
                 </div>
-              </CardHeader>
-              <CardContent className="pb-3 space-y-2.5">
-                <p className="text-sm text-muted-foreground">{agent.description}</p>
-                {agent.version && (
-                  <p className="text-xs text-muted-foreground">Версия: {agent.version}</p>
-                )}
-                <div className="flex items-center gap-1.5 rounded-md bg-code-bg border border-border px-2.5 py-1.5">
-                  <code className="text-xs font-mono text-foreground flex-1 truncate">{agent.url}</code>
-                  <CopyButton text={agent.url} />
-                </div>
-              </CardContent>
-              <CardFooter className="pt-0 flex-col items-stretch gap-0">
-                <div className="flex justify-between items-center">
-                  <div>
-                    {agent.active ? (
-                      <AgentEndpoints agentUrl={agent.url} />
-                    ) : (
-                      <span className="text-xs text-destructive font-medium">Проверьте подключение</span>
-                    )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-sm font-semibold text-foreground">{agent.name}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{agent.description}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {agent.version && (
+                        <Badge variant="outline" className="text-[11px] font-mono border-border text-muted-foreground">
+                          {agent.version}
+                        </Badge>
+                      )}
+                      {agent.active ? (
+                        <Badge className="gap-1 bg-success/10 text-success hover:bg-success/10 border border-success/20 text-[11px]">
+                          <Circle className="w-1.5 h-1.5 fill-current" />
+                          Активен
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="gap-1 bg-muted text-muted-foreground border-border text-[11px]">
+                          <Circle className="w-1.5 h-1.5 fill-current" />
+                          Недоступен
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                  <AgentManualButton agent={agent} />
+
+                  <div className="mt-3 flex items-center gap-1.5 rounded-md bg-code-bg border border-border px-3 py-2">
+                    <code className="text-xs font-mono text-foreground flex-1 truncate">{agent.url}</code>
+                    <CopyButton text={agent.url} />
+                  </div>
+
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+                    <div className="flex items-center gap-3">
+                      {agent.active ? (
+                        <AgentEndpoints agentUrl={agent.url} />
+                      ) : (
+                        <span className="text-xs text-muted-foreground font-medium">Проверьте подключение</span>
+                      )}
+                    </div>
+                    <AgentManualButton agent={agent} />
+                  </div>
                 </div>
-              </CardFooter>
-            </Card>
+              </div>
+            </div>
           ))}
           {filtered.length === 0 && (
-            <div className="col-span-full text-center py-12 text-sm text-muted-foreground">
+            <div className="text-center py-12 text-sm text-muted-foreground">
               Агенты не найдены
             </div>
           )}
