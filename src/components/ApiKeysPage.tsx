@@ -39,7 +39,7 @@ function CurlExample({ token }: { token: string | null }) {
   );
 }
 
-export function ApiKeysPage() {
+export function ApiKeysPage({ showEmpty = false }: { showEmpty?: boolean }) {
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
