@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { PageGuide } from "./PageGuide";
+import { HelpTerm } from "./HelpTerm";
+import { DocsFooter } from "./DocsFooter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -123,7 +125,7 @@ export function ApiKeysPage() {
               <Shield className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-foreground">Временный сессионный токен (JWT)</h2>
+              <h2 className="text-sm font-semibold text-foreground">Временный сессионный токен (<HelpTerm tip="JSON Web Token. Короткоживущий токен для быстрых проверок. Истекает ровно через 60 минут.">JWT</HelpTerm>)</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Генерация краткосрочного JWT для доступа к API. Токены действительны 60 минут.
               </p>
@@ -269,6 +271,8 @@ export function ApiKeysPage() {
             </div>
           </div>
         )}
+
+        <DocsFooter text="📖 Читать гайд: Безопасность API и управление ключами доступа" />
       </div>
     </div>
   );
