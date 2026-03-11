@@ -33,7 +33,6 @@ export function ApiKeysPage() {
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [envCopied, setEnvCopied] = useState(false);
   const [creating, setCreating] = useState(false);
 
   // JWT section
