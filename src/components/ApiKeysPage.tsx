@@ -271,6 +271,8 @@ export function ApiKeysPage() {
             </div>
           </div>
         )}
+
+        <DocsFooter text="📖 Читать гайд: Безопасность API и управление ключами доступа" />
       </div>
     </div>
   );

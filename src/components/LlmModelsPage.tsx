@@ -365,6 +365,8 @@ export function LlmModelsPage() {
             ))}
           </div>
         )}
+
+        <DocsFooter text="📖 Документация: Работа с потоковой генерацией (Streaming) и Vision моделями" />
       </div>
     </div>
   );

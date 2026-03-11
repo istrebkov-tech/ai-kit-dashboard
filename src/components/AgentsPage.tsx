@@ -177,6 +177,8 @@ export function AgentsPage() {
             </div>
           )}
         </div>
+
+        <DocsFooter text="📖 Гайд разработчика: A2A-интеграция и оркестрация агентов" />
       </div>
     </div>
   );

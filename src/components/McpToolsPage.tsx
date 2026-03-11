@@ -133,6 +133,8 @@ export function McpToolsPage() {
             })}
           </Accordion>
         )}
+
+        <DocsFooter text="📖 Руководство: Как безопасно подключить корпоративные базы данных через MCP" />
       </div>
     </div>
   );
