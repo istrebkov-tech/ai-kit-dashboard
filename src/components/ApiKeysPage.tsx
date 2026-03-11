@@ -152,20 +152,21 @@ export function ApiKeysPage() {
               <p className="mt-1 text-sm text-muted-foreground">
                 Генерация краткосрочного JWT для доступа к API. Токены действительны 60 минут.
               </p>
-              <div className="mt-4">
+              <div className="mt-4 flex items-center gap-3">
                 <Button onClick={generateJwt} disabled={jwtLoading} size="sm" className="gap-2">
-                  <RefreshCw className={`w-3.5 h-3.5 ${jwtLoading ? "animate-spin" : ""}`} />
-                  Получить токен
+                  {jwtToken ? (
+                    <RefreshCw className={`w-3.5 h-3.5 ${jwtLoading ? "animate-spin" : ""}`} />
+                  ) : (
+                    <KeyRound className="w-3.5 h-3.5" />
+                  )}
+                  {jwtToken ? "Обновить токен" : "Получить токен"}
                 </Button>
+                {jwtToken && (
+                  <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
+                    {Math.floor(jwtSecondsLeft / 60)}мин {jwtSecondsLeft % 60}с
+                  </Badge>
+                )}
               </div>
-
-              {jwtToken && (
-                <div className="mt-4 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
-                      Действителен {Math.floor(jwtSecondsLeft / 60)}мин {jwtSecondsLeft % 60}с
-                    </Badge>
-                  </div>
                   <div className="relative rounded-md bg-code-bg border border-border">
                     <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
                       {jwtToken}
