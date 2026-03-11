@@ -254,3 +254,77 @@ function AgentEndpoints({ agentUrl }: { agentUrl: string }) {
     </Collapsible>
   );
 }
+
+function AgentManualButton({ agent }: { agent: Agent }) {
+  const [open, setOpen] = useState(false);
+
+  const examplePayload = JSON.stringify(
+    { message: "Найди мне красные кроссовки 42 размера", session_id: "12345" },
+    null,
+    2
+  );
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setOpen(true)}
+        className="text-primary hover:text-primary hover:bg-primary/10 -mr-2 gap-1.5"
+      >
+        <BookOpen className="w-3.5 h-3.5" />
+        Как использовать
+      </Button>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent className="overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>{agent.name} — Инструкция</SheetTitle>
+            <SheetDescription>Простое руководство по работе с агентом.</SheetDescription>
+          </SheetHeader>
+
+          <div className="mt-6 space-y-6">
+            <div>
+              <h4 className="font-semibold flex items-center gap-2 mb-2 text-sm text-foreground">
+                <Brain className="w-4 h-4 text-purple-500" />
+                Что умеет агент
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Этот агент берёт на себя всю рутину. Вы просто передаёте ему задачу, а он сам решает, какие инструменты вызвать и как вернуть готовый результат.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold flex items-center gap-2 mb-2 text-sm text-foreground">
+                <Zap className="w-4 h-4 text-amber-500" />
+                Как воспользоваться
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Отправьте обычный POST-запрос на эндпоинт агента. Вот пример того, что нужно передать в теле запроса (payload):
+              </p>
+              <div className="relative rounded-md bg-code-bg border border-border">
+                <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
+                  {examplePayload}
+                </pre>
+                <div className="absolute top-2.5 right-2.5">
+                  <CopyButton text={examplePayload} />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold flex items-center gap-2 mb-2 text-sm text-foreground">
+                <FlaskConical className="w-4 h-4 text-muted-foreground" />
+                Эндпоинт
+              </h4>
+              <div className="flex items-center gap-1.5 rounded-md bg-code-bg border border-border px-2.5 py-1.5">
+                <code className="text-xs font-mono text-foreground flex-1 truncate">POST {agent.url}/message/send</code>
+                <CopyButton text={`${agent.url}/message/send`} />
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+}
