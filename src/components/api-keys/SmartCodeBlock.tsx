@@ -151,7 +151,7 @@ print(response.json())`}
           </TabsContent>
 
           <TabsContent value="node" className="mt-3">
-            <CodePane getText={() => getNodeText(t)} tokenInjected={!!token}>
+            <CodePane getText={() => getNodeText(t)}>
               {`const response = await fetch(
   "${BASE_URL}/llm/chat/completions",
   {
