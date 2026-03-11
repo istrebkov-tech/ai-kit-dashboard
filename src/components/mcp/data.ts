@@ -26,6 +26,10 @@ export const servers: McpServer[] = [
     description: "MCP Server Everything - демонстрационные инструменты",
     path: "/mcp/test",
     status: { kind: "success" },
+    mcpCommand: {
+      command: "npx",
+      args: ["-y", "@modelcontextprotocol/server-everything"],
+    },
     tools: [
       { name: "echo", description: "Возвращает входное сообщение обратно. Args: `message`.", category: "Утилиты" },
       { name: "get-annotated-message", description: "Возвращает аннотированное сообщение с метаданными. Args: `messageType`, `includeImage`.", category: "Генерация" },

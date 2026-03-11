@@ -15,6 +15,12 @@ export type ServerStatus =
   | { kind: "error"; message: string }
   | { kind: "auth"; fields: AuthField[] };
 
+export interface McpServerCommand {
+  command: string;
+  args: string[];
+  env?: Record<string, string>;
+}
+
 export interface McpServer {
   id: string;
   name: string;
@@ -23,4 +29,5 @@ export interface McpServer {
   path: string;
   tools: McpTool[];
   status: ServerStatus;
+  mcpCommand?: McpServerCommand;
 }
