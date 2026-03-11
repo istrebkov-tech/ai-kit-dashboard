@@ -56,15 +56,16 @@ export function LimitsPage() {
           <div className="px-5 pt-5 pb-2">
             <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Лимиты по моделям</h2>
           </div>
-          <Table>
+          <div className="overflow-x-auto">
+          <Table className="min-w-[700px]">
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="text-xs font-medium">Модель</TableHead>
-                <TableHead className="text-xs font-medium text-right">RPM</TableHead>
-                <TableHead className="text-xs font-medium text-right">TPM</TableHead>
-                <TableHead className="text-xs font-medium text-right">Токены / мес</TableHead>
-                <TableHead className="text-xs font-medium text-right">Цена / 1M (вход)</TableHead>
-                <TableHead className="text-xs font-medium text-right">Цена / 1M (выход)</TableHead>
+                <TableHead className="text-[11px] font-medium w-[180px]">Модель</TableHead>
+                <TableHead className="text-[11px] font-medium text-right whitespace-nowrap">RPM</TableHead>
+                <TableHead className="text-[11px] font-medium text-right whitespace-nowrap">TPM</TableHead>
+                <TableHead className="text-[11px] font-medium text-right whitespace-nowrap">Токены/мес</TableHead>
+                <TableHead className="text-[11px] font-medium text-right whitespace-nowrap">$/1M вход</TableHead>
+                <TableHead className="text-[11px] font-medium text-right whitespace-nowrap">$/1M выход</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
