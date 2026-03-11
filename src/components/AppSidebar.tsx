@@ -1,4 +1,5 @@
-import { Key, Box, Wrench, Cpu, ChevronDown, Sparkles, Users, UserCog } from "lucide-react";
+import { useState } from "react";
+import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog } from "lucide-react";
 
 interface NavItem {
   id: string;
