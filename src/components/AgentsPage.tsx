@@ -144,10 +144,12 @@ export function AgentsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-sm font-semibold text-foreground leading-tight flex items-center gap-1.5">
-                      {agent.name}
+                    <div className="flex items-center justify-between w-full pr-24">
+                      <h3 className="text-sm font-semibold text-foreground leading-tight truncate max-w-[140px]">
+                        {agent.name}
+                      </h3>
                       <AgentManualButton agent={agent} />
-                    </h3>
+                    </div>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {agent.version && (
                         <Badge variant="outline" className="text-[10px] font-mono border-border text-muted-foreground px-1.5 py-0">
@@ -274,7 +276,7 @@ function AgentManualButton({ agent }: { agent: Agent }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-muted-foreground/50 hover:text-primary transition-colors shrink-0"
+        className="text-muted-foreground/30 hover:text-primary transition-colors shrink-0"
         title="Как использовать"
       >
         <Info className="w-3.5 h-3.5" />
