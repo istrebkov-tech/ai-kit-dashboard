@@ -19,6 +19,7 @@ const navItems: NavItem[] = [
       { id: "my-agents", title: "Мои агенты", icon: UserCog },
     ],
   },
+  { id: "limits", title: "Лимиты и Квоты", icon: Activity },
   { id: "mcp", title: "Инструменты MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
 ];
