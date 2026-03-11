@@ -281,8 +281,9 @@ export function ApiKeysPage() {
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-md bg-warning/10 border border-warning/20 px-3 py-2 text-xs text-warning">
-                    💡 Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
+                  <div className="flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
+                    <Check className="w-3.5 h-3.5 shrink-0" />
+                    Сохраните ключ сейчас. В целях безопасности он больше не будет показан.
                   </div>
 
                   <div className="min-w-0 max-w-full">
