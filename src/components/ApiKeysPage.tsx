@@ -37,6 +37,7 @@ export function ApiKeysPage() {
   const [copied, setCopied] = useState(false);
   const [creating, setCreating] = useState(false);
   const [isKeyExpanded, setIsKeyExpanded] = useState(false);
+  const [isKeysListExpanded, setIsKeysListExpanded] = useState(false);
 
   // JWT section
   const [jwtToken, setJwtToken] = useState<string | null>(null);
@@ -295,42 +296,85 @@ export function ApiKeysPage() {
                 </CollapsibleContent>
               </Collapsible>
 
-              <div className="mt-4 border-t border-border pt-4">
-                <div className="flex flex-col gap-1 mb-4 mt-2">
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-semibold text-foreground">Активные ключи</h4>
-                    <span className="text-sm text-muted-foreground font-normal">{keys.length}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Управление созданными ключами. Удалите ключ, если доступ больше не требуется или он был скомпрометирован.
-                  </p>
-                </div>
+            </div>
+          </div>
+        </div>
 
+        {/* Section 3: Active Keys */}
+        <div className="mb-6 rounded-lg border border-border bg-card p-5">
+          <div className="flex items-start gap-3.5">
+            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+              <KeyRound className="w-4.5 h-4.5 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-sm font-semibold text-foreground">Активные ключи</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Управление созданными ключами. Удалите ключ, если доступ больше не требуется.
+              </p>
+
+              <div className="mt-4">
                 {keys.length === 0 ? (
                   <div className="p-6 border-2 border-dashed border-border rounded-lg text-center flex flex-col items-center">
                     <KeyRound className="w-8 h-8 text-muted-foreground/30" />
                     <p className="text-sm text-muted-foreground mt-2">Нет активных ключей</p>
                   </div>
                 ) : (
-                  <div className="space-y-2 max-h-[250px] overflow-y-auto pr-1">
-                    {keys.map((key) => (
-                      <div key={key.id} className="relative rounded-md bg-code-bg border border-border p-3 pr-10 font-mono">
-                        <div className="flex items-center gap-2 text-xs text-foreground">
-                          <KeyRound className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                          <span className="font-medium">{key.name}</span>
-                          <span className="text-muted-foreground">•</span>
-                          <code className="text-muted-foreground">[sk-...{key.id.slice(-4)}]</code>
-                          <span className="text-muted-foreground hidden sm:inline">• {key.created}</span>
-                        </div>
-                        <button
-                          onClick={() => deleteKey(key.id)}
-                          className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-destructive/10 transition-colors group"
-                          title="Удалить"
-                        >
-                          <Trash2 className="w-3.5 h-3.5 text-muted-foreground group-hover:text-destructive" />
-                        </button>
+                  <div className="space-y-2">
+                    <div className="relative rounded-md bg-code-bg border border-border p-3 pr-10 font-mono">
+                      <div className="flex items-center gap-2 text-xs text-foreground">
+                        <KeyRound className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                        <span className="font-medium">{keys[0].name}</span>
+                        <span className="text-muted-foreground">•</span>
+                        <code className="text-muted-foreground">[sk-...{keys[0].id.slice(-4)}]</code>
+                        <span className="text-muted-foreground hidden sm:inline">• {keys[0].created}</span>
                       </div>
-                    ))}
+                      <button
+                        onClick={() => deleteKey(keys[0].id)}
+                        className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-destructive/10 transition-colors group"
+                        title="Удалить"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-muted-foreground group-hover:text-destructive" />
+                      </button>
+                    </div>
+
+                    {keys.length > 1 && (
+                      <Collapsible open={isKeysListExpanded} onOpenChange={setIsKeysListExpanded}>
+                        <CollapsibleContent>
+                          <div className="space-y-2">
+                            {keys.slice(1).map((key) => (
+                              <div key={key.id} className="relative rounded-md bg-code-bg border border-border p-3 pr-10 font-mono">
+                                <div className="flex items-center gap-2 text-xs text-foreground">
+                                  <KeyRound className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                                  <span className="font-medium">{key.name}</span>
+                                  <span className="text-muted-foreground">•</span>
+                                  <code className="text-muted-foreground">[sk-...{key.id.slice(-4)}]</code>
+                                  <span className="text-muted-foreground hidden sm:inline">• {key.created}</span>
+                                </div>
+                                <button
+                                  onClick={() => deleteKey(key.id)}
+                                  className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-destructive/10 transition-colors group"
+                                  title="Удалить"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5 text-muted-foreground group-hover:text-destructive" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </CollapsibleContent>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setIsKeysListExpanded(!isKeysListExpanded)}
+                          className="w-full mt-2 text-muted-foreground gap-1.5"
+                        >
+                          {isKeysListExpanded ? (
+                            <><ChevronUp className="w-3.5 h-3.5" /> Скрыть</>
+                          ) : (
+                            <><ChevronDown className="w-3.5 h-3.5" /> Показать остальные ({keys.length - 1})</>
+                          )}
+                        </Button>
+                      </Collapsible>
+                    )}
                   </div>
                 )}
               </div>
