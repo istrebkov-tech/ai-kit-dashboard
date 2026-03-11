@@ -118,7 +118,7 @@ export const SmartCodeBlock = forwardRef<HTMLDivElement, SmartCodeBlockProps>(
           </TabsList>
 
           <TabsContent value="curl" className="mt-3">
-            <CodePane getText={() => getCurlText(t)} tokenInjected={!!token}>
+            <CodePane getText={() => getCurlText(t)}>
               {`curl "${BASE_URL}/llm/chat/completions" \\
   -H "Authorization: Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} highlight={highlight} />{`" \\
   -H "Content-Type: application/json" \\
