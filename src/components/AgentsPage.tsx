@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import { PageGuide } from "./PageGuide";
 
 interface Agent {
   id: string;
@@ -93,6 +94,10 @@ export function AgentsPage() {
             Управление, мониторинг и интеграция доступных AI-агентов платформы.
           </p>
         </div>
+
+        <PageGuide>
+          <strong>Что такое Агенты:</strong> В отличие от обычных чат-моделей, Агенты умеют автономно выполнять многошаговые задачи. Выберите подходящего агента и отправьте ему задачу через A2A-интерфейс.
+        </PageGuide>
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">

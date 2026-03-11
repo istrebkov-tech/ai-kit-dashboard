@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Search, Copy, Check, Terminal, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { PageGuide } from "./PageGuide";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -289,6 +290,10 @@ export function LlmModelsPage() {
             Доступные языковые, визуальные и аудио модели для использования через единый API.
           </p>
         </div>
+
+        <PageGuide>
+          <strong>Как использовать:</strong> Здесь собран единый API для 100+ нейросетей. Найдите нужную модель (текст, аудио, зрение), скопируйте её название и подставьте в параметр <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">model</code> в вашем коде.
+        </PageGuide>
 
         {/* API Reference Accordion */}
         <Accordion type="single" collapsible className="mb-4">

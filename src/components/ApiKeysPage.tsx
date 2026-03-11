@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Shield, RefreshCw, Copy, Check, Plus, Trash2, AlertTriangle } from "lucide-react";
+import { PageGuide } from "./PageGuide";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -111,6 +112,9 @@ export function ApiKeysPage() {
           </p>
         </div>
 
+        <PageGuide>
+          <strong>С чего начать:</strong> Любой запрос к платформе требует авторизации. Сгенерируйте временный JWT-токен (на 1 час) для быстрых тестов в Postman/Terminal, или создайте постоянный ключ для вашего бэкенда.
+        </PageGuide>
 
         {/* Section 1: JWT Token */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
