@@ -40,10 +40,25 @@ function parseToolDescription(desc: string): { text: string; args: { name: strin
 
 function ToolItem({ tool }: { tool: McpTool }) {
   const { text, args } = useMemo(() => parseToolDescription(tool.description), [tool.description]);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(tool.name);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [tool.name]);
 
   return (
-    <div className="px-3 py-2 flex flex-col gap-1">
-      <code className="text-sm font-mono font-semibold text-foreground">{tool.name}</code>
+    <div className="px-3 py-2 flex flex-col gap-1 group/tool">
+      <div className="flex items-center gap-1.5">
+        <code className="text-sm font-mono font-semibold text-foreground">{tool.name}</code>
+        <button
+          className="opacity-0 group-hover/tool:opacity-100 transition-opacity p-0.5 rounded hover:bg-muted"
+          onClick={handleCopy}
+        >
+          {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3 text-muted-foreground" />}
+        </button>
+      </div>
       {text && (
         <p className="text-[13px] text-muted-foreground leading-snug line-clamp-2">{text}</p>
       )}
