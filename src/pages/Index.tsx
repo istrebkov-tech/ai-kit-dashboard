@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ApiKeysPage } from "@/components/ApiKeysPage";
 import { AgentsPage } from "@/components/AgentsPage";
+import { MyAgentsPage } from "@/components/MyAgentsPage";
 import { McpToolsPage } from "@/components/McpToolsPage";
 import { LlmModelsPage } from "@/components/LlmModelsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
@@ -16,6 +17,7 @@ const Index = () => {
   const renderPage = () => {
     if (activeId === "api-keys") return <ApiKeysPage />;
     if (activeId === "agents") return <AgentsPage />;
+    if (activeId === "my-agents") return <MyAgentsPage />;
     if (activeId === "mcp") return <McpToolsPage />;
     if (activeId === "models") return <LlmModelsPage />;
     if (pages[activeId]) return <PlaceholderPage title={pages[activeId].title} subtitle={pages[activeId].subtitle} />;
