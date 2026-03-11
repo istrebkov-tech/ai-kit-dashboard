@@ -206,9 +206,9 @@ export function AgentsPage({ jwtToken }: { jwtToken?: string | null }) {
   );
 }
 
-function AgentEndpoints({ agentUrl, disabled = false }: { agentUrl: string; disabled?: boolean }) {
+function AgentEndpoints({ agentUrl, disabled = false, jwtToken }: { agentUrl: string; disabled?: boolean; jwtToken?: string | null }) {
   const [open, setOpen] = useState(false);
-  const snippets = buildCurlSnippets(agentUrl);
+  const snippets = buildCurlSnippets(agentUrl, jwtToken);
 
   return (
     <Collapsible open={open} onOpenChange={disabled ? undefined : setOpen}>
