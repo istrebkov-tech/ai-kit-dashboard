@@ -49,9 +49,6 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
   const [jwtLoading, setJwtLoading] = useState(false);
   const [tokenHighlight, setTokenHighlight] = useState(false);
   const [isTokenExpanded, setIsTokenExpanded] = useState(false);
-  const [jwtLoading, setJwtLoading] = useState(false);
-  const [tokenHighlight, setTokenHighlight] = useState(false);
-  const [isTokenExpanded, setIsTokenExpanded] = useState(false);
 
   // JWT countdown
   const [jwtSecondsLeft, setJwtSecondsLeft] = useState(0);
