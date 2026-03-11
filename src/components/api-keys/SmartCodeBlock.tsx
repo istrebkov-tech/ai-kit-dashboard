@@ -104,10 +104,6 @@ function CodePane({ children, getText, tokenInjected }: { children: React.ReactN
     </div>
   );
 }
-      </div>
-    </div>
-  );
-}
 
 interface SmartCodeBlockProps {
   token: string | null;
