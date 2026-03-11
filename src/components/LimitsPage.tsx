@@ -19,13 +19,8 @@ const modelLimits = [
   { group: "Mixtral 8x7B", rpm: "10 000", tpm: "500 000", monthly: "unlimited", priceIn: "$0.24", priceOut: "$0.24", status: "unlimited" },
 ];
 
-const tiers = [
-  { name: "Tier 1", req: "$0", active: false },
-  { name: "Tier 2", req: "$10", active: false },
-  { name: "Tier 3", req: "$50", active: true },
-  { name: "Tier 4", req: "$100", active: false },
-  { name: "Tier 5", req: "$500", active: false },
-];
+
+
 
 export function LimitsPage() {
   return (
