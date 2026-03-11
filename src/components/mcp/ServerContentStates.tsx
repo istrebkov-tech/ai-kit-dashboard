@@ -19,13 +19,20 @@ import {
 import type { McpServer, McpTool } from "./types";
 import { groupToolsByCategory, CATEGORY_COLORS } from "./helpers";
 
-/** Split description into main text and arg names */
-function parseToolDescription(desc: string): { text: string; args: string[] } {
+/** Split description into main text and args with descriptions */
+function parseToolDescription(desc: string): { text: string; args: { name: string; hint: string }[] } {
   const argsMatch = desc.match(/Args:\s*(.+)$/);
   if (!argsMatch) return { text: desc.trim(), args: [] };
   const text = desc.slice(0, desc.indexOf("Args:")).trim();
   const argsStr = argsMatch[1];
-  const args = [...argsStr.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
+  // Match patterns like `argName` — description or `argName` - description
+  const argParts = argsStr.split(/,\s*(?=`)/).map((s) => s.trim()).filter(Boolean);
+  const args = argParts.map((part) => {
+    const nameMatch = part.match(/^`([^`]+)`/);
+    const name = nameMatch ? nameMatch[1] : part;
+    const hint = nameMatch ? part.slice(nameMatch[0].length).replace(/^\s*[—–\-:]\s*/, "").trim() : "";
+    return { name, hint: hint || name };
+  });
   return { text, args };
 }
 
@@ -41,14 +48,21 @@ function ToolItem({ tool }: { tool: McpTool }) {
         <p className="text-[13px] text-muted-foreground leading-snug line-clamp-2">{text}</p>
       )}
       {args.length > 0 && (
-        <div className="flex flex-wrap items-center gap-1 mt-0.5">
+        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+          <span className="text-[11px] text-muted-foreground/60 mr-0.5 uppercase tracking-wider font-semibold">Args:</span>
           {args.map((arg) => (
-            <span
-              key={arg}
-              className="bg-muted/60 text-muted-foreground px-2 py-0.5 rounded border border-border text-[11px] font-mono"
-            >
-              {arg}
-            </span>
+            <Tooltip key={arg.name}>
+              <TooltipTrigger asChild>
+                <span className="bg-muted/40 text-muted-foreground px-2 py-0.5 rounded border border-border/60 text-[11px] font-mono cursor-help decoration-dotted underline underline-offset-2 decoration-muted-foreground/30">
+                  {arg.name}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-xs text-xs">
+                <span className="font-mono font-semibold">{arg.name}</span>
+                <span className="text-muted-foreground ml-1">(string)</span>
+                {arg.hint && <p className="mt-0.5 text-muted-foreground">{arg.hint}</p>}
+              </TooltipContent>
+            </Tooltip>
           ))}
         </div>
       )}
