@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { Copy, Check } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
 
-function TokenSpan({ token, isPlaceholder }: { token: string; isPlaceholder: boolean }) {
-  return <span className={isPlaceholder ? "text-token-highlight font-semibold" : ""}>{token}</span>;
+function TokenSpan({ token, isPlaceholder, highlight }: { token: string; isPlaceholder: boolean; highlight: boolean }) {
+  return (
+    <span
+      className={[
+        isPlaceholder ? "text-token-highlight font-semibold" : "",
+        highlight ? "bg-success/20 rounded px-0.5 transition-colors duration-700" : "",
+      ].join(" ")}
+    >
+      {token}
+    </span>
+  );
 }
 
 function useCopyButton(getText: () => string) {
@@ -67,55 +76,67 @@ const data = await response.json();
 console.log(data);`;
 }
 
-function CodePane({ children, getText }: { children: React.ReactNode; getText: () => string }) {
+function CodePane({ children, getText, tokenInjected }: { children: React.ReactNode; getText: () => string; tokenInjected: boolean }) {
   const { copied, copy } = useCopyButton(getText);
   return (
     <div className="relative rounded-md bg-code-bg border border-border">
       <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre">
         {children}
       </pre>
-      <button
-        onClick={copy}
-        className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
-        title="Копировать"
-      >
-        {copied ? (
-          <Check className="w-3.5 h-3.5 text-success" />
-        ) : (
-          <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+      <div className="absolute top-2 right-2 flex items-center gap-1.5">
+        {tokenInjected && (
+          <span className="text-[10px] text-success font-medium whitespace-nowrap">✓ Токен подставлен</span>
         )}
-      </button>
+        <button
+          onClick={copy}
+          className="p-1 rounded hover:bg-muted transition-colors"
+          title="Копировать"
+        >
+          {copied ? (
+            <Check className="w-3.5 h-3.5 text-success" />
+          ) : (
+            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }
 
-export function SmartCodeBlock({ token }: { token: string | null }) {
-  const t = token || "YOUR_API_KEY_TOKEN";
-  const isPlaceholder = !token;
+interface SmartCodeBlockProps {
+  token: string | null;
+  highlight?: boolean;
+}
 
-  return (
-    <Tabs defaultValue="curl" className="w-full">
-      <TabsList className="w-full justify-start h-9 bg-muted/50 rounded-md p-0.5">
-        <TabsTrigger value="curl" className="text-xs px-3 py-1 data-[state=active]:bg-background">cURL</TabsTrigger>
-        <TabsTrigger value="python" className="text-xs px-3 py-1 data-[state=active]:bg-background">Python</TabsTrigger>
-        <TabsTrigger value="node" className="text-xs px-3 py-1 data-[state=active]:bg-background">Node.js</TabsTrigger>
-      </TabsList>
+export const SmartCodeBlock = forwardRef<HTMLDivElement, SmartCodeBlockProps>(
+  ({ token, highlight = false }, ref) => {
+    const t = token || "СГЕНЕРИРУЙТЕ_ТОКЕН_ВЫШЕ";
+    const isPlaceholder = !token;
 
-      <TabsContent value="curl" className="mt-3">
-        <CodePane getText={() => getCurlText(t)}>
-          {`curl "${BASE_URL}/llm/chat/completions" \\
-  -H "Authorization: Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} />{`" \\
+    return (
+      <div ref={ref}>
+        <Tabs defaultValue="curl" className="w-full">
+          <TabsList className="w-full justify-start h-9 bg-muted/50 rounded-md p-0.5">
+            <TabsTrigger value="curl" className="text-xs px-3 py-1 data-[state=active]:bg-background">cURL</TabsTrigger>
+            <TabsTrigger value="python" className="text-xs px-3 py-1 data-[state=active]:bg-background">Python</TabsTrigger>
+            <TabsTrigger value="node" className="text-xs px-3 py-1 data-[state=active]:bg-background">Node.js</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="curl" className="mt-3">
+            <CodePane getText={() => getCurlText(t)} tokenInjected={!!token}>
+              {`curl "${BASE_URL}/llm/chat/completions" \\
+  -H "Authorization: Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} highlight={highlight} />{`" \\
   -H "Content-Type: application/json" \\
   -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"Hello"}]}'`}
-        </CodePane>
-      </TabsContent>
+            </CodePane>
+          </TabsContent>
 
-      <TabsContent value="python" className="mt-3">
-        <CodePane getText={() => getPythonText(t)}>
-          {`import requests
+          <TabsContent value="python" className="mt-3">
+            <CodePane getText={() => getPythonText(t)} tokenInjected={!!token}>
+              {`import requests
 
 headers = {
-    "Authorization": f"Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} />{`",
+    "Authorization": f"Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} highlight={highlight} />{`",
     "Content-Type": "application/json"
 }
 
@@ -131,17 +152,17 @@ response = requests.post(
 )
 
 print(response.json())`}
-        </CodePane>
-      </TabsContent>
+            </CodePane>
+          </TabsContent>
 
-      <TabsContent value="node" className="mt-3">
-        <CodePane getText={() => getNodeText(t)}>
-          {`const response = await fetch(
+          <TabsContent value="node" className="mt-3">
+            <CodePane getText={() => getNodeText(t)} tokenInjected={!!token}>
+              {`const response = await fetch(
   "${BASE_URL}/llm/chat/completions",
   {
     method: "POST",
     headers: {
-      "Authorization": "Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} />{`",
+      "Authorization": "Bearer `}<TokenSpan token={t} isPlaceholder={isPlaceholder} highlight={highlight} />{`",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -153,8 +174,12 @@ print(response.json())`}
 
 const data = await response.json();
 console.log(data);`}
-        </CodePane>
-      </TabsContent>
-    </Tabs>
-  );
-}
+            </CodePane>
+          </TabsContent>
+        </Tabs>
+      </div>
+    );
+  }
+);
+
+SmartCodeBlock.displayName = "SmartCodeBlock";
