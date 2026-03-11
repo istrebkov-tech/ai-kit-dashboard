@@ -164,9 +164,8 @@ export function AgentsPage({ jwtToken }: { jwtToken?: string | null }) {
               </div>
 
               <div className="mt-3 flex items-center gap-1.5 rounded-md bg-code-bg border border-border px-2.5 py-1.5">
-                <span className="text-[10px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0">POST</span>
-                <code className="text-[12px] font-mono text-foreground flex-1 truncate">{`${BASE_URL}/a2a${agent.url}`}</code>
-                <CopyButton text={`${BASE_URL}/a2a${agent.url}`} />
+                <code className="text-xs font-mono text-foreground flex-1 truncate">{agent.url}</code>
+                <CopyButton text={agent.url} />
               </div>
 
               <div className="pt-2.5 mt-auto border-t border-border">
