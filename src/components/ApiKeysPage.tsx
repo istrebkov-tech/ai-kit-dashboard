@@ -33,7 +33,6 @@ export function ApiKeysPage() {
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [envCopied, setEnvCopied] = useState(false);
   const [creating, setCreating] = useState(false);
 
   // JWT section
@@ -112,11 +111,6 @@ export function ApiKeysPage() {
     }
   };
 
-  const copyForEnv = (token: string) => {
-    navigator.clipboard.writeText(`API_KEY=${token}`);
-    setEnvCopied(true);
-    setTimeout(() => setEnvCopied(false), 2000);
-  };
 
   const deleteKey = (id: string) => {
     setKeys((prev) => prev.filter((k) => k.id !== id));
@@ -234,10 +228,6 @@ export function ApiKeysPage() {
                   {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   {copied ? "Скопировано" : "Копировать токен"}
                 </Button>
-                <Button onClick={() => copyForEnv(createdToken)} size="sm" variant="outline" className="gap-2">
-                  {envCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  {envCopied ? "Скопировано" : "Скопировать для .env"}
-                </Button>
                 <Button onClick={dismissToken} size="sm" variant="ghost" className="text-muted-foreground">
                   Закрыть
                 </Button>
@@ -246,6 +236,14 @@ export function ApiKeysPage() {
                 <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                 Скопируйте токен сейчас — он больше не будет показан.
               </p>
+
+              <div className="pt-2 border-t border-border">
+                <div className="mb-2 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
+                  <Check className="w-3.5 h-3.5 shrink-0" />
+                  Токен подставлен в примеры. При перезагрузке страницы он будет сброшен.
+                </div>
+                <SmartCodeBlock token={createdToken} />
+              </div>
             </div>
           )}
         </div>
