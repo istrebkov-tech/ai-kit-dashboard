@@ -46,7 +46,7 @@ export function ApiKeysPage() {
 
   const startJwtTimer = () => {
     if (jwtIntervalRef.current) clearInterval(jwtIntervalRef.current);
-    setJwtSecondsLeft(3600);
+    setJwtSecondsLeft(3599);
     jwtIntervalRef.current = setInterval(() => {
       setJwtSecondsLeft((prev) => {
         if (prev <= 1) {
