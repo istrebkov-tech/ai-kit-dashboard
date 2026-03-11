@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Search, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { HelpTerm } from "./HelpTerm";
+import { DocsFooter } from "./DocsFooter";
 import {
   Accordion,
   AccordionContent,
