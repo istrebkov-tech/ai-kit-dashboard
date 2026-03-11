@@ -98,32 +98,6 @@ export function LimitsPage() {
           </Table>
         </Card>
 
-        {/* Tier Benefits */}
-        <Card className="p-5">
-          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Уровни доступа</h2>
-          <div className="flex gap-2 mb-4">
-            {tiers.map((tier) => (
-              <div
-                key={tier.name}
-                className={`flex-1 rounded-lg border px-3 py-2.5 text-center transition-colors ${
-                  tier.active
-                    ? "border-primary bg-primary/5"
-                    : "border-border bg-muted/30"
-                }`}
-              >
-                <div className={`font-mono text-xs font-semibold ${tier.active ? "text-primary" : "text-muted-foreground"}`}>
-                  {tier.name}
-                </div>
-                <div className="font-mono text-[11px] text-muted-foreground mt-0.5">от {tier.req}</div>
-              </div>
-            ))}
-          </div>
-          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-            Пополните баланс на <span className="font-mono font-semibold text-foreground">$50</span>, чтобы перейти на
-            <span className="font-mono font-semibold text-foreground">Tier 4</span> с увеличенной пропускной способностью.
-            <ArrowUpRight className="w-3.5 h-3.5 text-primary inline shrink-0" />
-          </p>
-        </Card>
       </div>
     </div>
   );
