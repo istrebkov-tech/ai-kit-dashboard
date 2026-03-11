@@ -30,7 +30,12 @@ function formatDate(d: Date) {
     ", " + d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
-export function ApiKeysPage() {
+interface ApiKeysPageProps {
+  jwtToken: string | null;
+  onJwtTokenChange: (token: string | null) => void;
+}
+
+export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
@@ -40,7 +45,6 @@ export function ApiKeysPage() {
   const [isKeysListExpanded, setIsKeysListExpanded] = useState(false);
 
   // JWT section
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [jwtCopied, setJwtCopied] = useState(false);
   const [jwtLoading, setJwtLoading] = useState(false);
   const [tokenHighlight, setTokenHighlight] = useState(false);
@@ -58,7 +62,7 @@ export function ApiKeysPage() {
         if (prev <= 1) {
           clearInterval(jwtIntervalRef.current!);
           jwtIntervalRef.current = null;
-          setJwtToken(null);
+          onJwtTokenChange(null);
           return 0;
         }
         return prev - 1;
@@ -76,7 +80,7 @@ export function ApiKeysPage() {
     setJwtLoading(true);
     setTimeout(() => {
       const sig = Math.random().toString(36).substring(2, 15) + Date.now().toString(36) + Math.random().toString(36).substring(2, 10);
-      setJwtToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ." + sig);
+      onJwtTokenChange("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ." + sig);
       setJwtLoading(false);
       startJwtTimer();
       setTokenHighlight(true);

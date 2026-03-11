@@ -29,22 +29,23 @@ const agents: Agent[] = [
 
 const BASE_URL = "https://agentgateway.ai.redmadrobot.com";
 
-function buildCurlSnippets(agentUrl: string) {
+function buildCurlSnippets(agentUrl: string, token?: string | null) {
+  const tokenValue = token || "YOUR_TOKEN";
   return [
     {
       label: `GET agent-card.json`,
       desc: "Получить спецификацию агента",
-      curl: `curl "${BASE_URL}/a2a${agentUrl}/.well-known/agent-card.json" \\\n     -H "Authorization: Bearer YOUR_TOKEN"`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/.well-known/agent-card.json" \\\n     -H "Authorization: Bearer ${tokenValue}"`,
     },
     {
       label: `POST message/send`,
       desc: "Отправить сообщение синхронно",
-      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/send" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/send" \\\n     -H "Authorization: Bearer ${tokenValue}" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
     },
     {
       label: `POST message/stream`,
       desc: "Стриминг ответа от агента",
-      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/stream" \\\n     -H "Authorization: Bearer YOUR_TOKEN" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"2","method":"message/stream","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
+      curl: `curl "${BASE_URL}/a2a${agentUrl}/message/stream" \\\n     -H "Authorization: Bearer ${tokenValue}" \\\n     -H "Content-Type: application/json" \\\n     -d '{"jsonrpc":"2.0","id":"2","method":"message/stream","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'`,
     },
   ];
 }
@@ -65,7 +66,7 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-export function AgentsPage() {
+export function AgentsPage({ jwtToken }: { jwtToken?: string | null }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
 
@@ -168,7 +169,7 @@ export function AgentsPage() {
               </div>
 
               <div className="pt-2.5 mt-auto border-t border-border">
-                <AgentEndpoints agentUrl={agent.url} disabled={!agent.active} />
+                <AgentEndpoints agentUrl={agent.url} disabled={!agent.active} jwtToken={jwtToken} />
               </div>
             </div>
           ))}
@@ -205,9 +206,9 @@ export function AgentsPage() {
   );
 }
 
-function AgentEndpoints({ agentUrl, disabled = false }: { agentUrl: string; disabled?: boolean }) {
+function AgentEndpoints({ agentUrl, disabled = false, jwtToken }: { agentUrl: string; disabled?: boolean; jwtToken?: string | null }) {
   const [open, setOpen] = useState(false);
-  const snippets = buildCurlSnippets(agentUrl);
+  const snippets = buildCurlSnippets(agentUrl, jwtToken);
 
   return (
     <Collapsible open={open} onOpenChange={disabled ? undefined : setOpen}>
