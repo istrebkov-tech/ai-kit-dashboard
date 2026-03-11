@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Shield, RefreshCw, Copy, Check, Plus, KeyRound } from "lucide-react";
+import { Shield, RefreshCw, Copy, Check, Plus, KeyRound, ChevronDown, ChevronUp } from "lucide-react";
 import { PageGuide } from "./PageGuide";
 import { SmartCodeBlock } from "./api-keys/SmartCodeBlock";
 
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 
 
 interface ApiKey {
@@ -37,13 +37,13 @@ export function ApiKeysPage() {
   const [copied, setCopied] = useState(false);
   const [creating, setCreating] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [jwtDialogOpen, setJwtDialogOpen] = useState(false);
 
   // JWT section
   const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [jwtCopied, setJwtCopied] = useState(false);
   const [jwtLoading, setJwtLoading] = useState(false);
   const [tokenHighlight, setTokenHighlight] = useState(false);
+  const [isTokenExpanded, setIsTokenExpanded] = useState(false);
 
   // JWT countdown
   const [jwtSecondsLeft, setJwtSecondsLeft] = useState(0);
@@ -79,7 +79,7 @@ export function ApiKeysPage() {
       setJwtLoading(false);
       startJwtTimer();
       setTokenHighlight(true);
-      setJwtDialogOpen(true);
+      setIsTokenExpanded(true);
       setTimeout(() => setTokenHighlight(false), 1500);
     }, 800);
   };
@@ -166,11 +166,58 @@ export function ApiKeysPage() {
                   {jwtToken ? "Обновить токен" : "Получить токен"}
                 </Button>
                 {jwtToken && (
-                  <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
-                    {Math.floor(jwtSecondsLeft / 60)}мин {jwtSecondsLeft % 60}с
-                  </Badge>
+                  <>
+                    <Badge className={`${jwtSecondsLeft <= 300 ? 'bg-destructive/10 text-destructive hover:bg-destructive/10' : 'bg-success/10 text-success hover:bg-success/10'} border-0 text-xs font-medium tabular-nums`}>
+                      {Math.floor(jwtSecondsLeft / 60)}мин {jwtSecondsLeft % 60}с
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsTokenExpanded(!isTokenExpanded)}
+                      className="gap-1.5 text-muted-foreground ml-auto"
+                    >
+                      {isTokenExpanded ? (
+                        <><ChevronUp className="w-3.5 h-3.5" /> Скрыть детали</>
+                      ) : (
+                        <><ChevronDown className="w-3.5 h-3.5" /> Показать детали</>
+                      )}
+                    </Button>
+                  </>
                 )}
               </div>
+
+              <Collapsible open={isTokenExpanded}>
+                <CollapsibleContent>
+                  {jwtToken && (
+                    <div className="mt-3 space-y-3">
+                      <div className="relative rounded-md bg-code-bg border border-border">
+                        <pre className="p-3 pr-10 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-all">
+                          {jwtToken}
+                        </pre>
+                        <button
+                          onClick={copyJwt}
+                          className="absolute top-2.5 right-2.5 p-1 rounded hover:bg-muted transition-colors"
+                          title="Копировать"
+                        >
+                          {jwtCopied ? (
+                            <Check className="w-3.5 h-3.5 text-success" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="pt-2 border-t border-border">
+                        <div className="mb-2 flex items-center gap-2 rounded-md bg-success/10 border border-success/20 px-3 py-2 text-xs text-success">
+                          <Check className="w-3.5 h-3.5 shrink-0" />
+                          Токен подставлен в примеры. При перезагрузке страницы он будет сброшен.
+                        </div>
+                        <SmartCodeBlock token={jwtToken} highlight={tokenHighlight} />
+                      </div>
+                    </div>
+                  )}
+                </CollapsibleContent>
+              </Collapsible>
             </div>
           </div>
         </div>
@@ -232,41 +279,7 @@ export function ApiKeysPage() {
           </DialogContent>
         </Dialog>
 
-        {/* JWT Success Dialog */}
-        <Dialog open={jwtDialogOpen} onOpenChange={(open) => { if (!open) setJwtDialogOpen(false); }}>
-          <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Ваш временный токен</DialogTitle>
-            </DialogHeader>
-
-            <div className="space-y-3 min-w-0">
-              <div className="flex items-center gap-2">
-                <div className="flex-1 min-w-0 rounded-md bg-code-bg border border-border">
-                  <pre className="p-3 text-xs font-mono text-foreground whitespace-normal break-all max-h-28 overflow-y-auto">
-                    {jwtToken}
-                  </pre>
-                </div>
-                <Button onClick={copyJwt} size="icon" variant="secondary" className="shrink-0">
-                  {jwtCopied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-
-              <div className="text-xs text-success bg-success/10 px-3 py-2 rounded-md flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 shrink-0" />
-                Секретный ключ подставлен в примеры ниже. Скопируйте нужный код.
-              </div>
-
-              <div className="min-w-0 max-w-full">
-                {jwtToken && <SmartCodeBlock token={jwtToken} highlight={tokenHighlight} />}
-              </div>
-            </div>
-
-            <DialogFooter>
-              <Button onClick={() => setJwtDialogOpen(false)}>Готово</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
+        {/* Existing Keys */}
         {keys.length > 0 && (
           <div className="mb-6 rounded-lg border border-border bg-card">
             <div className="px-5 py-3.5 border-b border-border">
