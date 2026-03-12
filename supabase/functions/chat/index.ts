@@ -1,4 +1,4 @@
-// AI Kit Chat Assistant
+// v4 - Lovable AI Gateway
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -17,14 +17,14 @@ serve(async (req) => {
 
     const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) {
-      console.error("LOVABLE_API_KEY not found in env");
+      console.error("v4: LOVABLE_API_KEY not found");
       return new Response(
         JSON.stringify({ error: "API key not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log("aichat: calling gateway");
+    console.log("v4: calling Lovable AI gateway");
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -37,7 +37,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "Ты — AI Kit Assistant, помощник по платформе AI Kit. Отвечай кратко, по делу, на русском языке. Используй markdown для форматирования. Платформа включает: реестр AI-агентов (A2A протокол), MCP-инструменты, LLM-модели через единый API, JWT/API ключи для авторизации.",
+            content: "Ты — AI Kit Assistant, помощник по платформе AI Kit. Отвечай кратко, по делу, на русском языке. Используй markdown для форматирования.",
           },
           ...messages,
         ],
@@ -45,25 +45,15 @@ serve(async (req) => {
       }),
     });
 
-    console.log("aichat: status", response.status);
+    console.log("v4: gateway status", response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("aichat: error", response.status, errorText);
-
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Слишком много запросов, попробуйте позже." }), {
-          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Необходимо пополнить баланс." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      console.error("v4: gateway error", response.status, errorText);
 
       return new Response(JSON.stringify({ error: `AI error ${response.status}` }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: response.status >= 400 && response.status < 500 ? response.status : 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -71,7 +61,7 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
-    console.error("aichat: exception", e);
+    console.error("v4: exception", e);
     return new Response(
       JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
