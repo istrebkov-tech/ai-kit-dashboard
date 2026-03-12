@@ -311,8 +311,8 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
               <List className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-foreground">Активные ключи</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h2 className="text-xs font-semibold text-foreground">Активные ключи</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 Управление созданными ключами. Удалите ключ, если доступ больше не требуется.
               </p>
 

@@ -12,8 +12,8 @@ export function MyAgentsPage() {
 
         <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
           <Construction className="w-12 h-12 text-amber-500 mb-4" />
-          <h2 className="text-xl font-bold text-foreground">Раздел в разработке</h2>
-          <p className="text-muted-foreground mt-2 max-w-md">
+          <h2 className="text-base font-semibold text-foreground">Раздел в разработке</h2>
+          <p className="text-xs text-muted-foreground mt-2 max-w-md">
             Здесь скоро появится список ваших персонально настроенных агентов.
           </p>
         </Card>
