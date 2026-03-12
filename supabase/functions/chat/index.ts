@@ -14,48 +14,37 @@ serve(async (req) => {
   try {
     const { messages } = await req.json();
 
-    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-    console.log("API key present:", !!OPENROUTER_API_KEY, "length:", OPENROUTER_API_KEY?.length);
-
-    if (!OPENROUTER_API_KEY) {
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) {
       return new Response(
-        JSON.stringify({ error: "OPENROUTER_API_KEY is not configured" }),
+        JSON.stringify({ error: "LOVABLE_API_KEY is not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const headers = new Headers();
-    headers.set("Content-Type", "application/json");
-    headers.set("Authorization", `Bearer ${OPENROUTER_API_KEY}`);
-    headers.set("HTTP-Referer", "https://ai-kit-dashboard.lovable.app");
-    headers.set("X-Title", "AI Kit Assistant");
-
-    const body = JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      messages: [
-        {
-          role: "system",
-          content:
-            "Ты — AI Kit Assistant, помощник по платформе AI Kit. Отвечай кратко, по делу, на русском языке. Используй markdown для форматирования. Платформа включает: реестр AI-агентов (A2A протокол), MCP-инструменты, LLM-модели через единый API, JWT/API ключи для авторизации.",
-        },
-        ...messages,
-      ],
-      stream: true,
-    });
-
-    console.log("Sending request to OpenRouter...");
-
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
-      headers,
-      body,
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          {
+            role: "system",
+            content:
+              "Ты — AI Kit Assistant, помощник по платформе AI Kit. Отвечай кратко, по делу, на русском языке. Используй markdown для форматирования. Платформа включает: реестр AI-агентов (A2A протокол), MCP-инструменты, LLM-модели через единый API, JWT/API ключи для авторизации.",
+          },
+          ...messages,
+        ],
+        stream: true,
+      }),
     });
-
-    console.log("OpenRouter response status:", response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("OpenRouter error:", response.status, errorText);
+      console.error("AI gateway error:", response.status, errorText);
 
       if (response.status === 429) {
         return new Response(JSON.stringify({ error: "Слишком много запросов, попробуйте позже." }), {
@@ -64,14 +53,8 @@ serve(async (req) => {
         });
       }
       if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Недостаточно средств на аккаунте OpenRouter." }), {
+        return new Response(JSON.stringify({ error: "Необходимо пополнить баланс Lovable AI." }), {
           status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 401) {
-        return new Response(JSON.stringify({ error: "Ошибка авторизации OpenRouter. Проверьте API ключ." }), {
-          status: 401,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
