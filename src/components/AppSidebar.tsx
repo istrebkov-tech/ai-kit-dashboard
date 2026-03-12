@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity } from "lucide-react";
-import { AiOmnibox } from "./AiOmnibox";
+
 
 interface NavItem {
   id: string;
@@ -78,10 +78,6 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         )}
       </div>
 
-      {/* AI Omnibox trigger */}
-      <div className="mx-3 mb-4">
-        <AiOmnibox />
-      </div>
 
       <nav className="flex-1 px-3">
         <ul className="space-y-0.5">

@@ -8,6 +8,7 @@ import { LlmModelsPage } from "@/components/LlmModelsPage";
 import { LimitsPage } from "@/components/LimitsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 import { OnboardingModal } from "@/components/OnboardingModal";
+import { AiOmnibox } from "@/components/AiOmnibox";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
@@ -31,6 +32,7 @@ const Index = () => {
     <div className="flex min-h-screen bg-background">
       <AppSidebar activeId={activeId} onNavigate={setActiveId} onOpenOnboarding={() => setOnboardingOpen(true)} />
       {renderPage()}
+      <AiOmnibox />
       <OnboardingModal open={onboardingOpen} onOpenChange={setOnboardingOpen} />
     </div>
   );
