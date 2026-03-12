@@ -1,3 +1,4 @@
+// v4 - Lovable AI Gateway
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -14,15 +15,21 @@ serve(async (req) => {
   try {
     const { messages } = await req.json();
 
-    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-    if (!OPENROUTER_API_KEY) {
-      throw new Error("OPENROUTER_API_KEY is not configured");
+    const apiKey = Deno.env.get("LOVABLE_API_KEY");
+    if (!apiKey) {
+      console.error("v4: LOVABLE_API_KEY not found");
+      return new Response(
+        JSON.stringify({ error: "API key not configured" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    console.log("v4: calling Lovable AI gateway");
+
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -30,8 +37,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content:
-              "Ты — AI Kit Assistant, помощник по платформе AI Kit. Отвечай кратко, по делу, на русском языке. Используй markdown для форматирования. Платформа включает: реестр AI-агентов (A2A протокол), MCP-инструменты, LLM-модели через единый API, JWT/API ключи для авторизации.",
+            content: "Ты — AI Kit Assistant, помощник по платформе AI Kit. Отвечай кратко, по делу, на русском языке. Используй markdown для форматирования.",
           },
           ...messages,
         ],
@@ -39,25 +45,14 @@ serve(async (req) => {
       }),
     });
 
+    console.log("v4: gateway status", response.status);
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("OpenRouter error:", response.status, errorText);
+      console.error("v4: gateway error", response.status, errorText);
 
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Слишком много запросов, попробуйте позже." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Недостаточно средств на аккаунте OpenRouter." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      return new Response(JSON.stringify({ error: "Ошибка AI сервиса" }), {
-        status: 500,
+      return new Response(JSON.stringify({ error: `AI error ${response.status}` }), {
+        status: response.status >= 400 && response.status < 500 ? response.status : 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -66,13 +61,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
-    console.error("chat error:", e);
+    console.error("v4: exception", e);
     return new Response(
       JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
