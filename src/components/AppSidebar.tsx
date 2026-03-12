@@ -37,9 +37,9 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
+    <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0 relative">
       {/* Scrollable area */}
-      <div className="flex-1 overflow-y-auto relative flex flex-col">
+      <div className="flex-1 overflow-y-auto pb-16">
         <div className="px-5 pt-5 pb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
@@ -140,11 +140,11 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
             ))}
           </ul>
         </nav>
+      </div>
 
-        {/* Sticky FAB */}
-        <div className="sticky bottom-4 mt-auto flex justify-end w-full pointer-events-none px-4 z-50">
-          <AiOmnibox />
-        </div>
+      {/* Floating AI button */}
+      <div className="absolute right-3 bottom-[52px] z-50">
+        <AiOmnibox />
       </div>
 
       {/* Static footer */}
