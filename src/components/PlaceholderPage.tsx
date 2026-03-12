@@ -8,10 +8,10 @@ interface PlaceholderPageProps {
 export function PlaceholderPage({ title, subtitle }: PlaceholderPageProps) {
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="max-w-3xl mx-auto px-8 py-10">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">{title}</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">{subtitle}</p>
+      <div className="max-w-3xl mx-auto px-8 py-8">
+        <div className="mb-6">
+          <h1 className="text-lg font-semibold text-foreground tracking-tight">{title}</h1>
+          <p className="mt-1 text-xs text-muted-foreground">{subtitle}</p>
         </div>
         <div className="rounded-lg border border-border bg-card p-12 flex flex-col items-center justify-center text-center">
           <Construction className="w-10 h-10 text-muted-foreground mb-4" />
