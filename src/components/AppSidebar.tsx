@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity } from "lucide-react";
+import { AiOmnibox } from "./AiOmnibox";
 
 
 interface NavItem {
@@ -139,6 +140,9 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         </ul>
       </nav>
 
+      <div className="px-3 pb-3">
+        <AiOmnibox />
+      </div>
       <div className="px-5 py-4 border-t border-border">
         <div className="text-[11px] text-muted-foreground">AI Kit v2.4.1</div>
       </div>
