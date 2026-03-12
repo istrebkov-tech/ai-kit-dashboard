@@ -68,14 +68,14 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
             <div className="mt-0.5 ml-2 border-l border-border pl-3">
               <button
                 onClick={() => { onNavigate("limits"); setProfileOpen(true); }}
-                className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-[13px] transition-colors ${
+                className={`w-full flex items-center gap-1.5 px-2 py-1.5 rounded-md text-[11px] whitespace-nowrap transition-colors ${
                   activeId === "limits"
                     ? "text-foreground font-medium bg-sidebar-active"
                     : "text-muted-foreground hover:text-foreground hover:bg-sidebar-active"
                 }`}
               >
-                <Activity className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">Лимиты и Квоты</span>
+                <Activity className="w-3 h-3 shrink-0" />
+                <span>Лимиты</span>
               </button>
             </div>
           )}
