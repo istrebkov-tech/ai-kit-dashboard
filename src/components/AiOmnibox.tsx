@@ -68,13 +68,11 @@ export function AiOmnibox() {
       {/* Trigger button */}
       <button
         onClick={handleOpen}
-        className="flex items-center justify-between w-full px-3 py-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted border border-border hover:border-muted-foreground/20 rounded-lg transition-all shadow-sm cursor-pointer"
+        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-2.5 text-sm text-primary-foreground bg-primary hover:bg-primary/90 border border-primary/20 rounded-full transition-all shadow-lg cursor-pointer"
       >
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span>Спросить AI или найти...</span>
-        </div>
-        <kbd className="flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground/60 bg-background border border-border rounded font-mono">
+        <Sparkles className="w-4 h-4" />
+        <span className="font-medium">Спросить AI</span>
+        <kbd className="ml-1 px-1.5 py-0.5 text-[10px] font-mono text-primary-foreground/60 bg-primary-foreground/10 border border-primary-foreground/20 rounded">
           ⌘K
         </kbd>
       </button>
