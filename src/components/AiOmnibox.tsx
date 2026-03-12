@@ -229,7 +229,7 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
                         <p className="text-sm text-foreground pt-0.5">{msg.content}</p>
                       </>
                     ) : (
-                      <div className="bg-muted/50 p-4 rounded-lg text-sm text-foreground/80 leading-relaxed w-full prose prose-sm dark:prose-invert max-w-none [&_pre]:bg-background [&_pre]:border [&_pre]:border-border [&_code]:text-xs">
+                      <div className="bg-muted/50 p-4 rounded-lg text-sm text-foreground/80 leading-relaxed w-full max-w-none space-y-3 [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:space-y-2 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:space-y-1 [&_strong]:font-semibold [&_strong]:text-foreground [&_code]:bg-muted [&_code]:text-foreground [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:font-mono [&_code]:text-xs [&_pre]:bg-background [&_pre]:border [&_pre]:border-border [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_p]:leading-relaxed [&_li]:leading-relaxed">
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
                     )}
