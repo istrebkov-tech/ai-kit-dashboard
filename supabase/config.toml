@@ -2,6 +2,3 @@ project_id = "nlioprxxzllkgqmoahjp"
 
 [functions.chat]
 verify_jwt = false
-
-[functions.openrouter-limits]
-verify_jwt = false
