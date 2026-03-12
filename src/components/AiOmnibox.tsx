@@ -68,7 +68,7 @@ export function AiOmnibox() {
       {/* Trigger button */}
       <button
         onClick={handleOpen}
-        className="fixed bottom-4 left-4 z-40 flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground bg-background hover:bg-muted border border-border rounded-lg transition-all shadow-md cursor-pointer"
+        className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground bg-background hover:bg-muted border border-border rounded-lg transition-all shadow-sm cursor-pointer"
       >
         <Sparkles className="w-3.5 h-3.5 text-primary" />
         <kbd className="font-mono text-[11px]">⌘K</kbd>
