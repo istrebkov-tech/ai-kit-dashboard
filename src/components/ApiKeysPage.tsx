@@ -137,11 +137,11 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="max-w-3xl mx-auto px-8 py-10">
+      <div className="max-w-3xl mx-auto px-8 py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">API Ключи и Доступ</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
+        <div className="mb-6">
+          <h1 className="text-lg font-semibold text-foreground tracking-tight">API Ключи и Доступ</h1>
+          <p className="mt-1 text-xs text-muted-foreground">
             Управление токенами аутентификации и постоянными API ключами
           </p>
         </div>
