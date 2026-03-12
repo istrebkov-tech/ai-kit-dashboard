@@ -11,17 +11,17 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: "api-keys", title: "API Ключи и Доступ", icon: Key },
+  { id: "api-keys", title: "API Ключи", icon: Key },
   {
     id: "agents",
-    title: "Реестр Агентов",
+    title: "Агенты",
     icon: Box,
     children: [
-      { id: "agents", title: "Доступные агенты", icon: Users },
+      { id: "agents", title: "Доступные", icon: Users },
       { id: "my-agents", title: "Мои агенты", icon: UserCog },
     ],
   },
-  { id: "mcp", title: "Инструменты MCP", icon: Wrench },
+  { id: "mcp", title: "MCP", icon: Wrench },
   { id: "models", title: "LLM Модели", icon: Cpu },
 ];
 
