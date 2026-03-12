@@ -143,7 +143,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
       </div>
 
       {/* Floating AI button */}
-      <div className="absolute right-3 bottom-[52px] z-50">
+      <div className="absolute left-3 bottom-[52px] z-50">
         <AiOmnibox />
       </div>
 
