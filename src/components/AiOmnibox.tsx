@@ -15,11 +15,13 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 async function streamChat({
   messages,
+  currentPage,
   onDelta,
   onDone,
   onError,
 }: {
   messages: Msg[];
+  currentPage: string;
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (err: string) => void;
