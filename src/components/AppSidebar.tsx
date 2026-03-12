@@ -37,7 +37,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <aside className="w-[250px] min-h-screen max-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
+    <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
@@ -79,7 +79,8 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         )}
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3">
+
+      <nav className="flex-1 px-3">
         <ul className="space-y-0.5">
           {navItems.map((item) => (
             <li key={item.id}>
@@ -137,14 +138,12 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
             </li>
           ))}
         </ul>
-
-        {/* Sticky AI button at the bottom of scrollable nav */}
-        <div className="sticky bottom-0 pt-3 pb-1 bg-sidebar-bg">
-          <AiOmnibox />
-        </div>
       </nav>
 
-      <div className="px-5 py-4 border-t border-border shrink-0">
+      <div className="px-3 pb-3">
+        <AiOmnibox />
+      </div>
+      <div className="px-5 py-4 border-t border-border">
         <div className="text-[11px] text-muted-foreground">AI Kit v2.4.1</div>
       </div>
     </aside>
