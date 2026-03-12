@@ -137,11 +137,11 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="max-w-3xl mx-auto px-8 py-10">
+      <div className="max-w-3xl mx-auto px-8 py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground tracking-tight">API Ключи и Доступ</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
+        <div className="mb-6">
+          <h1 className="text-lg font-semibold text-foreground tracking-tight">API Ключи и Доступ</h1>
+          <p className="mt-1 text-xs text-muted-foreground">
             Управление токенами аутентификации и постоянными API ключами
           </p>
         </div>
@@ -157,8 +157,8 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
               <Shield className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-foreground">Временный сессионный токен (JWT)</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h2 className="text-xs font-semibold text-foreground">Временный сессионный токен (JWT)</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 Генерация краткосрочного JWT для доступа к API. Токены действительны 60 минут.
               </p>
               <div className="mt-4 flex items-center gap-3">
@@ -234,8 +234,8 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
               <KeyRound className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-foreground">Создать API ключ</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h2 className="text-xs font-semibold text-foreground">Создать API ключ</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
               </p>
               <div className="mt-4 flex items-center gap-3">
@@ -311,8 +311,8 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
               <List className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-foreground">Активные ключи</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h2 className="text-xs font-semibold text-foreground">Активные ключи</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 Управление созданными ключами. Удалите ключ, если доступ больше не требуется.
               </p>
 

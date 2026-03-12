@@ -13,7 +13,7 @@ export function PageGuide({ children }: PageGuideProps) {
   return (
     <div className="mb-6 rounded-lg border border-primary/15 bg-primary/[0.03] px-4 py-3 flex items-start gap-3">
       <Lightbulb className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-      <div className="flex-1 text-sm text-muted-foreground leading-relaxed [&>strong]:text-foreground [&>strong]:font-medium">
+      <div className="flex-1 text-xs text-muted-foreground leading-relaxed [&>strong]:text-foreground [&>strong]:font-medium">
         {children}
       </div>
       <button

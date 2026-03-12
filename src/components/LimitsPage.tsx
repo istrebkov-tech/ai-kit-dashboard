@@ -27,9 +27,9 @@ export function LimitsPage() {
     <div className="flex-1 overflow-auto">
       <div className="max-w-6xl mx-auto px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-xl font-bold text-foreground">Лимиты и Квоты</h1>
-          <p className="text-sm text-muted-foreground mt-1">Текущее использование ресурсов и ограничения</p>
+        <div className="mb-6">
+          <h1 className="text-lg font-semibold text-foreground">Лимиты и Квоты</h1>
+          <p className="text-xs text-muted-foreground mt-1">Текущее использование ресурсов и ограничения</p>
         </div>
 
         {/* Current Usage */}
