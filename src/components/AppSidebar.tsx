@@ -142,10 +142,8 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         </nav>
 
         {/* Sticky FAB */}
-        <div className="sticky bottom-0 pb-3 pt-4 flex justify-end px-3 z-10 bg-gradient-to-t from-sidebar-bg via-sidebar-bg to-transparent pointer-events-none">
-          <div className="pointer-events-auto">
-            <AiOmnibox />
-          </div>
+        <div className="sticky bottom-4 mt-auto flex justify-end w-full pointer-events-none px-4 z-50">
+          <AiOmnibox />
         </div>
       </div>
 
