@@ -8,7 +8,7 @@ import { LlmModelsPage } from "@/components/LlmModelsPage";
 import { LimitsPage } from "@/components/LimitsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 import { OnboardingModal } from "@/components/OnboardingModal";
-import { AiOmnibox } from "@/components/AiOmnibox";
+
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
