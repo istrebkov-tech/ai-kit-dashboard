@@ -37,7 +37,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <aside className="w-[250px] h-screen sticky top-0 border-r border-border bg-sidebar-bg flex flex-col shrink-0 relative">
+    <aside className="w-[200px] h-screen sticky top-0 border-r border-border bg-sidebar-bg flex flex-col shrink-0 relative">
       {/* Scrollable area */}
       <div className="flex-1 overflow-y-auto pb-16">
         <div className="px-5 pt-5 pb-3">
