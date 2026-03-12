@@ -20,22 +20,48 @@ serve(async (req) => {
       );
     }
 
-    // Fetch key info (limits, usage, credits)
+    console.log("openrouter-limits: key length", apiKey.length, "prefix", apiKey.substring(0, 5));
+
+    // Use Headers object to prevent stripping
+    const headers = new Headers();
+    headers.set("Authorization", `Bearer ${apiKey}`);
+    headers.set("Content-Type", "application/json");
+
     const keyResp = await fetch("https://openrouter.ai/api/v1/key", {
-      headers: { Authorization: `Bearer ${apiKey}` },
+      method: "GET",
+      headers,
     });
 
     if (!keyResp.ok) {
       const errText = await keyResp.text();
       console.error("OpenRouter /key error:", keyResp.status, errText);
-      return new Response(
-        JSON.stringify({ error: `OpenRouter error ${keyResp.status}` }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      
+      // If auth fails, try with HTTP-Authorization header workaround
+      const retryResp = await fetch("https://openrouter.ai/api/v1/key", {
+        method: "GET",
+        headers: {
+          "HTTP-Authorization": `Bearer ${apiKey}`,
+          "Authorization": `Bearer ${apiKey}`,
+          "X-Api-Key": apiKey,
+        },
+      });
+      
+      if (!retryResp.ok) {
+        const retryErr = await retryResp.text();
+        console.error("OpenRouter /key retry error:", retryResp.status, retryErr);
+        return new Response(
+          JSON.stringify({ error: `OpenRouter error ${keyResp.status}` }),
+          { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      
+      const retryData = await retryResp.json();
+      return new Response(JSON.stringify(retryData), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const keyData = await keyResp.json();
-
     return new Response(JSON.stringify(keyData), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
