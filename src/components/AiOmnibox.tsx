@@ -142,6 +142,7 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
     try {
       await streamChat({
         messages: newMessages,
+        currentPage: activeId,
         onDelta: (chunk) => {
           assistantRef.current += chunk;
           const current = assistantRef.current;
