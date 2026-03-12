@@ -234,8 +234,8 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
               <KeyRound className="w-4.5 h-4.5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-foreground">Создать API ключ</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h2 className="text-xs font-semibold text-foreground">Создать API ключ</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 Долгосрочный ключ для межсервисной интеграции. Действует 365 дней.
               </p>
               <div className="mt-4 flex items-center gap-3">
