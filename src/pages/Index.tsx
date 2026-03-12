@@ -32,7 +32,6 @@ const Index = () => {
     <div className="flex min-h-screen bg-background">
       <AppSidebar activeId={activeId} onNavigate={setActiveId} onOpenOnboarding={() => setOnboardingOpen(true)} />
       {renderPage()}
-      <AiOmnibox />
       <OnboardingModal open={onboardingOpen} onOpenChange={setOnboardingOpen} />
     </div>
   );
