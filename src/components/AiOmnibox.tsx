@@ -239,22 +239,44 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
           <div ref={scrollRef} className="max-h-[400px] overflow-y-auto">
             {hasMessages ? (
               <div className="p-4 space-y-3">
-                {messages.map((msg, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    {msg.role === "user" ? (
-                      <>
+                {messages.map((msg, i) => {
+                  if (msg.role === "user") {
+                    return (
+                      <div key={i} className="flex items-start gap-2">
                         <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
                           <span className="text-xs font-medium text-muted-foreground">И</span>
                         </div>
                         <p className="text-sm text-foreground pt-0.5">{msg.content}</p>
-                      </>
-                    ) : (
-                      <div className="bg-muted/50 p-4 rounded-lg text-sm text-foreground/80 leading-relaxed w-full max-w-none space-y-3 [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:space-y-2 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:space-y-1 [&_strong]:font-semibold [&_strong]:text-foreground [&_code]:bg-muted [&_code]:text-foreground [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:font-mono [&_code]:text-xs [&_pre]:bg-background [&_pre]:border [&_pre]:border-border [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_p]:leading-relaxed [&_li]:leading-relaxed">
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
-                    )}
-                  </div>
-                ))}
+                    );
+                  }
+
+                  const isLast = i === messages.length - 1;
+                  const { clean, suggestions: msgSuggestions } = parseSuggestions(msg.content);
+                  const showSuggestions = isLast && !isLoading && msgSuggestions.length > 0;
+
+                  return (
+                    <div key={i}>
+                      <div className="bg-muted/50 p-4 rounded-lg text-sm text-foreground/80 leading-relaxed w-full max-w-none space-y-3 [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:space-y-2 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:space-y-1 [&_strong]:font-semibold [&_strong]:text-foreground [&_code]:bg-muted [&_code]:text-foreground [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:font-mono [&_code]:text-xs [&_pre]:bg-background [&_pre]:border [&_pre]:border-border [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_p]:leading-relaxed [&_li]:leading-relaxed">
+                        <ReactMarkdown>{clean}</ReactMarkdown>
+                      </div>
+                      {showSuggestions && (
+                        <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-border/40">
+                          {msgSuggestions.map((s, si) => (
+                            <button
+                              key={si}
+                              onClick={() => handleSubmit(s)}
+                              className="text-xs px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors border border-primary/20 text-left flex items-center gap-1.5 leading-tight shadow-sm active:scale-95"
+                            >
+                              <Sparkles className="w-3 h-3 shrink-0" />
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
                 {error && (
                   <div className="text-xs text-destructive bg-destructive/10 rounded-md px-3 py-2">
                     {error}
