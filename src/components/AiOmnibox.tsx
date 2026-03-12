@@ -68,13 +68,10 @@ export function AiOmnibox() {
       {/* Trigger button */}
       <button
         onClick={handleOpen}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-2.5 text-sm text-primary-foreground bg-primary hover:bg-primary/90 border border-primary/20 rounded-full transition-all shadow-lg cursor-pointer"
+        className="fixed bottom-4 right-4 z-40 flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground bg-background hover:bg-muted border border-border rounded-lg transition-all shadow-md cursor-pointer"
       >
-        <Sparkles className="w-4 h-4" />
-        <span className="font-medium">Спросить AI</span>
-        <kbd className="ml-1 px-1.5 py-0.5 text-[10px] font-mono text-primary-foreground/60 bg-primary-foreground/10 border border-primary-foreground/20 rounded">
-          ⌘K
-        </kbd>
+        <Sparkles className="w-3.5 h-3.5 text-primary" />
+        <kbd className="font-mono text-[11px]">⌘K</kbd>
       </button>
 
       {/* Omnibox dialog */}
