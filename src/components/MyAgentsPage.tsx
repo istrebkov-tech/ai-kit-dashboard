@@ -5,9 +5,9 @@ export function MyAgentsPage() {
   return (
     <div className="flex-1 overflow-auto">
       <div className="max-w-6xl mx-auto px-8 py-8">
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-foreground">Мои агенты</h1>
-          <p className="text-sm text-muted-foreground mt-1">Персонально настроенные агенты</p>
+        <div className="mb-5">
+          <h1 className="text-lg font-semibold text-foreground">Мои агенты</h1>
+          <p className="text-xs text-muted-foreground mt-1">Персонально настроенные агенты</p>
         </div>
 
         <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
