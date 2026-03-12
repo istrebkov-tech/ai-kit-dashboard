@@ -13,6 +13,26 @@ const suggestions = [
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+function parseSuggestions(content: string): { clean: string; suggestions: string[] } {
+  const lines = content.split("\n");
+  const suggestionLines: string[] = [];
+  const cleanLines: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("[SUGGESTION] ")) {
+      suggestionLines.push(trimmed.slice("[SUGGESTION] ".length));
+    } else {
+      cleanLines.push(line);
+    }
+  }
+
+  return {
+    clean: cleanLines.join("\n").trimEnd(),
+    suggestions: suggestionLines,
+  };
+}
+
 async function streamChat({
   messages,
   currentPage,
