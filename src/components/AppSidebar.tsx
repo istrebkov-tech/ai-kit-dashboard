@@ -89,7 +89,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
                   <>
                     <button
                       onClick={() => setAgentsOpen(!agentsOpen)}
-                      className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-colors ${
+                      className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs whitespace-nowrap transition-colors ${
                         isAgentsSection
                           ? "bg-sidebar-active font-medium text-foreground"
                           : "text-muted-foreground hover:bg-sidebar-active hover:text-foreground"
