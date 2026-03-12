@@ -39,7 +39,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
   return (
     <aside className="w-[250px] min-h-screen border-r border-border bg-sidebar-bg flex flex-col shrink-0">
       {/* Scrollable area */}
-      <div className="flex-1 overflow-y-auto relative">
+      <div className="flex-1 overflow-y-auto relative flex flex-col">
         <div className="px-5 pt-5 pb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
