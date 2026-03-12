@@ -109,7 +109,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
                           <li key={child.id}>
                             <button
                               onClick={() => onNavigate(child.id)}
-                              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-[13px] transition-colors ${
+                              className={`w-full flex items-center gap-1.5 px-2 py-1.5 rounded-md text-[11px] whitespace-nowrap transition-colors ${
                                 activeId === child.id
                                   ? "text-foreground font-medium bg-sidebar-active"
                                   : "text-muted-foreground hover:text-foreground hover:bg-sidebar-active"
