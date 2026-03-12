@@ -84,7 +84,7 @@ async function streamChat({
   onDone();
 }
 
-export function AiOmnibox() {
+export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<Msg[]>([]);
