@@ -78,10 +78,6 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         )}
       </div>
 
-      {/* AI Omnibox trigger */}
-      <div className="mx-3 mb-4">
-        <AiOmnibox />
-      </div>
 
       <nav className="flex-1 px-3">
         <ul className="space-y-0.5">
