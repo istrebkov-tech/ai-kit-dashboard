@@ -15,6 +15,7 @@ serve(async (req) => {
     const { messages } = await req.json();
 
     const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    console.log("API key present:", !!OPENROUTER_API_KEY, "length:", OPENROUTER_API_KEY?.length);
     if (!OPENROUTER_API_KEY) {
       throw new Error("OPENROUTER_API_KEY is not configured");
     }
