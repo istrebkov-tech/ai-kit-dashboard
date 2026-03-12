@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Sparkles, ArrowRight, CornerDownLeft } from "lucide-react";
+import { Sparkles, CornerDownLeft, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ReactMarkdown from "react-markdown";
+
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 const suggestions = [
   { emoji: "✨", text: "Как интегрировать агента?" },
@@ -8,34 +11,101 @@ const suggestions = [
   { emoji: "📊", text: "Почему я уперся в лимиты?" },
 ];
 
-const MOCK_RESPONSE = `**Agent-to-Agent (A2A)** — это протокол для программного взаимодействия с агентами.
+type Msg = { role: "user" | "assistant"; content: string };
 
-### Быстрый старт
+async function streamChat({
+  messages,
+  onDelta,
+  onDone,
+  onError,
+}: {
+  messages: Msg[];
+  onDelta: (text: string) => void;
+  onDone: () => void;
+  onError: (err: string) => void;
+}) {
+  const resp = await fetch(CHAT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+    },
+    body: JSON.stringify({ messages }),
+  });
 
-1. Получите JWT-токен на странице **API Ключи**
-2. Найдите нужного агента в **Реестре Агентов**
-3. Отправьте POST-запрос на его эндпоинт \`/message/send\`
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    onError(data.error || `Ошибка ${resp.status}`);
+    return;
+  }
 
-\`\`\`bash
-curl "https://agentgateway.ai.redmadrobot.com/a2a/helloworld/message/send" \\
-  -H "Authorization: Bearer YOUR_TOKEN" \\
-  -H "Content-Type: application/json" \\
-  -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"kind":"text","text":"Hello"}]}}}'
-\`\`\`
+  if (!resp.body) {
+    onError("Нет данных от сервера");
+    return;
+  }
 
-Агент обработает запрос и вернёт структурированный ответ.`;
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    let newlineIndex: number;
+    while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+      let line = buffer.slice(0, newlineIndex);
+      buffer = buffer.slice(newlineIndex + 1);
+
+      if (line.endsWith("\r")) line = line.slice(0, -1);
+      if (line.startsWith(":") || line.trim() === "") continue;
+      if (!line.startsWith("data: ")) continue;
+
+      const jsonStr = line.slice(6).trim();
+      if (jsonStr === "[DONE]") {
+        onDone();
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(jsonStr);
+        const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+        if (content) onDelta(content);
+      } catch {
+        buffer = line + "\n" + buffer;
+        break;
+      }
+    }
+  }
+
+  onDone();
+}
 
 export function AiOmnibox() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [submitted, setSubmitted] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Msg[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const assistantRef = useRef("");
 
   const handleOpen = useCallback(() => {
     setOpen(true);
     setQuery("");
-    setSubmitted(null);
+    setMessages([]);
+    setError(null);
+    assistantRef.current = "";
   }, []);
+
+  // Scroll to bottom on new content
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Global Cmd+K / Ctrl+K
   useEffect(() => {
@@ -57,11 +127,45 @@ export function AiOmnibox() {
     }
   }, [open]);
 
-  const handleSubmit = (text: string) => {
-    if (!text.trim()) return;
-    setSubmitted(text.trim());
+  const handleSubmit = async (text: string) => {
+    if (!text.trim() || isLoading) return;
+    const userMsg: Msg = { role: "user", content: text.trim() };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
     setQuery("");
+    setIsLoading(true);
+    setError(null);
+    assistantRef.current = "";
+
+    try {
+      await streamChat({
+        messages: newMessages,
+        onDelta: (chunk) => {
+          assistantRef.current += chunk;
+          const current = assistantRef.current;
+          setMessages((prev) => {
+            const last = prev[prev.length - 1];
+            if (last?.role === "assistant") {
+              return prev.map((m, i) =>
+                i === prev.length - 1 ? { ...m, content: current } : m
+              );
+            }
+            return [...prev, { role: "assistant", content: current }];
+          });
+        },
+        onDone: () => setIsLoading(false),
+        onError: (err) => {
+          setError(err);
+          setIsLoading(false);
+        },
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Неизвестная ошибка");
+      setIsLoading(false);
+    }
   };
+
+  const hasMessages = messages.length > 0;
 
   return (
     <>
@@ -71,7 +175,9 @@ export function AiOmnibox() {
         className="pointer-events-auto flex items-center gap-2 bg-background border border-border shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)] rounded-full p-2.5 transition-all active:scale-95 cursor-pointer"
       >
         <Sparkles className="w-4 h-4 text-primary" />
-        <kbd className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border">⌘K</kbd>
+        <kbd className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border">
+          ⌘K
+        </kbd>
       </button>
 
       {/* Omnibox dialog */}
@@ -90,32 +196,47 @@ export function AiOmnibox() {
               }}
               placeholder="Спросите AI или введите команду..."
               className="flex-1 text-lg bg-transparent placeholder:text-muted-foreground/50 focus:outline-none text-foreground"
+              disabled={isLoading}
             />
-            {query.trim() && (
-              <button
-                onClick={() => handleSubmit(query)}
-                className="p-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                <CornerDownLeft className="w-4 h-4" />
-              </button>
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 text-muted-foreground animate-spin" />
+            ) : (
+              query.trim() && (
+                <button
+                  onClick={() => handleSubmit(query)}
+                  className="p-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  <CornerDownLeft className="w-4 h-4" />
+                </button>
+              )
             )}
           </div>
 
           {/* Results area */}
-          <div className="max-h-[400px] overflow-y-auto">
-            {submitted ? (
+          <div ref={scrollRef} className="max-h-[400px] overflow-y-auto">
+            {hasMessages ? (
               <div className="p-4 space-y-3">
-                {/* User prompt */}
-                <div className="flex items-start gap-2">
-                  <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-xs font-medium text-muted-foreground">И</span>
+                {messages.map((msg, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    {msg.role === "user" ? (
+                      <>
+                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
+                          <span className="text-xs font-medium text-muted-foreground">И</span>
+                        </div>
+                        <p className="text-sm text-foreground pt-0.5">{msg.content}</p>
+                      </>
+                    ) : (
+                      <div className="bg-muted/50 p-4 rounded-lg text-sm text-foreground/80 leading-relaxed w-full prose prose-sm dark:prose-invert max-w-none [&_pre]:bg-background [&_pre]:border [&_pre]:border-border [&_code]:text-xs">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-sm text-foreground pt-0.5">{submitted}</p>
-                </div>
-                {/* AI response */}
-                <div className="bg-muted/50 p-4 rounded-lg text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
-                  {MOCK_RESPONSE}
-                </div>
+                ))}
+                {error && (
+                  <div className="text-xs text-destructive bg-destructive/10 rounded-md px-3 py-2">
+                    {error}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="p-2">
@@ -130,7 +251,6 @@ export function AiOmnibox() {
                   >
                     <span className="text-base">{s.emoji}</span>
                     <span className="flex-1 text-left">{s.text}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/0 group-hover/item:text-muted-foreground transition-colors" />
                   </button>
                 ))}
               </div>
@@ -139,7 +259,7 @@ export function AiOmnibox() {
 
           {/* Footer */}
           <div className="px-4 py-2 border-t border-border/50 flex items-center justify-between text-[11px] text-muted-foreground">
-            <span>AI Kit Assistant</span>
+            <span>AI Kit Assistant · OpenRouter</span>
             <div className="flex items-center gap-2">
               <kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono">Esc</kbd>
               <span>закрыть</span>
