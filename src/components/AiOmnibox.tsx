@@ -15,11 +15,13 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 async function streamChat({
   messages,
+  currentPage,
   onDelta,
   onDone,
   onError,
 }: {
   messages: Msg[];
+  currentPage: string;
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (err: string) => void;
@@ -30,7 +32,7 @@ async function streamChat({
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
-    body: JSON.stringify({ messages }),
+    body: JSON.stringify({ messages, currentPage }),
   });
 
   if (!resp.ok) {
@@ -82,7 +84,7 @@ async function streamChat({
   onDone();
 }
 
-export function AiOmnibox() {
+export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -140,6 +142,7 @@ export function AiOmnibox() {
     try {
       await streamChat({
         messages: newMessages,
+        currentPage: activeId,
         onDelta: (chunk) => {
           assistantRef.current += chunk;
           const current = assistantRef.current;
