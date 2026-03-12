@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity } from "lucide-react";
+import { AiOmnibox } from "./AiOmnibox";
 
 interface NavItem {
   id: string;
@@ -137,7 +138,8 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
         </ul>
       </nav>
 
-      <div className="px-3 pb-2">
+      <div className="px-3 pb-1 space-y-0.5">
+        <AiOmnibox />
         <button
           onClick={onOpenOnboarding}
           className="w-full flex items-center gap-2 px-2.5 py-2 rounded-md text-sm text-muted-foreground hover:bg-sidebar-active hover:text-foreground transition-colors"
