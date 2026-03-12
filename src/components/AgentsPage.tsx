@@ -100,9 +100,6 @@ export function AgentsPage({ jwtToken }: { jwtToken?: string | null }) {
           </p>
         </div>
 
-        <PageGuide>
-          <strong>Что такое Агенты:</strong> В отличие от обычных чат-моделей, Агенты умеют автономно выполнять многошаговые задачи. Выберите подходящего агента и отправьте ему задачу через A2A-интерфейс.
-        </PageGuide>
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">

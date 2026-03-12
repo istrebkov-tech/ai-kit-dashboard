@@ -55,9 +55,6 @@ export function McpToolsPage() {
           </p>
         </div>
 
-        <PageGuide>
-          <strong>Зачем это нужно:</strong> MCP-серверы дают нейросетям доступ к данным вашей компании. Авторизуйте нужные сервисы (например, Jira или GitHub), чтобы модели могли читать вашу документацию и контекст.
-        </PageGuide>
 
         {/* Controls */}
         <div className="flex items-center gap-4 mb-6">

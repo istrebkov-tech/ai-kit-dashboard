@@ -146,9 +146,6 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
           </p>
         </div>
 
-        <PageGuide>
-          <strong>С чего начать:</strong> Любой запрос к платформе требует авторизации. Сгенерируйте временный JWT-токен (на 1 час) для быстрых тестов в Postman/Terminal, или создайте постоянный ключ для вашего бэкенда.
-        </PageGuide>
 
         {/* Section 1: JWT Token */}
         <div className="mb-6 rounded-lg border border-border bg-card p-5">
