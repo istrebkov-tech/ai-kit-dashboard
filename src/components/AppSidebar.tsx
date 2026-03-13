@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink } from "lucide-react";
 import { AiOmnibox } from "./AiOmnibox";
 
 
