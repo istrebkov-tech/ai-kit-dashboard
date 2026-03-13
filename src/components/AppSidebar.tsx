@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink } from "lucide-react";
 import { AiOmnibox } from "./AiOmnibox";
 
 
@@ -139,6 +139,19 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
               </li>
             ))}
           </ul>
+
+          {/* Eval Platform — external link */}
+          <a
+            href="https://eval.yourdomain.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-2 py-1.5 mt-0.5 rounded-md text-xs whitespace-nowrap transition-colors text-muted-foreground hover:bg-sidebar-active hover:text-foreground"
+          >
+            <FlaskConical className="w-4 h-4 shrink-0" />
+            <span className="truncate">Eval Platform</span>
+            <span className="px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 border border-amber-200/50 text-[10px] font-bold uppercase tracking-wider ml-auto">Dev</span>
+            <ExternalLink className="w-3 h-3 text-muted-foreground shrink-0" />
+          </a>
         </nav>
       </div>
 
