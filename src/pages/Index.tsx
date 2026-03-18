@@ -39,7 +39,7 @@ const Index = () => {
     <div className="flex min-h-screen bg-background">
       <AppSidebar activeId={activeId} onNavigate={setActiveId} onOpenOnboarding={() => setOnboardingOpen(true)} />
       {renderPage()}
-      <OnboardingModal open={onboardingOpen} onOpenChange={setOnboardingOpen} />
+      <OnboardingTour open={onboardingOpen} onComplete={handleOnboardingComplete} />
     </div>
   );
 };
