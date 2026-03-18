@@ -120,8 +120,6 @@ export const AiOmnibox = forwardRef<AiOmniboxHandle, { activeId?: string; onFirs
   const assistantRef = useRef("");
   const firstMsgFired = useRef(false);
 
-  useImperativeHandle(ref, () => ({ openDialog: handleOpen }), [handleOpen]);
-
   const handleOpen = useCallback(() => {
     setOpen(true);
     setQuery("");
@@ -129,6 +127,8 @@ export const AiOmnibox = forwardRef<AiOmniboxHandle, { activeId?: string; onFirs
     setError(null);
     assistantRef.current = "";
   }, []);
+
+  useImperativeHandle(ref, () => ({ openDialog: handleOpen }), [handleOpen]);
 
   // Scroll to bottom on new content
   useEffect(() => {
