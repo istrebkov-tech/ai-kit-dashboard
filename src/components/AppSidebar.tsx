@@ -34,6 +34,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ activeId, onNavigate, onOpenOnboarding, onRegisterOpenAssistant }: AppSidebarProps) {
+  const onboardingCtx = useOnboarding();
   const isAgentsSection = activeId === "agents" || activeId === "my-agents";
   const [agentsOpen, setAgentsOpen] = useState(isAgentsSection);
   const [profileOpen, setProfileOpen] = useState(false);
