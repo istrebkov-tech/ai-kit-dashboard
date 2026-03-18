@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink } from "lucide-react";
 import { AiOmnibox, type AiOmniboxHandle } from "./AiOmnibox";
+import { useOnboarding } from "@/contexts/OnboardingContext";
 
 
 interface NavItem {
