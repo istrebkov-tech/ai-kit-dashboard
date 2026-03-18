@@ -322,4 +322,4 @@ export const AiOmnibox = forwardRef<AiOmniboxHandle, { activeId?: string; onFirs
       </Dialog>
     </>
   );
-}
+});
