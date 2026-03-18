@@ -21,8 +21,11 @@ import { ServerContent } from "./mcp/ServerContentStates";
 import { PageGuide } from "./PageGuide";
 
 export function McpToolsPage() {
+  const onboardingCtx = useOnboarding();
   const [search, setSearch] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  useEffect(() => { onboardingCtx.markMCP(); }, []);
 
   const handleCopyCommand = useCallback((serverId: string, command: string) => {
     navigator.clipboard.writeText(command);
