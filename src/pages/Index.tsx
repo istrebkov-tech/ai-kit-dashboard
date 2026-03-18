@@ -7,15 +7,22 @@ import { McpToolsPage } from "@/components/McpToolsPage";
 import { LlmModelsPage } from "@/components/LlmModelsPage";
 import { LimitsPage } from "@/components/LimitsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
-import { OnboardingModal } from "@/components/OnboardingModal";
+import { OnboardingTour } from "@/components/OnboardingTour";
 
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
 const Index = () => {
   const [activeId, setActiveId] = useState("api-keys");
-  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [onboardingOpen, setOnboardingOpen] = useState(() => {
+    return localStorage.getItem("aikit_onboarding_done") !== "true";
+  });
   const [jwtToken, setJwtToken] = useState<string | null>(null);
+
+  const handleOnboardingComplete = () => {
+    setOnboardingOpen(false);
+    localStorage.setItem("aikit_onboarding_done", "true");
+  };
 
   const renderPage = () => {
     if (activeId === "api-keys") return <ApiKeysPage jwtToken={jwtToken} onJwtTokenChange={setJwtToken} />;
