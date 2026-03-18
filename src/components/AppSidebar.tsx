@@ -29,6 +29,7 @@ interface AppSidebarProps {
   activeId: string;
   onNavigate: (id: string) => void;
   onOpenOnboarding?: () => void;
+  onRegisterOpenAssistant?: (fn: () => void) => void;
 }
 
 export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
