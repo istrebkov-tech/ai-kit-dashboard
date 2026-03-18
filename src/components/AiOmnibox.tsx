@@ -152,12 +152,6 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
   const handleSubmit = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
-    // Mark first message for onboarding
-    if (!firstMsgFired.current && onFirstMessage) {
-      firstMsgFired.current = true;
-      onFirstMessage();
-    }
-
     const userMsg: Msg = { role: "user", content: text.trim() };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
