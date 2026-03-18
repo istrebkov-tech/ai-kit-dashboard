@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Shield, RefreshCw, Copy, Check, Plus, KeyRound, ChevronDown, ChevronUp, Trash2, List } from "lucide-react";
+import { useOnboarding } from "@/contexts/OnboardingContext";
 import { PageGuide } from "./PageGuide";
 import { SmartCodeBlock } from "./api-keys/SmartCodeBlock";
 
