@@ -82,7 +82,7 @@ export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
     setTimeout(() => {
       const sig = Math.random().toString(36).substring(2, 15) + Date.now().toString(36) + Math.random().toString(36).substring(2, 10);
       onJwtTokenChange("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzJhYjNjZDRlIiwiaXNzIjoiYWlraXQucnUiLCJpYXQiOjE3MDk4MjQ0MDAsImV4cCI6MTcwOTgyODAwMCwic2NvcGUiOiJhZ2VudHM6cmVhZCBhZ2VudHM6d3JpdGUgbW9kZWxzOnJlYWQifQ." + sig);
-      try { onboardingCtx.markToken(); } catch {}
+      
       setJwtLoading(false);
       startJwtTimer();
       setTokenHighlight(true);
