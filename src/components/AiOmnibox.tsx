@@ -315,4 +315,4 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
       </Dialog>
     </>
   );
-});
+}
