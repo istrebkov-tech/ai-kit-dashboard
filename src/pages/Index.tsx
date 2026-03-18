@@ -11,6 +11,7 @@ import { OnboardingTour } from "@/components/OnboardingTour";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { GettingStartedWidget } from "@/components/GettingStartedWidget";
 import { ContextualGuide } from "@/components/ContextualGuide";
+import { DynamicCodeBuilder } from "@/components/DynamicCodeBuilder";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
