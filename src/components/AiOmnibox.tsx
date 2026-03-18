@@ -104,7 +104,12 @@ async function streamChat({
   onDone();
 }
 
-export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
+export interface AiOmniboxHandle {
+  openDialog: () => void;
+}
+
+export const AiOmnibox = forwardRef<AiOmniboxHandle, { activeId?: string; onFirstMessage?: () => void }>(
+  function AiOmnibox({ activeId = "api-keys", onFirstMessage }, ref) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -113,6 +118,9 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const assistantRef = useRef("");
+  const firstMsgFired = useRef(false);
+
+  useImperativeHandle(ref, () => ({ openDialog: handleOpen }), [handleOpen]);
 
   const handleOpen = useCallback(() => {
     setOpen(true);
