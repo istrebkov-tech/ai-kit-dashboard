@@ -11,6 +11,7 @@ import { OnboardingTour } from "@/components/OnboardingTour";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { GettingStartedWidget } from "@/components/GettingStartedWidget";
 import { ContextualGuide } from "@/components/ContextualGuide";
+import { DynamicCodeBuilder } from "@/components/DynamicCodeBuilder";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
@@ -48,6 +49,7 @@ const Index = () => {
         <div className="flex-1 flex flex-col">
           <div className="px-8 pt-6">
             <GettingStartedWidget onNavigate={setActiveId} />
+            <DynamicCodeBuilder />
           </div>
           {renderPage()}
         </div>
