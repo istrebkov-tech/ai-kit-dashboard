@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useOnboarding } from "@/contexts/OnboardingContext";
 import { Search, Lock, Database, Code, Copy, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -20,8 +21,11 @@ import { ServerContent } from "./mcp/ServerContentStates";
 import { PageGuide } from "./PageGuide";
 
 export function McpToolsPage() {
+  const onboardingCtx = useOnboarding();
   const [search, setSearch] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  useEffect(() => { onboardingCtx.markMCP(); }, []);
 
   const handleCopyCommand = useCallback((serverId: string, command: string) => {
     navigator.clipboard.writeText(command);

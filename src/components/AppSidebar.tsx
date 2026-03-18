@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink } from "lucide-react";
-import { AiOmnibox } from "./AiOmnibox";
+import { AiOmnibox, type AiOmniboxHandle } from "./AiOmnibox";
+import { useOnboarding } from "@/contexts/OnboardingContext";
 
 
 interface NavItem {
@@ -29,12 +30,21 @@ interface AppSidebarProps {
   activeId: string;
   onNavigate: (id: string) => void;
   onOpenOnboarding?: () => void;
+  onRegisterOpenAssistant?: (fn: () => void) => void;
 }
 
-export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
+export function AppSidebar({ activeId, onNavigate, onOpenOnboarding, onRegisterOpenAssistant }: AppSidebarProps) {
+  const onboardingCtx = useOnboarding();
   const isAgentsSection = activeId === "agents" || activeId === "my-agents";
   const [agentsOpen, setAgentsOpen] = useState(isAgentsSection);
   const [profileOpen, setProfileOpen] = useState(false);
+  const omniboxRef = useRef<AiOmniboxHandle>(null);
+
+  useEffect(() => {
+    if (onRegisterOpenAssistant && omniboxRef.current) {
+      onRegisterOpenAssistant(() => omniboxRef.current?.openDialog());
+    }
+  }, [onRegisterOpenAssistant]);
 
   return (
     <aside className="w-[200px] h-screen sticky top-0 border-r border-border bg-sidebar-bg flex flex-col shrink-0 relative">
@@ -157,7 +167,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
 
       {/* Floating AI button */}
       <div className="absolute left-3 bottom-[52px] z-50">
-        <AiOmnibox activeId={activeId} />
+        <AiOmnibox ref={omniboxRef} activeId={activeId} onFirstMessage={onboardingCtx.markAssistant} />
       </div>
 
       {/* Static footer */}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ApiKeysPage } from "@/components/ApiKeysPage";
 import { AgentsPage } from "@/components/AgentsPage";
@@ -8,7 +8,8 @@ import { LlmModelsPage } from "@/components/LlmModelsPage";
 import { LimitsPage } from "@/components/LimitsPage";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
 import { OnboardingTour } from "@/components/OnboardingTour";
-
+import { OnboardingProvider } from "@/contexts/OnboardingContext";
+import { GettingStartedWidget } from "@/components/GettingStartedWidget";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
@@ -18,6 +19,7 @@ const Index = () => {
     return localStorage.getItem("aikit_onboarding_done") !== "true";
   });
   const [jwtToken, setJwtToken] = useState<string | null>(null);
+  const openAssistantRef = useRef<(() => void) | null>(null);
 
   const handleOnboardingComplete = () => {
     setOnboardingOpen(false);
@@ -36,11 +38,26 @@ const Index = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AppSidebar activeId={activeId} onNavigate={setActiveId} onOpenOnboarding={() => setOnboardingOpen(true)} />
-      {renderPage()}
-      <OnboardingTour open={onboardingOpen} onComplete={handleOnboardingComplete} />
-    </div>
+    <OnboardingProvider>
+      <div className="flex min-h-screen bg-background">
+        <AppSidebar
+          activeId={activeId}
+          onNavigate={setActiveId}
+          onOpenOnboarding={() => setOnboardingOpen(true)}
+          onRegisterOpenAssistant={(fn) => { openAssistantRef.current = fn; }}
+        />
+        <div className="flex-1 flex flex-col">
+          <div className="px-8 pt-6">
+            <GettingStartedWidget
+              onNavigate={setActiveId}
+              onOpenAssistant={() => openAssistantRef.current?.()}
+            />
+          </div>
+          {renderPage()}
+        </div>
+        <OnboardingTour open={onboardingOpen} onComplete={handleOnboardingComplete} />
+      </div>
+    </OnboardingProvider>
   );
 };
 

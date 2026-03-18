@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useImperativeHandle, forwardRef } from "react";
 import { Sparkles, CornerDownLeft, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import ReactMarkdown from "react-markdown";
@@ -104,7 +104,12 @@ async function streamChat({
   onDone();
 }
 
-export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
+export interface AiOmniboxHandle {
+  openDialog: () => void;
+}
+
+export const AiOmnibox = forwardRef<AiOmniboxHandle, { activeId?: string; onFirstMessage?: () => void }>(
+  function AiOmnibox({ activeId = "api-keys", onFirstMessage }, ref) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -113,6 +118,7 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const assistantRef = useRef("");
+  const firstMsgFired = useRef(false);
 
   const handleOpen = useCallback(() => {
     setOpen(true);
@@ -121,6 +127,8 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
     setError(null);
     assistantRef.current = "";
   }, []);
+
+  useImperativeHandle(ref, () => ({ openDialog: handleOpen }), [handleOpen]);
 
   // Scroll to bottom on new content
   useEffect(() => {
@@ -151,6 +159,13 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
 
   const handleSubmit = async (text: string) => {
     if (!text.trim() || isLoading) return;
+
+    // Mark first message for onboarding
+    if (!firstMsgFired.current && onFirstMessage) {
+      firstMsgFired.current = true;
+      onFirstMessage();
+    }
+
     const userMsg: Msg = { role: "user", content: text.trim() };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
@@ -314,4 +329,4 @@ export function AiOmnibox({ activeId = "api-keys" }: { activeId?: string }) {
       </Dialog>
     </>
   );
-}
+});
