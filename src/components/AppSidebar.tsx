@@ -36,6 +36,13 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding, onRegisterO
   const isAgentsSection = activeId === "agents" || activeId === "my-agents";
   const [agentsOpen, setAgentsOpen] = useState(isAgentsSection);
   const [profileOpen, setProfileOpen] = useState(false);
+  const omniboxRef = useRef<AiOmniboxHandle>(null);
+
+  useEffect(() => {
+    if (onRegisterOpenAssistant && omniboxRef.current) {
+      onRegisterOpenAssistant(() => omniboxRef.current?.openDialog());
+    }
+  }, [onRegisterOpenAssistant]);
 
   return (
     <aside className="w-[200px] h-screen sticky top-0 border-r border-border bg-sidebar-bg flex flex-col shrink-0 relative">
