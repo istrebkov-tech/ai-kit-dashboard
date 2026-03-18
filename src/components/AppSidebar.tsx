@@ -76,6 +76,7 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
               >
                 <Activity className="w-3 h-3 shrink-0" />
                 <span>Лимиты</span>
+              </button>
               <button
                 onClick={() => {
                   localStorage.removeItem("aikit_onboarding_done");
