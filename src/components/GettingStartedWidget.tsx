@@ -1,56 +1,63 @@
 import { CheckCircle2, Circle, ChevronRight, PartyPopper, X } from "lucide-react";
-import { useOnboarding } from "@/contexts/OnboardingContext";
+import { useOnboarding, type GuideId } from "@/contexts/OnboardingContext";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface Task {
-  key: "hasGeneratedToken" | "hasViewedMCP" | "hasTalkedToAssistant";
+  key: "hasGeneratedToken" | "hasViewedModels" | "hasViewedMCP";
+  guide: "keys" | "models" | "mcp";
   title: string;
   description: string;
   actionLabel: string;
-  onAction: () => void;
+  navTarget: string;
 }
 
 interface GettingStartedWidgetProps {
   onNavigate: (id: string) => void;
-  onOpenAssistant: () => void;
 }
 
-export function GettingStartedWidget({ onNavigate, onOpenAssistant }: GettingStartedWidgetProps) {
+const tasks: Task[] = [
+  {
+    key: "hasGeneratedToken",
+    guide: "keys",
+    title: "Получите доступ (API Ключ)",
+    description: "Сгенерируйте JWT-токен или создайте постоянный API-ключ.",
+    actionLabel: "Перейти к ключам",
+    navTarget: "api-keys",
+  },
+  {
+    key: "hasViewedModels",
+    guide: "models",
+    title: "Выберите мозг агента (LLM)",
+    description: "Найдите нужную модель и скопируйте её ID для запросов.",
+    actionLabel: "Перейти к моделям",
+    navTarget: "models",
+  },
+  {
+    key: "hasViewedMCP",
+    guide: "mcp",
+    title: "Подключите интеграции (MCP)",
+    description: "Выберите интеграцию и скопируйте npx-команду.",
+    actionLabel: "Перейти к инструментам",
+    navTarget: "mcp",
+  },
+];
+
+export function GettingStartedWidget({ onNavigate }: GettingStartedWidgetProps) {
   const ob = useOnboarding();
 
   if (ob.isWidgetDismissed) return null;
 
-  const tasks: Task[] = [
-    {
-      key: "hasGeneratedToken",
-      title: "Выпустите свой первый ключ",
-      description: "Сгенерируйте JWT-токен для тестового доступа к API.",
-      actionLabel: "Перейти к ключам",
-      onAction: () => onNavigate("api-keys"),
-    },
-    {
-      key: "hasViewedMCP",
-      title: "Изучите арсенал MCP",
-      description: "Посмотрите, какие интеграции доступны для ваших агентов.",
-      actionLabel: "Открыть MCP",
-      onAction: () => onNavigate("mcp"),
-    },
-    {
-      key: "hasTalkedToAssistant",
-      title: "Задайте вопрос Архитектору",
-      description: "Спросите ассистента: «Как мне подключить Jira?»",
-      actionLabel: "Открыть ⌘K",
-      onAction: onOpenAssistant,
-    },
-  ];
-
   const allDone = ob.completedCount === ob.totalTasks;
   const progress = (ob.completedCount / ob.totalTasks) * 100;
 
+  const handleTaskAction = (task: Task) => {
+    ob.setActiveGuide(task.guide);
+    onNavigate(task.navTarget);
+  };
+
   return (
     <div className="border border-border rounded-xl bg-card shadow-sm p-5 mb-6 animate-fade-in relative">
-      {/* Dismiss */}
       <button
         onClick={ob.dismiss}
         className="absolute top-3 right-3 p-1 rounded-md text-muted-foreground hover:text-foreground transition-colors"
@@ -60,7 +67,6 @@ export function GettingStartedWidget({ onNavigate, onOpenAssistant }: GettingSta
       </button>
 
       {allDone ? (
-        /* ── Success state ── */
         <div className="text-center py-4">
           <PartyPopper className="w-10 h-10 text-primary mx-auto mb-3" strokeWidth={1.5} />
           <h3 className="text-base font-semibold text-foreground mb-1">
@@ -75,7 +81,6 @@ export function GettingStartedWidget({ onNavigate, onOpenAssistant }: GettingSta
         </div>
       ) : (
         <>
-          {/* ── Header ── */}
           <div className="mb-4 pr-6">
             <h3 className="text-sm font-semibold text-foreground mb-1">
               Добро пожаловать на борт 🚀
@@ -93,7 +98,6 @@ export function GettingStartedWidget({ onNavigate, onOpenAssistant }: GettingSta
             </div>
           </div>
 
-          {/* ── Task list ── */}
           <ul className="space-y-1">
             {tasks.map((task) => {
               const done = ob[task.key];
@@ -124,7 +128,7 @@ export function GettingStartedWidget({ onNavigate, onOpenAssistant }: GettingSta
                       size="sm"
                       variant="ghost"
                       className="shrink-0 text-xs text-primary hover:text-primary"
-                      onClick={task.onAction}
+                      onClick={() => handleTaskAction(task)}
                     >
                       {task.actionLabel}
                       <ChevronRight className="w-3.5 h-3.5 ml-0.5" />

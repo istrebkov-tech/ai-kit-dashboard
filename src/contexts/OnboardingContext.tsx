@@ -1,17 +1,22 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 
+export type GuideId = "keys" | "models" | "mcp" | null;
+
 interface OnboardingState {
   hasGeneratedToken: boolean;
+  hasViewedModels: boolean;
   hasViewedMCP: boolean;
-  hasTalkedToAssistant: boolean;
   isWidgetDismissed: boolean;
+  activeGuide: GuideId;
 }
 
 interface OnboardingContextValue extends OnboardingState {
   markToken: () => void;
+  markModels: () => void;
   markMCP: () => void;
-  markAssistant: () => void;
   dismiss: () => void;
+  setActiveGuide: (g: GuideId) => void;
+  completeGuide: (g: "keys" | "models" | "mcp") => void;
   completedCount: number;
   totalTasks: number;
 }
@@ -22,9 +27,12 @@ const TOTAL = 3;
 function load(): OnboardingState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return { hasGeneratedToken: false, hasViewedModels: false, hasViewedMCP: false, isWidgetDismissed: false, activeGuide: null, ...parsed };
+    }
   } catch {}
-  return { hasGeneratedToken: false, hasViewedMCP: false, hasTalkedToAssistant: false, isWidgetDismissed: false };
+  return { hasGeneratedToken: false, hasViewedModels: false, hasViewedMCP: false, isWidgetDismissed: false, activeGuide: null };
 }
 
 function save(s: OnboardingState) {
@@ -44,14 +52,25 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const completedCount = [state.hasGeneratedToken, state.hasViewedMCP, state.hasTalkedToAssistant].filter(Boolean).length;
+  const completedCount = [state.hasGeneratedToken, state.hasViewedModels, state.hasViewedMCP].filter(Boolean).length;
+
+  const completeGuide = useCallback((g: "keys" | "models" | "mcp") => {
+    const map: Record<string, Partial<OnboardingState>> = {
+      keys: { hasGeneratedToken: true },
+      models: { hasViewedModels: true },
+      mcp: { hasViewedMCP: true },
+    };
+    update({ ...map[g], activeGuide: null });
+  }, [update]);
 
   const value: OnboardingContextValue = {
     ...state,
     markToken: () => update({ hasGeneratedToken: true }),
+    markModels: () => update({ hasViewedModels: true }),
     markMCP: () => update({ hasViewedMCP: true }),
-    markAssistant: () => update({ hasTalkedToAssistant: true }),
     dismiss: () => update({ isWidgetDismissed: true }),
+    setActiveGuide: (g) => update({ activeGuide: g }),
+    completeGuide,
     completedCount,
     totalTasks: TOTAL,
   };
