@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink } from "lucide-react";
+import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink, RotateCcw } from "lucide-react";
 import { AiOmnibox } from "./AiOmnibox";
 
 
@@ -76,6 +76,17 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
               >
                 <Activity className="w-3 h-3 shrink-0" />
                 <span>Лимиты</span>
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("aikit_onboarding_done");
+                  localStorage.removeItem("aikit_getting_started");
+                  window.location.reload();
+                }}
+                className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-md text-[11px] whitespace-nowrap transition-colors text-muted-foreground hover:text-foreground hover:bg-sidebar-active"
+              >
+                <RotateCcw className="w-3 h-3 shrink-0" />
+                <span>Пройти онбординг</span>
               </button>
             </div>
           )}
