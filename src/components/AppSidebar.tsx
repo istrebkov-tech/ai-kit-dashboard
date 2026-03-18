@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink } from "lucide-react";
-import { AiOmnibox, type AiOmniboxHandle } from "./AiOmnibox";
-import { useOnboarding } from "@/contexts/OnboardingContext";
+import { AiOmnibox } from "./AiOmnibox";
 
 
 interface NavItem {
@@ -30,21 +29,12 @@ interface AppSidebarProps {
   activeId: string;
   onNavigate: (id: string) => void;
   onOpenOnboarding?: () => void;
-  onRegisterOpenAssistant?: (fn: () => void) => void;
 }
 
-export function AppSidebar({ activeId, onNavigate, onOpenOnboarding, onRegisterOpenAssistant }: AppSidebarProps) {
-  const onboardingCtx = useOnboarding();
+export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSidebarProps) {
   const isAgentsSection = activeId === "agents" || activeId === "my-agents";
   const [agentsOpen, setAgentsOpen] = useState(isAgentsSection);
   const [profileOpen, setProfileOpen] = useState(false);
-  const omniboxRef = useRef<AiOmniboxHandle>(null);
-
-  useEffect(() => {
-    if (onRegisterOpenAssistant && omniboxRef.current) {
-      onRegisterOpenAssistant(() => omniboxRef.current?.openDialog());
-    }
-  }, [onRegisterOpenAssistant]);
 
   return (
     <aside className="w-[200px] h-screen sticky top-0 border-r border-border bg-sidebar-bg flex flex-col shrink-0 relative">
