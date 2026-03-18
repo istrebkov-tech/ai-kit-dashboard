@@ -37,7 +37,6 @@ interface ApiKeysPageProps {
 }
 
 export function ApiKeysPage({ jwtToken, onJwtTokenChange }: ApiKeysPageProps) {
-  const onboardingCtx = useOnboarding();
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState("");
   const [createdToken, setCreatedToken] = useState<string | null>(null);
