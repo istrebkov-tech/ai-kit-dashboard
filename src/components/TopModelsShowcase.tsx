@@ -43,23 +43,28 @@ function TopModelRow({ model, rank }: { model: TopModel; rank: number }) {
   };
 
   return (
-    <div className="group flex items-center gap-2 py-1.5 px-2 rounded-md hover:bg-muted/50 transition-colors">
-      <span className={`text-[10px] font-bold w-4 text-center shrink-0 ${rank <= 3 ? "text-primary" : "text-muted-foreground"}`}>
+    <div className="group flex items-start gap-2 py-2 px-2.5 rounded-md hover:bg-muted/50 transition-colors">
+      <span className={`text-[10px] font-bold w-4 text-center shrink-0 mt-0.5 ${rank <= 3 ? "text-primary" : "text-muted-foreground"}`}>
         {rank}
       </span>
-      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${PROVIDER_DOT[model.provider] || "bg-muted-foreground"}`} />
-      <code className="text-[11px] font-mono font-medium text-foreground truncate">{model.name}</code>
-      {model.nda && (
-        <span className="text-[8px] px-1 py-px rounded bg-success/10 text-success font-semibold shrink-0">NDA</span>
-      )}
-      <span className="text-[10px] text-muted-foreground truncate ml-auto mr-1 hidden sm:inline">{model.tag}</span>
-      <button
-        onClick={handleCopy}
-        className="p-0.5 rounded text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
-        title="Скопировать model ID"
-      >
-        {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
-      </button>
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 mt-1.5 ${PROVIDER_DOT[model.provider] || "bg-muted-foreground"}`} />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-1.5">
+          <code className="text-[11px] font-mono font-medium text-foreground">{model.name}</code>
+          {model.nda && (
+            <span className="text-[8px] px-1 py-px rounded bg-success/10 text-success font-semibold shrink-0">NDA</span>
+          )}
+          <button
+            onClick={handleCopy}
+            className="p-0.5 rounded text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+            title="Скопировать model ID"
+          >
+            {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
+          </button>
+        </div>
+        <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">{model.desc}</p>
+      </div>
+      <span className="text-[9px] text-muted-foreground whitespace-nowrap shrink-0 mt-0.5 hidden sm:inline">{model.tag}</span>
     </div>
   );
 }
