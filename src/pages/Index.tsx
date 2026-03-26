@@ -47,8 +47,9 @@ const Index = () => {
           onOpenOnboarding={() => setOnboardingOpen(true)}
         />
         <div className="flex-1 flex flex-col">
-          <div className="px-8 pt-6">
+          <div className="px-8 pt-6 space-y-5">
             <GettingStartedWidget onNavigate={setActiveId} />
+            {activeId === "api-keys" && <TopModelsShowcase onNavigate={setActiveId} />}
           </div>
           {renderPage()}
         </div>
