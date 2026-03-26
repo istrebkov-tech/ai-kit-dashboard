@@ -3,6 +3,7 @@ import { Search, Copy, Check, Terminal, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PageGuide } from "./PageGuide";
 import { ResourcesSection } from "./ResourcesSection";
+import { TopModelsShowcase } from "./TopModelsShowcase";
 import { Image, MessageSquare, SquareActivity } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
@@ -293,6 +294,10 @@ export function LlmModelsPage() {
           </p>
         </div>
 
+        {/* Top 10 */}
+        <div className="mb-4">
+          <TopModelsShowcase />
+        </div>
 
         {/* API Reference Accordion */}
         <Accordion type="single" collapsible className="mb-4">

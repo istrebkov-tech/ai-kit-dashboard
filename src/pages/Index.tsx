@@ -11,7 +11,7 @@ import { OnboardingTour } from "@/components/OnboardingTour";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { GettingStartedWidget } from "@/components/GettingStartedWidget";
 import { ContextualGuide } from "@/components/ContextualGuide";
-import { TopModelsShowcase } from "@/components/TopModelsShowcase";
+
 import { safeGetItem, safeSetItem } from "@/lib/safeStorage";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
@@ -48,9 +48,8 @@ const Index = () => {
           onOpenOnboarding={() => setOnboardingOpen(true)}
         />
         <div className="flex-1 flex flex-col">
-          <div className="px-8 pt-6 space-y-5">
+          <div className="px-8 pt-6">
             <GettingStartedWidget onNavigate={setActiveId} />
-            {activeId === "api-keys" && <TopModelsShowcase onNavigate={setActiveId} />}
           </div>
           {renderPage()}
         </div>
