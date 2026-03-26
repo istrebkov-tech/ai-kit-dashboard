@@ -76,7 +76,7 @@ function ModelRow({ model, rank, nda }: { model: TopModel; rank?: number; nda?: 
 }
 
 export function TopModelsShowcase() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [ndaOpen, setNdaOpen] = useState(false);
 
   return (
