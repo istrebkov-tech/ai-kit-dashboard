@@ -6,20 +6,21 @@ interface TopModel {
   name: string;
   provider: string;
   tag: string;
+  desc: string;
   nda?: boolean;
 }
 
 const TOP_MODELS: TopModel[] = [
-  { name: "gpt-5.2-pro", provider: "OpenAI", tag: "Reasoning + NDA", nda: true },
-  { name: "claude-opus-4-1-fallback", provider: "Anthropic", tag: "200K ctx + Coding", nda: true },
-  { name: "gemini-2.5-pro", provider: "Google", tag: "1M ctx + Multimodal" },
-  { name: "gpt-5.2", provider: "OpenAI", tag: "Универсал + Fast", nda: true },
-  { name: "claude-sonnet-4-fallback", provider: "Anthropic", tag: "Coding + NDA", nda: true },
-  { name: "grok-4", provider: "xAI", tag: "Top reasoning" },
-  { name: "deepseek-reasoner", provider: "DeepSeek", tag: "CoT reasoning" },
-  { name: "llama-3.1-405b", provider: "Meta", tag: "Open-source" },
-  { name: "gemini-2.5-flash", provider: "Google", tag: "Fast + 1M ctx" },
-  { name: "o3", provider: "OpenAI", tag: "Math + Science" },
+  { name: "claude-opus-4-6", provider: "Anthropic", tag: "Coding · Deep reasoning", desc: "Флагман для сложных задач: архитектура, рефакторинг, длинные цепочки рассуждений", nda: true },
+  { name: "claude-sonnet-4-5", provider: "Anthropic", tag: "Coding · Fast", desc: "Лучший баланс скорости и качества для повседневной разработки и код-ревью" },
+  { name: "claude-sonnet-4", provider: "Anthropic", tag: "Coding · Affordable", desc: "Быстрая и экономичная модель для массовых запросов и автоматизации" },
+  { name: "gpt-4.1", provider: "OpenAI", tag: "Universal · Instruction", desc: "Сильное следование инструкциям, хорош для структурированных выводов и API-агентов" },
+  { name: "claude-opus-4-1", provider: "Anthropic", tag: "Reasoning · NDA", desc: "Глубокий анализ и работа с конфиденциальными данными в закрытом контуре", nda: true },
+  { name: "gpt-5", provider: "OpenAI", tag: "Reasoning · Multimodal", desc: "Мультимодальный флагман OpenAI: текст, изображения, сложные рассуждения" },
+  { name: "gemini-2.5-flash-image", provider: "Google", tag: "Vision · Generation", desc: "Генерация и редактирование изображений по текстовому описанию" },
+  { name: "gpt-5-pro", provider: "OpenAI", tag: "Max quality · Slow", desc: "Максимальное качество для research-задач, где важна точность, а не скорость" },
+  { name: "gpt-4o-mini", provider: "OpenAI", tag: "Lightweight · Cheap", desc: "Ультрабюджетная модель для классификации, саммари и простых задач" },
+  { name: "grok-3", provider: "xAI", tag: "Reasoning · Real-time", desc: "Быстрые рассуждения с доступом к актуальным данным в реальном времени" },
 ];
 
 const PROVIDER_DOT: Record<string, string> = {
