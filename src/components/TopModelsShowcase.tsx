@@ -24,10 +24,8 @@ const TOP_MODELS: TopModel[] = [
 ];
 
 const NDA_MODELS: TopModel[] = [
-  { name: "qwen-3-235b", provider: "Qwen", tag: "NDA · Reasoning", desc: "Крупнейшая MoE-модель Qwen: 235B параметров, мощное рассуждение и кодинг" },
-  { name: "qwen-3-30b", provider: "Qwen", tag: "NDA · Balanced", desc: "Оптимальный баланс размера и качества для продакшен-задач в закрытом контуре" },
-  { name: "qwen-3-14b", provider: "Qwen", tag: "NDA · Fast", desc: "Быстрая модель для NDA-сценариев: классификация, суммаризация, чат" },
-  { name: "qwen-3-8b", provider: "Qwen", tag: "NDA · Edge", desc: "Компактная модель для деплоя on-premise и edge-инференса" },
+  { name: "qwen3-30b-a3b-instruct-2507", provider: "Qwen", tag: "NDA · Reasoning", desc: "Оптимальный баланс размера и качества для продакшен-задач в закрытом контуре" },
+  { name: "qwen2.5-7b-instruct", provider: "Qwen", tag: "NDA · Fast", desc: "Быстрая компактная модель для NDA-сценариев: классификация, суммаризация, чат" },
 ];
 
 const PROVIDER_DOT: Record<string, string> = {
@@ -78,7 +76,7 @@ function ModelRow({ model, rank, nda }: { model: TopModel; rank?: number; nda?: 
 }
 
 export function TopModelsShowcase() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [ndaOpen, setNdaOpen] = useState(false);
 
   return (
