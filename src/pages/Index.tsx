@@ -11,7 +11,7 @@ import { OnboardingTour } from "@/components/OnboardingTour";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { GettingStartedWidget } from "@/components/GettingStartedWidget";
 import { ContextualGuide } from "@/components/ContextualGuide";
-import { TopModelsShowcase } from "@/components/TopModelsShowcase";
+
 import { safeGetItem, safeSetItem } from "@/lib/safeStorage";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
