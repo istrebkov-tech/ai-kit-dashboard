@@ -294,6 +294,10 @@ export function LlmModelsPage() {
           </p>
         </div>
 
+        {/* Top 10 */}
+        <div className="mb-4">
+          <TopModelsShowcase />
+        </div>
 
         {/* API Reference Accordion */}
         <Accordion type="single" collapsible className="mb-4">
