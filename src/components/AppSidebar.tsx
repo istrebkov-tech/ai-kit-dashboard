@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Key, Box, Wrench, Cpu, ChevronDown, ChevronRight, Sparkles, Users, UserCog, Activity, FlaskConical, ExternalLink, RotateCcw } from "lucide-react";
 import { AiOmnibox } from "./AiOmnibox";
+import { safeRemoveItem } from "@/lib/safeStorage";
 
 
 interface NavItem {
@@ -79,8 +80,8 @@ export function AppSidebar({ activeId, onNavigate, onOpenOnboarding }: AppSideba
               </button>
               <button
                 onClick={() => {
-                  localStorage.removeItem("aikit_onboarding_done");
-                  localStorage.removeItem("aikit_getting_started");
+                  safeRemoveItem("aikit_onboarding_done");
+                  safeRemoveItem("aikit_getting_started");
                   window.location.reload();
                 }}
                 className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-md text-[11px] whitespace-nowrap transition-colors text-muted-foreground hover:text-foreground hover:bg-sidebar-active"

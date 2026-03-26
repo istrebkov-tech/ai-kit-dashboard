@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { safeGetItem, safeSetItem } from "@/lib/safeStorage";
 
 export type GuideId = "keys" | "models" | "mcp" | null;
 
@@ -43,14 +44,14 @@ const defaults: OnboardingState = {
 
 function load(): OnboardingState {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = safeGetItem(STORAGE_KEY);
     if (raw) return { ...defaults, ...JSON.parse(raw) };
   } catch {}
   return { ...defaults };
 }
 
 function save(s: OnboardingState) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  safeSetItem(STORAGE_KEY, JSON.stringify(s));
 }
 
 const Ctx = createContext<OnboardingContextValue | null>(null);
