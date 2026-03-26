@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ApiKeysPage } from "@/components/ApiKeysPage";
 import { AgentsPage } from "@/components/AgentsPage";
@@ -12,19 +12,20 @@ import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { GettingStartedWidget } from "@/components/GettingStartedWidget";
 import { ContextualGuide } from "@/components/ContextualGuide";
 import { TopModelsShowcase } from "@/components/TopModelsShowcase";
+import { safeGetItem, safeSetItem } from "@/lib/safeStorage";
 
 const pages: Record<string, { title: string; subtitle: string }> = {};
 
 const Index = () => {
   const [activeId, setActiveId] = useState("api-keys");
   const [onboardingOpen, setOnboardingOpen] = useState(() => {
-    return localStorage.getItem("aikit_onboarding_done") !== "true";
+    return safeGetItem("aikit_onboarding_done") !== "true";
   });
   const [jwtToken, setJwtToken] = useState<string | null>(null);
 
   const handleOnboardingComplete = () => {
     setOnboardingOpen(false);
-    localStorage.setItem("aikit_onboarding_done", "true");
+    safeSetItem("aikit_onboarding_done", "true");
   };
 
   const renderPage = () => {
